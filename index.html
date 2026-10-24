@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- <meta> は画面に表示されない要素なので、見た目を付けたり、動きを付けたりする必要がない（class は、CSSやJavaScriptが要素を見つけるための名前） -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- レスポンシブのスイッチ。これがありCSSで実際にビジュアルに反映させる -->
+  <title>猫カフェ ねこまる | 保護猫と過ごすやさしい時間</title>
+   <meta name="description" content="猫カフェ ねこまるの公式サイト。料金、猫の紹介、アクセスをご案内します。">
+   <!--検索結果で、タイトルの下に出る説明文 -->
+   <link rel="stylesheet" href="style.css">
+   <!--今回は外部CSSを読み込む。レルは参照するファイルの属性をおしえる、エイチレフはその参照先 -->
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="header">
+  <!-- 背景は画面いっぱいに広げ、中の文字やメニューだけを真ん中に寄せたいので、枠を二重にする（hederとdiv） -->
+    <div class="header__inner">
+    <!-- ただわかりやすく枠だけほしいときにDivをつかう -->
+      <a href="#top" class="logo">🐾 ねこまる</a>
+      <!-- aはアンカータグ（リンクを作る）エイチレフは参照先を指定 -->
+
+      <!-- ハンバーガーボタン(スマホのみ表示) -->
+      <button class="menu-btn" id="menuBtn" aria-label="メニューを開く" aria-expanded="false">?
+        <!-- アリア属性はWebの要素に意味や状態を補足するもの。これは画面読み上げソフトに意味を伝えるため(視覚障碍者向けなど)ラベル＝ボタンの名前、エクスペンデッド＝状態-->
+        <!-- ハンバーガーはSpanの線が並んで見た目が形成されているため、読み上げソフトはボタンと認識できないから -->
+        <!-- Javascriptでクリックするたび値を切り替える処理をする -->
+        <span></span><span></span><span></span>
+        <!-- <span></span>が一つの要素で、CSSで線を表現するために使ってる。CSSで簡単にいじれて画像でないため軽い、動きも付けられる -->
+      </button>
+
+      <nav class="nav" id="nav">
+      <!-- ここはナビゲーションメニュー。リストのような書き方が一般的 -->
+      <!-- nav(メニューの枠) > ul(リスト) > li(項目) > a(リンク) という入れ子 -->
+        <ul>
+          <li><a href="#about">ねこまるとは</a></li>
+          <li><a href="#cats">猫の紹介</a></li>
+          <li><a href="#price">料金</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+          <li><a href="#access">アクセス</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- メインビジュアル -->
+    <section class="hero">
+      <div class="hero__text">
+        <p class="hero__sub">保護猫と過ごす、やさしい時間</p>
+        <h1>猫カフェ ねこまる</h1>
+        <p>ふわふわの猫たちが、ゆっくりお出迎え。<br>ひとりでも、友だちとでも、のんびりどうぞ。</p>
+        <a href="#access" class="btn">ご来店のご案内</a>
+      </div>
+    </section>
+
+    <!-- お店について -->
+    <section class="section" id="about">
+      <h2 class="section__title">ねこまるとは</h2>
+      <p class="lead">
+        ねこまるは、保護猫たちが暮らす小さな猫カフェです。<br>
+        猫たちのペースを大切に、のんびり過ごせる空間づくりをしています。
+      </p>
+    </section>
+
+    <!-- 猫の紹介 -->
+    <section class="section section--tinted" id="cats">
+      <h2 class="section__title">猫の紹介</h2>
+      <ul class="cat-list">
+        <li class="cat-card">
+          <div class="cat-card__img">🐱</div>
+          <h3>みけ(3歳・女の子)</h3>
+          <p>おっとり甘えん坊。膝の上が大好きです。</p>
+        </li>
+        <li class="cat-card">
+          <div class="cat-card__img">😸</div>
+          <h3>そら(2歳・男の子)</h3>
+          <p>やんちゃな遊び好き。おもちゃを見せると大喜び。</p>
+        </li>
+        <li class="cat-card">
+          <div class="cat-card__img">😺</div>
+          <h3>もも(5歳・女の子)</h3>
+          <p>ベテランのお姉さん。窓辺でひなたぼっこ中。</p>
+        </li>
+      </ul>
+      <p class="note">※ 写真は <code>img</code> タグに差し替えてください(例:<code>&lt;img src="images/mike.jpg" alt="三毛猫のみけ"&gt;</code>)</p>
+    </section>
+
+    <!-- 料金 -->
+    <section class="section" id="price">
+      <h2 class="section__title">料金・システム</h2>
+      <table class="price-table">
+        <tr><th>30分</th><td>800円</td></tr>
+        <tr><th>60分</th><td>1,400円</td></tr>
+        <tr><th>延長(15分)</th><td>300円</td></tr>
+        <tr><th>ドリンク</th><td>フリードリンク付き</td></tr>
+      </table>
+      <ul class="rules">
+        <li>猫を追いかけたり、無理に抱っこしたりしないでください。</li>
+        <li>入店前に手洗い・消毒をお願いします。</li>
+        <li>小学生以下のお子さまは保護者同伴でご利用ください。</li>
+      </ul>
+    </section>
+
+    <!-- よくある質問(JSで開閉)(aria-expandedは要素が展開されているか折りたたまれているか) -->
+    <section class="section section--tinted" id="faq">
+      <h2 class="section__title">よくある質問</h2>
+      <div class="faq">
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">予約は必要ですか?</button>
+          <div class="faq__a"><p>平日は予約なしでご利用いただけます。土日祝は混み合うため、ご予約をおすすめします。</p></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">猫アレルギーでも大丈夫ですか?</button>
+          <div class="faq__a"><p>症状が出る可能性があります。ご不安な方は、事前にご相談ください。</p></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">猫を触っても良いですか?</button>
+          <div class="faq__a"><p>猫が寄ってきたら、やさしくなでてあげてください。寝ている子は、そっとしておいてくださいね。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- アクセス -->
+    <section class="section" id="access">
+      <h2 class="section__title">アクセス</h2>
+      <dl class="info">
+        <dt>住所</dt><dd>〒000-0000 ○○県○○市○○町1-2-3 2F</dd>
+        <dt>営業時間</dt><dd>11:00〜19:00(最終受付 18:00)</dd>
+        <dt>定休日</dt><dd>毎週水曜日</dd>
+        <dt>最寄り駅</dt><dd>○○駅 徒歩5分</dd>
+      </dl>
+      <p class="note">※ 地図は Google マップの「共有 → 地図を埋め込む」で取得したコードをここに貼ります。</p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 猫カフェ ねこまる</p>
+  </footer>
+
+
+  <script src="script.js"></script>
+  <!--JavaScriptのファイルをHTMLに読み込む行,<link> と同じ役割で、script.js とHTMLをつなぐ。src属性=読み込むファイルの場所を指定する属性 -->
+　<!-- JavaScriptは、HTMLの要素を探して操作するため最後に指示を書く -->
+　<!-- <head> に書いて、defer を付ける方法もある。「HTMLを全部読み込んでから実行してね」という指定になる　 -->
+</body>
+</html>
