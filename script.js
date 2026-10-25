@@ -48,3 +48,55 @@ document.querySelectorAll('.faq__q').forEach((question) => { //ページ全体�
     }
   });
 });
+
+// ==============================
+// 3. お知らせを news.json から読み込んで表示
+// ==============================
+const newsList = document.getElementById('newsList');
+
+// 画面にメッセージ(読み込み失敗など)を1行出す関数
+function showNewsMessage(text) {
+  newsList.innerHTML = '';
+  const li = document.createElement('li');
+  li.className = 'news-list__message';
+  li.textContent = text;
+  newsList.append(li);
+}
+
+// async は「途中で待つ処理(await)を含む関数」の印
+async function loadNews() {
+  try {
+    // ① news.json を取りに行く(届くまで await で待つ)
+    const response = await fetch('news.json');
+    if (!response.ok) {
+      throw new Error('news.json を読み込めませんでした');
+    }
+
+    // ② 届いた JSON の文字を、配列とオブジェクトに変換する(パース)
+    const newsItems = await response.json();
+
+    // ③ 「読み込み中」を消して、新しい順に並べ替える
+    newsList.innerHTML = '';
+    const sorted = [...newsItems].sort((a, b) => b.date.localeCompare(a.date));
+
+    // ④ 1件ずつ、HTMLの要素を作って、並べる
+    sorted.forEach((item) => {
+      const li = document.createElement('li');
+
+      const date = document.createElement('span');
+      date.className = 'news-list__date';
+      date.textContent = item.date.replaceAll('-', '.');
+
+      const title = document.createElement('span');
+      title.textContent = item.title;
+
+      li.append(date, title);
+      newsList.append(li);
+    });
+  } catch (error) {
+    console.error(error);   // 原因は F12 のコンソールに出る
+    showNewsMessage('お知らせを読み込めませんでした。');
+  }
+}
+
+loadNews();

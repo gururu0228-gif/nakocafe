@@ -383,6 +383,34 @@ code {
 
 .info dt:first-child { margin-top: 0; }
 
+/* お知らせ(スマホは縦並び) */
+.news-list {
+  max-width: 720px;
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.news-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-tint);
+}
+
+.news-list li:last-child { border-bottom: none; }
+
+.news-list__date {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--color-main-dark);
+}
+
+.news-list__message {
+  text-align: center;
+  opacity: 0.7;
+}
 /* ==============================
    フッター
    ============================== */
@@ -440,4 +468,14 @@ code {
   }
 
   .info dt { margin-top: 0; }
+
+  /* お知らせを、日付とタイトルの横並びに */
+  .news-list li {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .news-list__date { flex: 0 0 100px; }
+
+
 }
