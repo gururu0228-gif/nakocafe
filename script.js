@@ -38,7 +38,7 @@ document.querySelectorAll('.faq__q').forEach((question) => { //ページ全体�
     const isOpen = question.getAttribute('aria-expanded') === 'true'; //質問ボタンのaria-expandedがtrueかfalseかをisOpenに返す(getAttributeは属性を取得する)
 
     if (isOpen) {
-      // 閉じる
+      // 開いていたら閉じる
       answer.style.maxHeight = null;
       question.setAttribute('aria-expanded', false);//質問ボタンの aria-expanded を、"false"(閉じている)にする
     } else {
@@ -54,28 +54,33 @@ document.querySelectorAll('.faq__q').forEach((question) => { //ページ全体�
 // ==============================
 const newsList = document.getElementById('newsList');
 
-// 画面にメッセージ(読み込み失敗など)を1行出す関数
+// 画面にメッセージ(読み込み失敗したとき)を1行出す処理
+// functionは処理をひとまとまりにして名前を付けたもの｛｝内の処理を呼び出すときは名前を使う
 function showNewsMessage(text) {
-  newsList.innerHTML = '';
-  const li = document.createElement('li');
+  newsList.innerHTML = ''; // newsListの中身を空にする
+  const li = document.createElement('li'); // 新しいliタグを作って代入する
   li.className = 'news-list__message';
   li.textContent = text;
   newsList.append(li);
 }
 
-// async は「途中で待つ処理(await)を含む関数」の印
+// asyncｱｼﾝｸ は「途中で待つ時間のかかる処理、(await)を含む関数です」の印
+// awaitｱｳｪｲﾄ は「ここで待って、終わったら次の処理に進む」の印
+// async→この処理は非同期処理を行います→awaitが使える
+// Newsを読み込む処理
 async function loadNews() {
+  // try..catch は、コード実行中にエラー（例外）が発生してもプログラムが中断するのを防ぎ、安全に処理を続けるためのエラー処理構文
   try {
     // ① news.json を取りに行く(届くまで await で待つ)
     const response = await fetch('news.json');
-    if (!response.ok) {
-      throw new Error('news.json を読み込めませんでした');
+    if (!response.ok) { //もし response.ok が false なら、エラーを投げる
+      throw new Error('news.json を読み込めませんでした'); //catchへ飛ぶ
     }
 
     // ② 届いた JSON の文字を、配列とオブジェクトに変換する(パース)
-    const newsItems = await response.json();
+    const newsItems = await response.json(); //responseからJsonとして中身を読み取る,それをnewsItemsとする
 
-    // ③ 「読み込み中」を消して、新しい順に並べ替える
+    // ③ 「読み込み中」を消して、新しい順に並べ替える(ｺﾝｽﾄとｿｰﾃｨﾄﾞ)
     newsList.innerHTML = '';
     const sorted = [...newsItems].sort((a, b) => b.date.localeCompare(a.date));
 
