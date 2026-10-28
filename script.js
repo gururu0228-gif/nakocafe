@@ -82,11 +82,21 @@ async function loadNews() {
 
     // ③ 「読み込み中」を消して、新しい順に並べ替える(ｺﾝｽﾄとｿｰﾃｨﾄﾞ)
     newsList.innerHTML = '';
+    // newsItemsはお知らせの配列を読み込んだもの
+    // ...はコピーを作る指示newslistをコピー（sortで元の配列を並べ替えてしまうため、コピーを作成しコピーを触ってもらう）
+    // localeCompare は、2つの文字列を比べて、「どちらが先か」を判断する。localeCompare() が返す「マイナス・0・プラス」を sort() が使って、2つのデータの位置関係を決めている
+    //今回はaのdate10/10，bのdate10/24だから、b.date.localeCompare(a.date)でb→aの順番で並べると最新の日付が先と読み取られる
+    // .sortで並べ替える基準として比較できる二つを用意する、それがaとb。今回はb.date.localeCompare(a.date)で日付を比較して新しい順に並べ替える
+    // a、bには、Jsonに入ってるデータ１件分すべてをそれぞれ代入している。右側でその中のdateという要素を抜粋して比較するという指示をしている
+    // a、bには、別のデータの同じ要素をそれぞれに代入している（「比較する順番が関係ない」のではなく、a と b の“左右”はめちゃくちゃ重要だがJSONの上から順番に a、b と入るかどうかは重要ではない）
+    // 比較する順番（Jsonデータを比較関数に代入していく順番）は関係ない
+    // 「データを追加する人が守るルール」と「それを読み取るプログラム」がセット、このコードが成立するために、データを更新するときはどのようなルールで更新するか決める事が大事
+    //a と b のどちらに新しいデータが入っていても対応できるように保険的な意味で ｂは後ろ　  　  
     const sorted = [...newsItems].sort((a, b) => b.date.localeCompare(a.date));
 
     // ④ 1件ずつ、HTMLの要素を作って、並べる
-    sorted.forEach((item) => {
-      const li = document.createElement('li');
+    sorted.forEach((item) => { // sortedの中身を1件ずつitemに代入して{}内の処理をする
+      const li = document.createElement('li'); //HTMLの <li> を1個作る
 
       const date = document.createElement('span');
       date.className = 'news-list__date';
