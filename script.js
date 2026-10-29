@@ -91,22 +91,23 @@ async function loadNews() {
     // a、bには、別のデータの同じ要素をそれぞれに代入している（「比較する順番が関係ない」のではなく、a と b の“左右”はめちゃくちゃ重要だがJSONの上から順番に a、b と入るかどうかは重要ではない）
     // 比較する順番（Jsonデータを比較関数に代入していく順番）は関係ない
     // 「データを追加する人が守るルール」と「それを読み取るプログラム」がセット、このコードが成立するために、データを更新するときはどのようなルールで更新するか決める事が大事
-    //a と b のどちらに新しいデータが入っていても対応できるように保険的な意味で ｂは後ろ　  　  
+    // sortに並び順の指示を与えるための指示となるb.date.localeCompare(a.date))後の変数：先の変数にすると、データを新しい順に並べて（降順）との指示になる
+    // sort((b, a)としていたら、a.date.localeCompare(b.date))となる。この指示からSortが読み取るというより、ここがSortに指示をしているという感覚
     const sorted = [...newsItems].sort((a, b) => b.date.localeCompare(a.date));
 
     // ④ 1件ずつ、HTMLの要素を作って、並べる
-    sorted.forEach((item) => { // sortedの中身を1件ずつitemに代入して{}内の処理をする
+    sorted.forEach((item) => {                 // sortedの中身を1件ずつitemに代入して{}内の処理をする
       const li = document.createElement('li'); //HTMLの <li> を1個作る
 
-      const date = document.createElement('span');
+      const date = document.createElement('span'); //日付用のSpanを新しくつくる（CSSがこれに対してデザインしたりできる）
       date.className = 'news-list__date';
       date.textContent = item.date.replaceAll('-', '.');
 
       const title = document.createElement('span');
-      title.textContent = item.title;
+      title.textContent = item.title;          //title 要素の中にJSONから取り出した、ニュースのタイトルを代入
 
-      li.append(date, title);
-      newsList.append(li);
+      li.append(date, title);                  //日付とタイトルを<li>の中にいれる
+      newsList.append(li);                     // newsListの中に<li>を追加する
     });
   } catch (error) {
     console.error(error);   // 原因は F12 のコンソールに出る
