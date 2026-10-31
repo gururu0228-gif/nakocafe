@@ -70,12 +70,28 @@
 
     <!-- メインビジュアル -->
     <section class="hero">
-      <div class="hero__text">
-        <p class="hero__sub">保護猫と過ごす、やさしい時間</p>
-        <h1>猫カフェ ねこまる</h1>
-        <p>ふわふわの猫たちが、ゆっくりお出迎え。<br>ひとりでも、友だちとでも、のんびりどうぞ。</p>
-        <a href="#access" class="btn">ご来店のご案内</a>
+      <!-- 画面には出さず、読み上げソフトと検索エンジンだけに伝える見出し -->
+      <h1 class="sr-only">猫カフェ ねんね</h1>
+
+      <!-- 写真の枠と、縦書きの文字を、横に並べる入れ物 -->
+      <div class="hero__stage">
+
+        <!-- 写真の枠(いまは、猫の絵文字で仮置き。あとで画像に差し替える) -->
+        <div class="hero__photos reveal" id="heroPhotos" role="img" aria-label="ねこの写真(スライド・仮)">
+          <div class="slide is-active" style="--tint:#ffd9cf">🐱</div>
+          <div class="slide" style="--tint:#cfeff2">😸</div>
+          <div class="slide" style="--tint:#e6defa">😺</div>
+          <div class="slide" style="--tint:#ffe6c9">🐈</div>
+        </div>
+
+        <!-- 縦書きのキャッチコピー。2行目は、少し下にずらす -->
+        <p class="hero__vtext reveal" style="--delay:.2s">ねこと くつろげる</p>
+        <p class="hero__vtext hero__vtext--low reveal" style="--delay:.4s">おへやあります</p>
       </div>
+
+      <!-- 今の中身は、あとで使うかもしれないので、コメントアウトして残す
+      <div class="hero__text"> ... </div>
+      -->
     </section>
 
     <!-- お知らせ(news.json から script.js が自動で表示する) -->

@@ -20,6 +20,7 @@
   --sakura: #ffc9c0;
   --mint: #8fe3ea;
   --line: #5a5a60;           /* 縁取りの線の色 */
+  --paper-2: #f1eee7;        /* 一段ふかい紙の色 */
 }
 /* ハイフンは呼び出し時の目印的なやつ */
 
@@ -191,15 +192,13 @@ a { color: inherit; text-decoration: none; }
    メインビジュアル
    ============================== */
 .hero {
-  margin-top: 64px;
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 40px 20px;
-  /* 写真を使うときは background-image: url(images/hero.jpg); に変更 */
-  background: linear-gradient(135deg, #ffd9b8, #ffe9d2 60%, #fff3e6);
+  margin-top: 64px;                    /* 固定ヘッダーの高さ分、下げる(いままでと同じ) */
+  min-height: calc(100svh - 64px);     /* 画面いっぱいの高さ(ヘッダー分を引く) */
+  padding: 36px 20px 90px;
+  display: grid;
+  place-items: center;                 /* 中身を、縦も横も、真ん中に */
+  overflow: hidden;
+  background: var(--paper-2);          /* 少し深い紙の色 */
 }
 
 .hero__sub {
@@ -565,3 +564,57 @@ code {
   /* 下に、ずらした影。楕円が浮いて見える */
   box-shadow: 0 8px 0 -4px rgba(90, 90, 96, 0.35);
 }
+
+/* 画面には出さない、読み上げソフト専用の文字 */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* 写真の枠と、縦書きの文字を、横に並べる */
+.hero__stage {
+  width: min(100%, 560px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;             /* 上にそろえる */
+  gap: clamp(14px, 4vw, 28px);         /* 画面の幅に合わせて、すき間が変わる(14px〜28px) */
+}
+
+/* 写真の枠:窓のような、アーチ形 */
+.hero__photos {
+  position: relative;
+  flex: 0 0 56%;                       /* 幅は、入れ物の56%で固定 */
+  aspect-ratio: 3 / 4.3;               /* 縦長の比率 */
+  overflow: hidden;                    /* 角の外に、はみ出したものを隠す */
+  background: #fff;
+  border: 3px solid var(--line);
+  border-radius: 999px 999px 28px 28px;   /* 上は半円、下は小さい角丸 */
+  box-shadow: 8px 8px 0 var(--sakura);    /* ぼかさない、さくら色の影 */
+}
+
+/* 1枚ごとの写真(全部、重ねておいて、is-active が付いた1枚だけ見せる) */
+.slide {
+  position: absolute;
+  inset: 0;                            /* 上下左右を、すべて0に。枠いっぱいに広げる */
+  display: grid;
+  place-items: center;
+  font-size: 5rem;                     /* 絵文字の大きさ */
+  background: var(--tint);             /* HTMLで指定した、1枚ごとの色 */
+  opacity: 0;
+  transition: opacity 1.3s ease;       /* 切り替わりを、1.3秒かけて、ふわっと */
+}
+.slide.is-active { opacity: 1; }
+
+/* 縦書きのキャッチコピー(右から左へ読む) */
+.hero__vtext {
+  writing-mode: vertical-rl;           /* 縦書き。vertical-rl = 縦・右から左 */
+  font-size: clamp(1.1rem, 5.2vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  color: #6b6b72;
+  margin-top: 1.5em;
+}
+.hero__vtext--low { margin-top: 3.4em; }          /* 2行目は、さらに下にずらす */
+.hero__vtext:nth-of-type(1) { order: 3; }         /* 1行目を、いちばん右に */
+.hero__vtext--low { order: 2; }                   /* 2行目は、その左に */
