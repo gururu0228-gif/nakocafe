@@ -546,3 +546,22 @@ code {
   transform-origin: 0 50%;                             /* 伸びる軸を、左端にする */
   z-index: 200;                                        /* 他の要素より、手前に出す */
 }
+
+/* 手描き風の見出し:文字のまわりを、少しゆがんだ楕円で囲む */
+.oval-title {
+  text-align: center;            /* 見出しを、真ん中に寄せる */
+  margin-bottom: 40px;
+  font-size: 1.5rem;
+}
+
+.oval-title span {
+  display: inline-block;         /* 文字の長さに合わせて、枠の幅が決まる */
+  padding: 10px 40px;            /* 文字と枠の間の余白(上下 左右) */
+  background: #fff;              /* 楕円の中を、白にする */
+  border: 3px solid var(--line); /* 灰色の枠線 */
+  border-radius: 52% 48% 55% 45% / 60% 55% 45% 40%;   /* 少しゆがんだ楕円(手描き風) */
+  letter-spacing: 0.2em;         /* 文字の間を、少し広げる */
+  font-weight: 900;              /* 文字を、太くする */
+  /* 下に、ずらした影。楕円が浮いて見える */
+  box-shadow: 0 8px 0 -4px rgba(90, 90, 96, 0.35);
+}
