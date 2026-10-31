@@ -24,6 +24,9 @@
 </head>
 <body>
 
+  <!-- 進み具合バー  -->
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
   <!-- ヘッダー -->
   <header class="header">
   <!-- 背景は画面いっぱいに広げ、中の文字やメニューだけを真ん中に寄せたいので、枠を二重にする（hederとdiv） -->
@@ -87,19 +90,19 @@
 
     <!-- 猫の紹介 -->
     <section class="section section--tinted" id="cats">
-      <h2 class="section__title">猫の紹介</h2>
+      <h2 class="section__title reveal">猫の紹介</h2>
       <ul class="cat-list">
-        <li class="cat-card">
+        <li class="cat-card reveal">
           <div class="cat-card__img">🐱</div>
           <h3>みけ(3歳・女の子)</h3>
           <p>おっとり甘えん坊。膝の上が大好きです。</p>
         </li>
-        <li class="cat-card">
+        <li class="cat-card reveal">
           <div class="cat-card__img">😸</div>
           <h3>そら(2歳・男の子)</h3>
           <p>やんちゃな遊び好き。おもちゃを見せると大喜び。</p>
         </li>
-        <li class="cat-card">
+        <li class="cat-card reveal">
           <div class="cat-card__img">😺</div>
           <h3>もも(5歳・女の子)</h3>
           <p>ベテランのお姉さん。窓辺でひなたぼっこ中。</p>
@@ -169,4 +172,5 @@
 　<!-- JavaScriptは、HTMLの要素を探して操作するため最後に指示を書く -->
 　<!-- <head> に書いて、defer を付ける方法もある。「HTMLを全部読み込んでから実行してね」という指定になる　 -->
 </body>
+
 </html>

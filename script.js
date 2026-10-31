@@ -116,3 +116,39 @@ async function loadNews() {
 }
 
 loadNews();
+
+// スクロールで、要素をふわっと出す
+const targets = document.querySelectorAll('.reveal');   // reveal が付いた要素を、全部集める
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if ('IntersectionObserver' in window && !reduceMotion) {
+  // 見張り番:要素が画面に入ったら、この関数が呼ばれる
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {                        // 画面に入った?
+        entry.target.classList.add('is-visible');        // 印を付ける → CSSが反応して動く
+        observer.unobserve(entry.target);                // 1回出したら、見張りをやめる
+      }
+    });
+  }, { threshold: 0.12 });                               // 12%見えたら「入った」とみなす
+
+  targets.forEach((target) => observer.observe(target)); // 全員に見張り番を付ける
+} else {
+  // 古いブラウザや「動きを減らす」設定のときは、最初から全部表示する
+  targets.forEach((target) => target.classList.add('is-visible'));
+}
+
+// ページの進み具合(0〜1)を返す関数。「計算だけ」する
+function scrollProgress() {
+  const max = document.documentElement.scrollHeight - window.innerHeight;     // スクロールできる長さ
+  return max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;        // 0〜1に収める
+}
+
+const progress = document.getElementById('progress');
+
+function updateProgress() {
+  progress.style.setProperty('--p', scrollProgress());   // CSS変数 --p に、数字を書き込む
+}
+
+window.addEventListener('scroll', updateProgress, { passive: true });   // スクロールするたびに実行
+updateProgress();                                                        // 最初に1回、実行しておく

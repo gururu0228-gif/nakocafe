@@ -18,6 +18,8 @@
   --paper: #faf8f4;          /* 和紙のような、あたたかい白 */
   --ink: #3d3d42;            /* 墨 */
   --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  --sakura: #ffc9c0;
+  --mint: #8fe3ea;
 }
 /* ハイフンは呼び出し時の目印的なやつ */
 
@@ -487,4 +489,35 @@ code {
   .news-list__date { flex: 0 0 100px; }
 
 
+}
+
+/* ふわっと出る動き:最初は透明で、少し下にずれている */
+.reveal {
+  opacity: 0;                                /* 透明 */
+  translate: 0 36px;                         /* 下に36pxずらす */
+  transition: opacity 0.8s ease, translate 0.8s ease;   /* 変わるときは、0.8秒かけてなめらかに */
+  transition-delay: var(--delay, 0s);        /* HTMLの --delay を読む。なければ0秒 */
+}
+
+/* is-visible という印が付いたら、濃くなって、元の位置に戻る */
+.reveal.is-visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* 「動きを減らす」設定の人には、動かさない */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; translate: 0 0; transition: none; }
+}
+
+/* 進み具合バー:ページの一番上にくっつく細い線 */
+.progress {
+  position: fixed;                                     /* 画面に固定する(スクロールしても動かない) */
+  top: 0; left: 0;                                     /* 左上に置く */
+  height: 5px;
+  width: 100%;                                         /* 最初から、いっぱいの幅にしておく */
+  background: linear-gradient(90deg, var(--sakura), var(--mint));   /* さくら色 → ミント色 */
+  transform: scaleX(var(--p, 0));                      /* 横に何倍に伸ばすか(0=見えない、1=いっぱい) */
+  transform-origin: 0 50%;                             /* 伸びる軸を、左端にする */
+  z-index: 200;                                        /* 他の要素より、手前に出す */
 }
