@@ -15,6 +15,9 @@
   --color-text: #4a3b32;
   --radius: 16px;  /* 角のまるみをradiusという文字列で定義　*/
   --max-width: 960px;
+  --paper: #faf8f4;          /* 和紙のような、あたたかい白 */
+  --ink: #3d3d42;            /* 墨 */
+  --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
 }
 /* ハイフンは呼び出し時の目印的なやつ */
 
@@ -40,10 +43,12 @@
 /* body に書くだけで、中にある <p>、<h1>、<a> などにも引き継がれる */
 body {
   /* 使いたいフォントを優先順位で並べる、sans-serifは保険。希望のフォントがないときのゴシック体 */
-  font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
-  /* varでRootの変数を呼び出している */
-  color: var(--color-text);
-  background: var(--color-bg);
+  /* Zen Maru Gothic は、HTMLで読み込んだ丸い文字。:root の --font-body にまとめてある */
+  font-family: var(--font-body);
+  /* 文字の色。墨のような灰色(:root の --ink) */
+  color: var(--ink);
+  /* 背景の色。和紙のようなあたたかい白(:root の --paper) */
+  background: var(--paper);
   /* 行間 */
   line-height: 1.8;
 }
