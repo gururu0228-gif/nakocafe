@@ -10,7 +10,6 @@
  :root { 
   --color-main: #e88f5a;      /* メインのオレンジ */
   --color-main-dark: #c9703c;
-  --color-bg: #fffaf4;        /* 全体の背景 */
   --color-tint: #fdeedd;      /* 交互セクションの背景 */
   --color-text: #4a3b32;
   --radius: 16px;  /* 角のまるみをradiusという文字列で定義　*/
@@ -101,8 +100,26 @@ a { color: inherit; text-decoration: none; }
 .logo {
   font-size: 1.3rem;
   font-weight: bold;
-  color: var(--color-main);
+  color: var(--ink);
+  white-space: nowrap;      /* ロゴを、途中で折り返さない */
 }
+
+/* 昼夜の切り替えボタン */
+.mode-btn {
+  margin-left: auto;             /* 左側の余白を、できるだけ広げて、右に寄せる */
+  margin-right: 8px;             /* ハンバーガーとの間を、少しあける */
+  padding: 9px 16px;
+  font: inherit;                 /* ボタンの文字を、ページの文字(丸ゴシック)に合わせる */
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--ink);        /* 墨のような灰色 */
+  border: 2px solid var(--ink);
+  border-radius: 999px;          /* 角を、最大まで丸くする(カプセルの形) */
+  cursor: pointer;
+  white-space: nowrap;           /* ボタンの文字を、途中で折り返さない */
+}
+.mode-btn:hover { opacity: 0.85; }
 
 /* ハンバーガーボタン */
 .menu-btn {
@@ -123,7 +140,7 @@ a { color: inherit; text-decoration: none; }
   display: block;
   width: 24px;
   height: 3px;
-  background: var(--color-text);
+  background: var(--ink);
   border-radius: 2px;
   /* transition: transform 0.3s, opacity 0.3s;（見た目が変わるときに滑らかにする）
            　　 　└─何を─┘ └時間┘ └─何を─┘└時間┘ */
@@ -162,6 +179,7 @@ a { color: inherit; text-decoration: none; }
   display: block;
   padding: 16px;
   border-top: 1px solid var(--color-tint);
+  white-space: nowrap;      /* メニューの文字を、途中で折り返さない */
 }
 
 .nav a:hover { background: var(--color-tint); }
@@ -444,28 +462,6 @@ code {
   .hero h1 { font-size: 3rem; }
   .section { padding: 80px 24px; }
 
-  /* ハンバーガーを隠し、ナビを横並びに */
-  .menu-btn { display: none; }
-
-  .nav {
-    position: static;
-    display: block;
-    width: auto;
-    background: none;
-    box-shadow: none;
-  }
-
-  .nav ul {
-    display: flex;
-    gap: 8px;
-  }
-
-  .nav a {
-    padding: 8px 14px;
-    border-top: none;
-    border-radius: 999px;
-  }
-
   /* 猫カードを3列に */
   .cat-list {
     grid-template-columns: repeat(3, 1fr);
@@ -488,8 +484,34 @@ code {
 
   .news-list__date { flex: 0 0 100px; }
 
-
 }
+
+/* ヘッダーのメニューは、横に並べるのに幅が必要なので、1024px以上のときだけ横並びにする */
+@media (min-width: 1024px) {
+
+  /* ハンバーガーを隠し、ナビを横並びに */
+  .menu-btn { display: none; }
+
+  .nav {
+    position: static;
+    display: block;
+    width: auto;
+    background: none;
+    box-shadow: none;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: 8px;
+  }
+
+  .nav a {
+    padding: 8px 14px;
+    border-top: none;
+    border-radius: 999px;
+  }
+}
+
 
 /* ふわっと出る動き:最初は透明で、少し下にずれている */
 .reveal {

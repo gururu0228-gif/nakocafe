@@ -32,11 +32,17 @@
   <!-- 背景は画面いっぱいに広げ、中の文字やメニューだけを真ん中に寄せたいので、枠を二重にする（hederとdiv） -->
     <div class="header__inner">
     <!-- ただわかりやすく枠だけほしいときにDivをつかう -->
-      <a href="#top" class="logo">🐾 ねこまる</a>
+      <a href="#top" class="logo">🐾 ねんね</a>
       <!-- aはアンカータグ（リンクを作る）エイチレフは参照先を指定 -->
 
+      <!-- 昼夜の切り替えボタン(動きは、あとで足す) -->
+      <!-- type="button":フォームの送信ボタンではない、ただのボタンという印 -->
+      <button class="mode-btn" id="modeBtn" type="button" aria-label="心霊Barに切り替える">
+        <span id="modeIcon">☾</span> <span id="modeLabel">心霊Barへ</span>
+      </button>
+
       <!-- ハンバーガーボタン(スマホのみ表示) -->
-      <button class="menu-btn" id="menuBtn" aria-label="メニューを開く" aria-expanded="false">?
+      <button class="menu-btn" id="menuBtn" aria-label="メニューを開く" aria-expanded="false">
         <!-- アリア属性はWebの要素に意味や状態を補足するもの。これは画面読み上げソフトに意味を伝えるため(視覚障碍者向けなど)ラベル＝ボタンの名前、エクスペンデッド＝状態-->
         <!-- ハンバーガーはSpanの線が並んで見た目が形成されているため、読み上げソフトはボタンと認識できないから -->
         <!-- Javascriptでクリックするたび値を切り替える処理をする -->
