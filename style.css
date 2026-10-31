@@ -198,7 +198,10 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   place-items: center;                 /* 中身を、縦も横も、真ん中に */
   overflow: hidden;
-  background: var(--paper-2);          /* 少し深い紙の色 */
+    background:
+    radial-gradient(circle at 15% 12%, #fff 0, transparent 46%),                       /* 左上に、白い光 */
+    radial-gradient(circle at 90% 85%, rgba(255, 201, 192, 0.35) 0, transparent 40%),  /* 右下に、うすいさくら色 */
+    var(--paper-2);                                                                    /* いちばん下は、紙の色 */
 }
 
 .hero__sub {
@@ -618,3 +621,10 @@ code {
 .hero__vtext--low { margin-top: 3.4em; }          /* 2行目は、さらに下にずらす */
 .hero__vtext:nth-of-type(1) { order: 3; }         /* 1行目を、いちばん右に */
 .hero__vtext--low { order: 2; }                   /* 2行目は、その左に */
+
+/* 広い画面(768px以上)では、写真の枠と文字を、少し大きくする */
+@media (min-width: 768px) {
+  .hero__stage { width: min(100%, 720px); gap: 40px; }   /* 並べる入れ物を、広げる */
+  .hero__photos { flex-basis: 52%; }                     /* 写真の枠の幅(入れ物の52%) */
+  .hero__vtext { font-size: 1.7rem; }                    /* 縦書きの文字を、大きくする */
+}

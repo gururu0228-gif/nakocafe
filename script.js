@@ -152,3 +152,16 @@ function updateProgress() {
 
 window.addEventListener('scroll', updateProgress, { passive: true });   // スクロールするたびに実行
 updateProgress();                                                        // 最初に1回、実行しておく
+
+// ヒーローの写真スライド(3.4秒ごとに、次の1枚へ)
+const slides = document.querySelectorAll('#heroPhotos .slide');   // 写真の枠の中の、スライドを全部集める
+let slideIndex = 0;                                               // いま見えているのは、何枚目か(0が1枚目)
+
+// 2枚以上あって、「動きを減らす」設定ではないときだけ動かす
+if (slides.length > 1 && !reduceMotion) {
+  setInterval(() => {                                             // 3400ミリ秒(3.4秒)ごとに、この中を繰り返す
+    slides[slideIndex].classList.remove('is-active');             // いまの1枚から、印を外す(薄くなって消える)
+    slideIndex = (slideIndex + 1) % slides.length;                // 次の番号にする。最後まで行ったら、0に戻る
+    slides[slideIndex].classList.add('is-active');                // 次の1枚に、印を付ける(濃くなって出てくる)
+  }, 3400);
+}
