@@ -700,3 +700,97 @@ code {
 @media (prefers-reduced-motion: reduce) {
   .floater { animation: none; }
 }
+
+/* ==============================
+   猫のカード(押すと、ふくらんで出る)
+   ============================== */
+/* hidden が付いている要素は、必ず隠す(.modal の display: grid に、負けないようにする) */
+[hidden] { display: none !important; }
+
+/* 画面全体を覆う、入れ物 */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;                      /* ヘッダー(100)や進み具合バー(200)より、手前 */
+  display: grid;
+  place-items: center;               /* カードを、真ん中に置く */
+  padding: 20px;
+}
+
+/* 後ろの、暗い幕。押すと閉じる */
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(40, 40, 46, 0.45);
+  animation: fade-in 0.3s both;
+}
+
+/* カード本体 */
+.modal__card {
+  position: relative;
+  width: min(100%, 360px);
+  padding: 26px 22px 24px;
+  text-align: center;
+  background: #fff;
+  border: 3px solid var(--line);
+  border-radius: 30px;
+  box-shadow: 8px 8px 0 var(--sakura);
+  transform-origin: var(--ox, 50%) var(--oy, 50%);    /* ふくらむ中心(JSが、押した丸の位置を書く) */
+  animation: grow 0.5s cubic-bezier(0.2, 1.3, 0.4, 1) both;
+}
+/* 小さい状態(15%)から、元の大きさ(100%)へ、ぽんっと、ふくらむ */
+@keyframes grow {
+  from { transform: scale(0.15); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 閉じるボタン(右上の×) */
+.modal__close {
+  position: absolute;
+  top: 10px; right: 12px;
+  width: 36px; height: 36px;
+  background: var(--paper-2);
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* 猫の丸い写真 */
+.modal__photo {
+  display: grid;
+  place-items: center;
+  width: 190px; height: 190px;
+  margin: 0 auto 12px;
+  font-size: 5.5rem;                 /* 仮の絵文字の大きさ */
+  background: var(--tint, #ffd9cf);  /* 猫ごとの色(JSが書く) */
+  border: 3px solid var(--line);
+  border-radius: 50%;
+  overflow: hidden;
+}
+.modal__photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.modal__card h3 { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.12em; line-height: 1.4; }
+.modal__meta { font-size: 0.9rem; color: #6b6b72; }
+
+/* 性格のことば(ふたつ並ぶ、丸いラベル) */
+#catModalTraits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+#catModalTraits li {
+  padding: 2px 14px;
+  background: var(--sakura);
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}

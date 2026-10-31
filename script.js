@@ -186,7 +186,7 @@ function createFloater(cat) {
   item.style.setProperty('--dur', rand(16, 26) + 's');           // 1周にかかる時間(長いほど、ゆっくり)
   item.style.setProperty('--delay', -rand(0, 26) + 's');         // マイナスにして、最初から途中の状態で動かす
   item.style.setProperty('--shift', rand(0, 40) + 'px');         // 縦の位置のずれ
-  
+
   for (let k = 1; k <= 3; k++) {                                 // 目的地を、3か所、決める
     item.style.setProperty('--x' + k, rand(-range, range) + 'px');
     item.style.setProperty('--y' + k, rand(-range, range) + 'px');
@@ -213,6 +213,8 @@ function createFloater(cat) {
   name.textContent = cat.name;
   button.append(name);
 
+  button.addEventListener('click', () => openModal(cat, button));   // 押したら、カードを開く
+
   item.append(button);
   return item;
 }
@@ -236,3 +238,63 @@ async function loadCats() {
 }
 
 loadCats();
+
+// ==============================
+// 猫のカード(モーダル)を、開く・閉じる
+// ==============================
+const modal = document.getElementById('catModal');
+let lastButton = null;                                  // 最後に押した丸(閉じたあとに、ここへ戻す)
+
+function openModal(cat, button) {
+  // 写真(なければ、仮の絵文字)を入れる
+  const photo = document.getElementById('catModalPhoto');
+  photo.style.setProperty('--tint', cat.tint);
+  if (cat.photo) {
+    const img = document.createElement('img');
+    img.src = cat.photo;
+    img.alt = cat.name + 'の写真';
+    photo.replaceChildren(img);
+  } else {
+    photo.textContent = catEmojis[cat.id % catEmojis.length];
+  }
+
+  // 名前、年齢と性別、性格のことば、ひとこと
+  document.getElementById('catModalName').textContent = cat.name;
+  document.getElementById('catModalMeta').textContent = cat.age + ' ・ ' + cat.sex;
+  const traits = document.getElementById('catModalTraits');
+  traits.replaceChildren();                             // 前の猫のことばを、空にする
+  cat.traits.forEach((trait) => {
+    const li = document.createElement('li');
+    li.textContent = trait;
+    traits.append(li);
+  });
+  document.getElementById('catModalText').textContent = cat.text;
+
+  modal.hidden = false;                                 // 表示する(先に表示してから、位置を測る)
+
+  // 押した丸の位置から、ふくらむように見せる
+  const rect = button.getBoundingClientRect();          // 押した丸の、画面上の位置と大きさ
+  const card = modal.querySelector('.modal__card');
+  const cardRect = card.getBoundingClientRect();
+  card.style.setProperty('--ox', (rect.left + rect.width / 2 - cardRect.left) + 'px');
+  card.style.setProperty('--oy', (rect.top + rect.height / 2 - cardRect.top) + 'px');
+
+  floaters.classList.add('is-paused');                  // 漂うのを、一時停止
+  lastButton = button;
+  modal.querySelector('.modal__close').focus();         // キーボード操作用に、×ボタンに、フォーカスを移す
+}
+
+function closeModal() {
+  modal.hidden = true;                                  // 隠す
+  floaters.classList.remove('is-paused');               // 漂うのを、再開
+  if (lastButton) lastButton.focus();                   // 押した丸に、フォーカスを戻す
+}
+
+// 暗い幕か、×を押したら、閉じる(data-close が付いたものが、閉じる合図)
+modal.addEventListener('click', (event) => {
+  if (event.target.closest('[data-close]')) closeModal();
+});
+// Escキーでも、閉じる
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !modal.hidden) closeModal();
+});
