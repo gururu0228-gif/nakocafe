@@ -165,3 +165,74 @@ if (slides.length > 1 && !reduceMotion) {
     slides[slideIndex].classList.add('is-active');                // 次の1枚に、印を付ける(濃くなって出てくる)
   }, 3400);
 }
+
+// ==============================
+// 猫の紹介:cats.json から、丸い写真を、ふわふわ漂わせる
+// ==============================
+const floaters = document.getElementById('floaters');
+const catEmojis = ['🐱', '😸', '😺', '😻', '🐈', '😼'];   // 写真が入るまでの、仮の絵
+
+// min〜max の間の、ランダムな数字を返す道具
+function rand(min, max) {
+  return min + Math.random() * (max - min);
+}
+
+// 猫1匹分の「丸い写真」を作って返す関数
+function createFloater(cat) {
+  const item = document.createElement('div');
+  item.className = 'floater';
+ // 揺れ方を、猫ごとに、ばらばらにする(CSS変数に、数字を書き込む)
+  const range = 40;                                              // 動く範囲(px)。大きいほど、遠くまで漂う
+  item.style.setProperty('--dur', rand(16, 26) + 's');           // 1周にかかる時間(長いほど、ゆっくり)
+  item.style.setProperty('--delay', -rand(0, 26) + 's');         // マイナスにして、最初から途中の状態で動かす
+  item.style.setProperty('--shift', rand(0, 40) + 'px');         // 縦の位置のずれ
+  
+  for (let k = 1; k <= 3; k++) {                                 // 目的地を、3か所、決める
+    item.style.setProperty('--x' + k, rand(-range, range) + 'px');
+    item.style.setProperty('--y' + k, rand(-range, range) + 'px');
+  }
+
+  const button = document.createElement('button');
+  button.className = 'floater__btn';
+  button.type = 'button';
+  button.style.setProperty('--tint', cat.tint);
+  button.setAttribute('aria-label', cat.name + 'のしょうかいを見る');
+
+  // 写真があれば写真、なければ仮の絵(絵文字)
+  if (cat.photo) {
+    const img = document.createElement('img');
+    img.src = cat.photo;
+    img.alt = cat.name + 'の写真';
+    button.append(img);
+  } else {
+    button.append(catEmojis[cat.id % catEmojis.length]);
+  }
+
+  const name = document.createElement('span');
+  name.className = 'floater__name';
+  name.textContent = cat.name;
+  button.append(name);
+
+  item.append(button);
+  return item;
+}
+
+// cats.json を読み込んで、並べる
+async function loadCats() {
+  try {
+    const response = await fetch('cats.json');
+    if (!response.ok) {
+      throw new Error('cats.json を読み込めませんでした');
+    }
+    const cats = await response.json();
+    cats.forEach((cat) => floaters.append(createFloater(cat)));
+  } catch (error) {
+    console.error(error);
+    const message = document.createElement('p');
+    message.className = 'note';
+    message.textContent = 'ねこの情報を読み込めませんでした。';
+    floaters.replaceChildren(message);
+  }
+}
+
+loadCats();

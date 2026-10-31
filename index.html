@@ -112,28 +112,16 @@
     </section>
 
     <!-- 猫の紹介 -->
-    <section class="section section--tinted" id="cats">
+      <section class="section section--tinted" id="cats">
       <h2 class="oval-title reveal"><span>猫の紹介</span></h2>
-      <ul class="cat-list">
-        <li class="cat-card reveal">
-          <div class="cat-card__img">🐱</div>
-          <h3>みけ(3歳・女の子)</h3>
-          <p>おっとり甘えん坊。膝の上が大好きです。</p>
-        </li>
-        <li class="cat-card reveal">
-          <div class="cat-card__img">😸</div>
-          <h3>そら(2歳・男の子)</h3>
-          <p>やんちゃな遊び好き。おもちゃを見せると大喜び。</p>
-        </li>
-        <li class="cat-card reveal">
-          <div class="cat-card__img">😺</div>
-          <h3>もも(5歳・女の子)</h3>
-          <p>ベテランのお姉さん。窓辺でひなたぼっこ中。</p>
-        </li>
-      </ul>
-      <p class="note">※ 写真は <code>img</code> タグに差し替えてください(例:<code>&lt;img src="images/mike.jpg" alt="三毛猫のみけ"&gt;</code>)</p>
-    </section>
+      <!-- <ul class="cat-list"> ... </ul> -->
 
+      <!-- ふわふわ漂う猫たち。丸い写真は、cats.json から、JSが並べる -->
+      <div class="floaters reveal" id="floaters" aria-label="ねこの写真(ふわふわ漂っています。押すと、くわしく見られます)"></div>
+
+      <p class="note">※ 写真は仮の絵です。名前に(仮)とあるものは、ダミーです。</p>
+    </section>
+    
     <!-- 料金 -->
     <section class="section" id="price">
       <h2 class="oval-title"><span>料金・システム</span></h2>
@@ -187,13 +175,25 @@
     <p>&copy; 2026 猫カフェ ねこまる</p>
   </footer>
 
+    <!-- 猫をおしたときに、ふくらんで出るカード(最初は hidden で隠しておく) -->
+  <div class="modal" id="catModal" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="catModalName">
+      <button class="modal__close" type="button" data-close aria-label="閉じる">×</button>
+      <div class="modal__photo" id="catModalPhoto"></div>
+      <h3 id="catModalName"></h3>
+      <p class="modal__meta" id="catModalMeta"></p>
+      <ul class="chips" id="catModalTraits"></ul>
+      <p id="catModalText"></p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
   <script src="sections.js"></script>   
   <script src="bar.js"></script>         
   <!--JavaScriptのファイルをHTMLに読み込む行,<link> と同じ役割で、script.js とHTMLをつなぐ。src属性=読み込むファイルの場所を指定する属性 -->
-　<!-- JavaScriptは、HTMLの要素を探して操作するため最後に指示を書く -->
-　<!-- <head> に書いて、defer を付ける方法もある。「HTMLを全部読み込んでから実行してね」という指定になる　 -->
+  <!-- JavaScriptは、HTMLの要素を探して操作するため最後に指示を書く -->
+  <!-- <head> に書いて、defer を付ける方法もある。「HTMLを全部読み込んでから実行してね」という指定になる　 -->
 </body>
 
 </html>
