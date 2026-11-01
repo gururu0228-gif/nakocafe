@@ -846,10 +846,10 @@ code {
   display: block;                      /* グリッドをやめる */
   position: relative;                  /* 丸の位置の、基準になる */
   width: 100%;
-  height: clamp(30rem, 70vw, 50rem);   /* 枠の高さ。スマホは約30rem、広い画面は最大50rem */
+  height: clamp(20rem, 70vw, 50rem);   /* 枠の高さ。スマホは約20rem、広い画面は最大50rem */
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;                    /* 枠の外には、はみ出さない */
+  overflow: visible;                   /* はみ出しを、隠さない */
 }
 
 .floater {
@@ -860,4 +860,11 @@ code {
   width: var(--d);
   height: var(--d);
   animation: none;                     /* 前の、CSSの動きは、やめる */
+}
+
+/* 広い画面は、丸が大きいので、枠も、高くする */
+@media (min-width: 768px) {
+  .floaters {
+    height: clamp(34rem, 78vw, 60rem);
+  }
 }

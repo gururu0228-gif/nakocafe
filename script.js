@@ -222,7 +222,7 @@ function createFloater(cat) {
   return item;
 }
 
-  // ------------------------------
+// ------------------------------
 // 猫の丸を、シャボン玉のように、枠の中で漂わせる
 // ------------------------------
 function startBubbles() {
@@ -231,8 +231,10 @@ function startBubbles() {
 
   let W = box.clientWidth;    // 枠の幅
   let H = box.clientHeight;   // 枠の高さ
+  const collide = window.innerWidth >= 768;   // 広い画面だけ、丸どうしがぶつかる(スマホは、重なってよい)
+  const over = 0.35;                          // 丸の大きさの何割まで、枠の上下からはみ出してよいか
 
-  // 丸ごとに、位置(x,y)と、速さ(vx,vy)を、ランダムに決める。VBAでいえば、「1匹分の、変数のセット」
+  // 丸ごとに、位置(x,y)と、速さ(vx,vy)を、ランダムに決める
   const bubbles = items.map((el) => {
     const r = el.offsetWidth / 2;                // 半径
     const speed = rand(14, 26);                  // 速さ(px/秒)
@@ -252,6 +254,15 @@ function startBubbles() {
 
   if (reduceMotion) { draw(); return; }          // 「動きを減らす」設定の人は、動かさない
 
+  // 枠の外に出ていたら、戻して、跳ね返す(1匹分の、壁チェック)
+  function keepInside(b) {
+    const oy = b.r * 2 * over;                   // 上下に、はみ出してよい長さ(px)
+    if (b.x < 0)                { b.x = 0;                    b.vx =  Math.abs(b.vx); }
+    if (b.x > W - b.r * 2)      { b.x = W - b.r * 2;          b.vx = -Math.abs(b.vx); }
+    if (b.y < -oy)              { b.y = -oy;                  b.vy =  Math.abs(b.vy); }
+    if (b.y > H - b.r * 2 + oy) { b.y = H - b.r * 2 + oy;     b.vy = -Math.abs(b.vy); }
+  }
+
   let last = performance.now();
 
   function tick(now) {
@@ -262,10 +273,7 @@ function startBubbles() {
     bubbles.forEach((b) => {
       b.x += b.vx * dt;
       b.y += b.vy * dt;
-      if (b.x < 0)             { b.x = 0;             b.vx =  Math.abs(b.vx); }
-      if (b.x > W - b.r * 2)   { b.x = W - b.r * 2;   b.vx = -Math.abs(b.vx); }
-      if (b.y < 0)             { b.y = 0;             b.vy =  Math.abs(b.vy); }
-      if (b.y > H - b.r * 2)   { b.y = H - b.r * 2;   b.vy = -Math.abs(b.vy); }
+      keepInside(b);
     });
 
     // 2. 丸どうしが、ぶつかったら、離して、跳ね返る(2匹ずつ、総当たりで調べる)
@@ -277,7 +285,7 @@ function startBubbles() {
         const dy = (a.y + a.r) - (b.y + b.r);
         const dist = Math.hypot(dx, dy);          // 中心どうしの距離
         const min = a.r + b.r;                    // これより近いと、重なっている
-        if (dist < min && dist > 0) {
+        if (collide && dist < min && dist > 0) {
           const nx = dx / dist;                   // 2匹を結ぶ、向き(長さ1)
           const ny = dy / dist;
           const push = (min - dist) / 2;          // 重なりの半分ずつ、離す
@@ -292,6 +300,8 @@ function startBubbles() {
       }
     }
 
+    bubbles.forEach(keepInside);                  // ぶつかって押し出された丸も、戻す
+
     draw();
     requestAnimationFrame(tick);                  // 次のフレームも、この関数を呼ぶ(くりかえし)
   }
@@ -302,6 +312,7 @@ function startBubbles() {
   window.addEventListener('resize', () => { W = box.clientWidth; H = box.clientHeight; });
 }
 
+
 // cats.json を読み込んで、並べる
 async function loadCats() {
   try {
@@ -311,7 +322,7 @@ async function loadCats() {
     }
     const cats = await response.json();
     cats.forEach((cat) => floaters.append(createFloater(cat)));
-    startBubbles(); 
+    startBubbles();                       // 丸を並べ終わってから、動かし始める
   } catch (error) {
     console.error(error);
     const message = document.createElement('p');
