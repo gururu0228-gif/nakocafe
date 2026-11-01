@@ -907,3 +907,126 @@ code {
   line-height: 2.1;
   letter-spacing: 0.08em;
 }
+
+/* ==============================
+   ABOUT:横スクロールのカード
+   ============================== */
+.cards {
+  display: flex;                          /* カードを、横一列に並べる */
+  gap: 1.25rem;
+  overflow-x: auto;                       /* 入りきらない分は、横にスクロール */
+  scroll-snap-type: x mandatory;          /* スクロールしたら、カードの位置にぴたっと止まる */
+  padding: 0.5rem 0.5rem 1.75rem;         /* 影や、スクロールバーが切れないように、余白をあける */
+  scrollbar-width: thin;                  /* スクロールバーを細くする */
+}
+
+.card {
+  flex: 0 0 min(80%, 19rem);              /* 幅は、入れ物の80%まで、ただし、19rem以下。縮まない */
+  scroll-snap-align: center;              /* 止まるときは、カードを真ん中に */
+  min-height: 18rem;
+  padding: 1.5rem 1.25rem;
+  background: #fff;
+  border: 3px solid var(--line);
+  border-radius: 28px;
+  box-shadow: 6px 6px 0 var(--sakura);
+}
+
+.card__title {
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.card__big {                              /* コンセプトの、大きな一言 */
+  margin: 1.5rem 0;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.card__text {
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.card__list li {                          /* できることの、リスト */
+  padding-left: 1.4em;
+  position: relative;
+  margin-bottom: 0.4rem;
+}
+.card__list li::before {
+  content: "🐾";
+  position: absolute;
+  left: 0;
+  font-size: 0.8em;
+}
+
+/* ==============================
+   ABOUT:縦にスクロールすると、横にスライドする
+   ============================== */
+.hscroll {
+  position: relative;
+  height: calc(var(--n, 6) * 80svh);        /* 全体の縦の長さ。カード1枚あたり、画面の高さの80% */
+}
+
+/* 画面に貼りつく窓。ヘッダー(64px)の下に、くっつく */
+.hscroll__sticky {
+  position: sticky;
+  top: 64px;
+  height: calc(100svh - 64px);              /* ヘッダーを除いた、画面いっぱい */
+  overflow: hidden;                         /* 窓の外に出たカードは、隠す */
+}
+
+/* カードを、横一列に並べた帯。JSの数字(--p)で、横に動く */
+.hscroll__track {
+  display: flex;
+  width: calc(var(--n, 6) * 100%);          /* 窓の幅 × 枚数 */
+  height: 100%;
+  /* 動かす量 = 帯の幅の (n-1)/n。--p が 0 なら動かず、1 なら最後のカードまで動く */
+  translate: calc(var(--p, 0) * (var(--n, 6) - 1) / var(--n, 6) * -100%) 0;
+  will-change: translate;                   /* ブラウザに、「動くよ」と伝えて、なめらかにする */
+}
+
+/* 画面いっぱいの1枚 */
+.panel {
+  flex: 0 0 calc(100% / var(--n, 6));       /* 帯を、枚数で、等分する */
+  display: grid;
+  place-items: center;                      /* カードを、真ん中に */
+  padding: 1.5rem 1.25rem;
+}
+
+.panel__card {
+  width: min(100%, 34rem);
+}
+
+/* 画面ごとに、背景色を変える(画面が切り替わったと、すぐ分かるように) */
+.panel:nth-child(1) { background: #fdeedd; }
+.panel:nth-child(2) { background: #ffe3dc; }
+.panel:nth-child(3) { background: #d9f1f4; }
+.panel:nth-child(4) { background: #ece6fb; }
+.panel:nth-child(5) { background: #fff1d6; }
+.panel:nth-child(6) { background: #e8f3df; }
+
+/* 画面いっぱいなので、文字を、大きくする */
+.panel .card__title { font-size: 1.6rem; margin-bottom: 1.5rem; }
+.panel .card__big   { font-size: 2.6rem; }
+.panel .card__text  { font-size: 1.15rem; }
+.panel .card__list li { font-size: 1.2rem; margin-bottom: 0.6rem; }
+
+/* 猫の手 */
+.cat-hand {
+  position: absolute;                       /* 窓(.hscroll__sticky)の中で、自由に置く */
+  bottom: 0;
+  /* 横の位置:画面の境目。切り替えが進む(--u が増える)ほど、左へ動く */
+  left: calc((1 - var(--u, 0)) * 100%);
+  width: clamp(5rem, 14vw, 8rem);
+  /* 縦の位置:--lift が 0 なら、完全に下に隠れる。1に近いほど、上に出てくる */
+  translate: -50% calc((1 - var(--lift, 0) * 0.85) * 100%);
+  rotate: -8deg;                            /* 少し傾けて、押している感じに */
+  z-index: 5;                               /* カードより、手前 */
+  pointer-events: none;                     /* クリックの邪魔をしない */
+}
+.cat-hand svg { display: block; width: 100%; height: auto; }

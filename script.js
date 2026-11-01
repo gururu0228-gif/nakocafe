@@ -428,3 +428,29 @@ if (canHover && !reduceMotion) {            // reduceMotion は、ふわっと�
     lastY = e.clientY;
   });
 }
+
+// ==============================
+// ABOUT:縦にスクロールした量を、横のスライドに変える
+// ==============================
+const hscroll = document.getElementById('about');
+const hscrollSticky = hscroll.querySelector('.hscroll__sticky');
+const hscrollCount = hscroll.querySelectorAll('.panel').length;   // 画面の枚数(←この行を足す)
+
+function updateHscroll() {
+  const stickTop = parseFloat(getComputedStyle(hscrollSticky).top);   // 貼りつく位置(64px)
+  const rect = hscroll.getBoundingClientRect();
+  const scrollable = rect.height - hscrollSticky.offsetHeight;
+  const p = Math.min(1, Math.max(0, (stickTop - rect.top) / scrollable));   // 全体の進み具合(0〜1)
+
+  const steps = p * (hscrollCount - 1);                // いま、何枚目と何枚目のあいだか
+  const u = steps - Math.floor(steps);                 // 今の切り替えが、何割進んだか(0〜1)
+  const lift = Math.sin(Math.PI * u);                  // 手の出具合。0 → 1 → 0 と、山なりに変わる
+
+  hscroll.style.setProperty('--p', p);
+  hscroll.style.setProperty('--u', u);
+  hscroll.style.setProperty('--lift', lift);
+}
+
+window.addEventListener('scroll', updateHscroll, { passive: true });   // ← この3行は、今ある行。そのまま
+window.addEventListener('resize', updateHscroll);
+updateHscroll();

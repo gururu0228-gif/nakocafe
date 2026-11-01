@@ -56,7 +56,6 @@
       <!-- nav(メニューの枠) > ul(リスト) > li(項目) > a(リンク) という入れ子 -->
         <ul>
           <li><a href="#news">お知らせ</a></li>
-          <li><a href="#about">ねんねとは</a></li>
           <li><a href="#cats">猫の紹介</a></li>
           <li><a href="#price">料金</a></li>
           <li><a href="#faq">よくある質問</a></li>
@@ -94,6 +93,17 @@
       -->
     </section>
 
+    <!-- お店について -->
+    <section class="section" id="intro">
+     <div class="intro reveal">
+       <figure class="intro__photo">🐾</figure>   <!-- 写真は、あとで <img> に差し替える -->
+      <p class="intro__text">
+      保護猫たちと、ゆっくり過ごす、小さな猫カフェ。<br>
+      ここで、ひと眠りしていってね。
+      </p>
+     </div>
+    </section>
+
     <!-- お知らせ(news.json から script.js が自動で表示する) -->
     <section class="section section--tinted" id="news">
       <h2 class="oval-title"><span>お知らせ</span></h2>
@@ -101,17 +111,85 @@
        <li class="news-list__message">読み込み中…</li>
       </ul>
     </section>
-    
-    <!-- お店について -->
-    <section class="section" id="about">
-  <div class="intro reveal">
-    <figure class="intro__photo">🐾</figure>   <!-- 写真は、あとで <img> に差し替える -->
-    <p class="intro__text">
-      保護猫たちと、ゆっくり過ごす、小さな猫カフェ。<br>
-      ここで、ひと眠りしていってね。
-    </p>
-  </div>
-</section>
+
+        <!-- ABOUT:縦にスクロールすると、横にスライドする -->
+    <!-- style="--n:6" は、カードの枚数(CSSとJSが、この数字を使う) -->
+    <section class="hscroll" id="about" style="--n:6">
+      <div class="hscroll__sticky">
+        <div class="hscroll__track">
+
+          <article class="panel">
+            <div class="panel__card">
+              <h3 class="card__title">コンセプト</h3>
+              <p class="card__big">和のモダン</p>
+              <p class="card__text">おちつく空間には、<br>たまたま ねこがいた。</p>
+              <p class="card__text">好きなように、<br>ぐるぐるしよう。</p>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__card">
+              <h3 class="card__title">ねんねで できること</h3>
+              <ul class="card__list">
+                <li>べんきょう</li>
+                <li>しごと</li>
+                <li>ねこと あそぶ・いやされる</li>
+                <li>軽食をたべる</li>
+                <li>本をよんだり</li>
+                <li>お話したい</li>
+                <li>ひまつぶし</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__card">
+              <h3 class="card__title">カフェメニュー</h3>
+              <p class="card__text">じゅんびちゅう</p>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__card">
+              <h3 class="card__title">店内あんない</h3>
+              <p class="card__text">じゅんびちゅう</p>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__card">
+              <h3 class="card__title">スタッフ紹介</h3>
+              <p class="card__text">じゅんびちゅう</p>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__card">
+              <h3 class="card__title">システム</h3>
+              <p class="card__text">じゅんびちゅう</p>
+            </div>
+          </article>
+
+        </div>
+
+         <!-- 猫の手:切り替わるとき、下から出てきて、画面を押す -->
+        <div class="cat-hand" aria-hidden="true">
+          <svg viewBox="0 0 120 220">
+            <!-- 腕 -->
+            <path d="M30 220 V85 Q30 45 60 45 Q90 45 90 85 V220 Z" fill="#fff" stroke="#5a5a60" stroke-width="4"/>
+            <!-- 肉球 -->
+            <g fill="#ffc9c0" stroke="#5a5a60" stroke-width="3">
+              <ellipse cx="60" cy="98" rx="17" ry="13"/>
+              <ellipse cx="39" cy="74" rx="7" ry="9"/>
+              <ellipse cx="53" cy="65" rx="7" ry="9"/>
+              <ellipse cx="68" cy="65" rx="7" ry="9"/>
+              <ellipse cx="82" cy="74" rx="7" ry="9"/>
+            </g>
+          </svg>
+        </div>
+
+      </div>
+    </section>
 
     <!-- 猫の紹介 -->
       <section class="section section--tinted" id="cats">
