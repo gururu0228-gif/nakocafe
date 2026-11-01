@@ -322,6 +322,24 @@ code {
   overflow: hidden;
 }
 
+/* 料金表:コース名は左、金額は中央にそろえる */
+.price-table th,
+.price-table td {
+  text-align: center;          /* 平日・土日祝の列を、中央にそろえる */
+}
+.price-table th:first-child,
+.price-table td:first-child {
+  text-align: left;            /* 1列目(コース名)だけ、左にそろえる */
+}
+
+/* 表の下の一文:表と同じ幅にして、中央に置く */
+.price-note {
+  max-width: 35rem;            /* 表(.price-table)と同じ幅 */
+  margin: 1rem auto 0;         /* 上に余白、左右は自動で、中央 */
+  text-align: center;
+  font-size: 0.95rem;
+}
+
 .price-table th,
 .price-table td {
   padding: 14px 16px;
