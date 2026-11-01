@@ -454,3 +454,17 @@ function updateHscroll() {
 window.addEventListener('scroll', updateHscroll, { passive: true });   // ← この3行は、今ある行。そのまま
 window.addEventListener('resize', updateHscroll);
 updateHscroll();
+
+// ナビの、ABOUTのサブ項目:押した画面へ、スクロールする
+document.querySelectorAll('.nav__sub a[data-go]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();                                          // 標準の、ページ内リンクの動きは、止める
+    const i = Number(link.dataset.go);                               // 何枚目か(HTMLの data-go)
+    const stickTop = parseFloat(getComputedStyle(hscrollSticky).top);
+    const scrollable = hscroll.offsetHeight - hscrollSticky.offsetHeight;
+    const pageTop = hscroll.getBoundingClientRect().top + window.scrollY;   // ABOUT全体の、ページ上の位置
+    // i枚目の画面が出る位置 = 貼りつき始める位置 + 全体の長さの、i/(枚数-1)
+    const target = pageTop - stickTop + scrollable * (i / (hscrollCount - 1));
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  });
+});

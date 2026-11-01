@@ -56,6 +56,18 @@
       <!-- nav(メニューの枠) > ul(リスト) > li(項目) > a(リンク) という入れ子 -->
         <ul>
           <li><a href="#news">お知らせ</a></li>
+          <li class="nav__item nav__item--has-sub">
+            <a href="#about">ABOUT</a>
+            <!-- サブ項目:data-go は、何枚目の画面か(0から数える) -->
+            <ul class="nav__sub">
+              <li><a href="#about" data-go="0">コンセプト</a></li>
+              <li><a href="#about" data-go="1">できること</a></li>
+              <li><a href="#about" data-go="2">カフェメニュー</a></li>
+              <li><a href="#about" data-go="3">店内あんない</a></li>
+              <li><a href="#about" data-go="4">スタッフ紹介</a></li>
+              <li><a href="#about" data-go="5">システム</a></li>
+            </ul>
+          </li>
           <li><a href="#cats">猫の紹介</a></li>
           <li><a href="#price">料金</a></li>
           <li><a href="#faq">よくある質問</a></li>
@@ -112,7 +124,7 @@
       </ul>
     </section>
 
-        <!-- ABOUT:縦にスクロールすると、横にスライドする -->
+    <!-- ABOUT:縦にスクロールすると、横にスライドする -->
     <!-- style="--n:6" は、カードの枚数(CSSとJSが、この数字を使う) -->
     <section class="hscroll" id="about" style="--n:6">
       <div class="hscroll__sticky">

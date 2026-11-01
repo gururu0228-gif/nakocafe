@@ -1030,3 +1030,42 @@ code {
   pointer-events: none;                     /* クリックの邪魔をしない */
 }
 .cat-hand svg { display: block; width: 100%; height: auto; }
+
+/* ナビの階層(ABOUTの下の、サブ項目) */
+/* スマホ(ハンバーガーの中):サブ項目は、少し右に下げて、小さく、並べる */
+.nav__sub a {
+  padding-left: 2.5rem;
+  font-size: 0.9rem;
+  background: rgba(255, 201, 192, 0.12);   /* うすいさくら色で、サブ項目と分かるように */
+}
+
+/* PC(1024px以上):ABOUTに、マウスを乗せると、下に開く */
+@media (min-width: 1024px) {
+  .nav__item--has-sub { position: relative; }        /* サブ項目の位置の、基準にする */
+
+  .nav .nav__sub {
+    display: none;                                    /* ふだんは、隠す */
+    position: absolute;
+    top: 100%;                                        /* ABOUTの、すぐ下 */
+    left: 0;
+    min-width: 12rem;
+    padding: 0.5rem;
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 var(--sakura);
+  }
+
+  /* マウスを乗せる、またはキーボードで移ったときに、見せる */
+  .nav .nav__item--has-sub:hover .nav__sub,
+  .nav .nav__item--has-sub:focus-within .nav__sub {
+    display: block;
+  }
+
+  .nav__sub a {
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    background: none;
+    border-radius: 12px;
+  }
+}
