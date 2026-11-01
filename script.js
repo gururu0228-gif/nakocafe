@@ -222,6 +222,86 @@ function createFloater(cat) {
   return item;
 }
 
+  // ------------------------------
+// 猫の丸を、シャボン玉のように、枠の中で漂わせる
+// ------------------------------
+function startBubbles() {
+  const box = document.getElementById('floaters');
+  const items = Array.from(box.querySelectorAll('.floater'));
+
+  let W = box.clientWidth;    // 枠の幅
+  let H = box.clientHeight;   // 枠の高さ
+
+  // 丸ごとに、位置(x,y)と、速さ(vx,vy)を、ランダムに決める。VBAでいえば、「1匹分の、変数のセット」
+  const bubbles = items.map((el) => {
+    const r = el.offsetWidth / 2;                // 半径
+    const speed = rand(14, 26);                  // 速さ(px/秒)
+    const dir = rand(0, Math.PI * 2);            // 向き(ラジアン。0〜360度)
+    return {
+      el, r,
+      x: rand(0, W - r * 2),
+      y: rand(0, H - r * 2),
+      vx: Math.cos(dir) * speed,
+      vy: Math.sin(dir) * speed,
+    };
+  });
+
+  function draw() {                              // 画面に、今の位置を、反映する
+    bubbles.forEach((b) => { b.el.style.translate = `${b.x}px ${b.y}px`; });
+  }
+
+  if (reduceMotion) { draw(); return; }          // 「動きを減らす」設定の人は、動かさない
+
+  let last = performance.now();
+
+  function tick(now) {
+    const dt = Math.min((now - last) / 1000, 0.05);   // 前回からの経過秒。上限を付けて、ジャンプを防ぐ
+    last = now;
+
+    // 1. それぞれ、進めて、壁で跳ね返る
+    bubbles.forEach((b) => {
+      b.x += b.vx * dt;
+      b.y += b.vy * dt;
+      if (b.x < 0)             { b.x = 0;             b.vx =  Math.abs(b.vx); }
+      if (b.x > W - b.r * 2)   { b.x = W - b.r * 2;   b.vx = -Math.abs(b.vx); }
+      if (b.y < 0)             { b.y = 0;             b.vy =  Math.abs(b.vy); }
+      if (b.y > H - b.r * 2)   { b.y = H - b.r * 2;   b.vy = -Math.abs(b.vy); }
+    });
+
+    // 2. 丸どうしが、ぶつかったら、離して、跳ね返る(2匹ずつ、総当たりで調べる)
+    for (let i = 0; i < bubbles.length; i++) {
+      for (let j = i + 1; j < bubbles.length; j++) {
+        const a = bubbles[i];
+        const b = bubbles[j];
+        const dx = (a.x + a.r) - (b.x + b.r);     // 中心どうしの差
+        const dy = (a.y + a.r) - (b.y + b.r);
+        const dist = Math.hypot(dx, dy);          // 中心どうしの距離
+        const min = a.r + b.r;                    // これより近いと、重なっている
+        if (dist < min && dist > 0) {
+          const nx = dx / dist;                   // 2匹を結ぶ、向き(長さ1)
+          const ny = dy / dist;
+          const push = (min - dist) / 2;          // 重なりの半分ずつ、離す
+          a.x += nx * push;  a.y += ny * push;
+          b.x -= nx * push;  b.y -= ny * push;
+          const rel = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;   // 近づく速さ
+          if (rel < 0) {                          // 近づいているときだけ、跳ね返す
+            a.vx -= rel * nx;  a.vy -= rel * ny;
+            b.vx += rel * nx;  b.vy += rel * ny;
+          }
+        }
+      }
+    }
+
+    draw();
+    requestAnimationFrame(tick);                  // 次のフレームも、この関数を呼ぶ(くりかえし)
+  }
+
+  requestAnimationFrame(tick);
+
+  // 画面の幅が変わったら、枠の大きさを、取り直す
+  window.addEventListener('resize', () => { W = box.clientWidth; H = box.clientHeight; });
+}
+
 // cats.json を読み込んで、並べる
 async function loadCats() {
   try {
@@ -231,6 +311,7 @@ async function loadCats() {
     }
     const cats = await response.json();
     cats.forEach((cat) => floaters.append(createFloater(cat)));
+    startBubbles(); 
   } catch (error) {
     console.error(error);
     const message = document.createElement('p');

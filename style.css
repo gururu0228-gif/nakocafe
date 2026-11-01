@@ -840,3 +840,24 @@ code {
   20%  { opacity: 0.8; scale: 1; }
   100% { opacity: 0;   scale: 1; }
 }
+
+/* ===== 猫の丸:枠の中を、自由に漂う ===== */
+.floaters {
+  display: block;                      /* グリッドをやめる */
+  position: relative;                  /* 丸の位置の、基準になる */
+  width: 100%;
+  height: clamp(30rem, 70vw, 50rem);   /* 枠の高さ。スマホは約30rem、広い画面は最大50rem */
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;                    /* 枠の外には、はみ出さない */
+}
+
+.floater {
+  position: absolute;                  /* 枠の中で、自由に位置を決める */
+  left: 0;
+  top: 0;
+  margin: 0;
+  width: var(--d);
+  height: var(--d);
+  animation: none;                     /* 前の、CSSの動きは、やめる */
+}
