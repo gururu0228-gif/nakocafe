@@ -301,3 +301,38 @@ modal.addEventListener('click', (event) => {
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && !modal.hidden) closeModal();
 });
+
+// ------------------------------
+// マウスのあとを、猫の足あとが、ついてくる
+// ------------------------------
+const canHover = window.matchMedia('(hover: hover)').matches;   // マウスがある環境か(スマホは、動かさない)
+
+if (canHover && !reduceMotion) {            // reduceMotion は、ふわっと出る動きのところで、もう作ってある
+  let lastX = null;
+  let lastY = null;
+  let side = 1;                             // 1と-1を、交互に入れ替える(左足・右足)
+  const STEP = 46;                          // 何px動くたびに、足あとを1つ置くか
+
+  window.addEventListener('pointermove', (e) => {
+    if (lastX === null) { lastX = e.clientX; lastY = e.clientY; return; }   // 最初の1回は、位置を覚えるだけ
+
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    if (Math.hypot(dx, dy) < STEP) return;  // まだ、遠くへ動いていない → 何もしない
+
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;   // 進む向き(度)。足先が前を向くよう+90
+
+    const paw = document.createElement('span');
+    paw.className = 'paw';
+    paw.style.left = e.clientX + 'px';
+    paw.style.top = e.clientY + 'px';
+    paw.style.setProperty('--rot', angle + 'deg');
+    paw.style.setProperty('--side', side * 9 + 'px');         // 進行方向と直角に、左右へずらす
+    side *= -1;
+    document.body.append(paw);
+    paw.addEventListener('animationend', () => paw.remove()); // 消えたら、要素も削除
+
+    lastX = e.clientX;
+    lastY = e.clientY;
+  });
+}
