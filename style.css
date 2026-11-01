@@ -652,14 +652,23 @@ code {
    猫の紹介(ふわふわ漂う)
    ============================== */
 .floaters {
-  --d: clamp(5.25rem, 20vw, 7rem);                 /* 丸の大きさ(画面の幅に合わせて、84〜112px) */
-  max-width: 51rem;
+  --d: clamp(4.5rem, 18vw, 9.5rem);   /* 前: 6rem, 24vw。スマホは約72〜108px */
+  max-width: 64rem;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: calc(var(--range, 0px) * 0.6 + 10px) calc(var(--range, 0px) * 0.5);   /* 前: * 0.6 + 20px / var(--range) */
   display: grid;
   /* 1つの置き場の幅を「丸+余白」にして、入るだけ、自動で並べる */
-  grid-template-columns: repeat(auto-fit, minmax(calc(var(--d) + 3.75rem), 1fr));
-  gap: 3.75rem 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--d) + 2rem), 1fr));   /* 前: + 3rem */
+  gap: 2rem 1rem;                                                                 /* 前: 1.5rem 0.75rem */
+}
+
+@media (min-width: 768px) {
+  .floaters {
+    --d: clamp(10rem, 17vw, 16rem);   /* 前: 8rem, 13vw, 12rem。広い画面で、さらに大きく */
+    max-width: 90rem;                  /* 前: 80rem。大きい丸が、並ぶ幅も、広げる */
+    grid-template-columns: repeat(auto-fit, minmax(calc(var(--d) + 4.5rem), 1fr));
+    gap: 4.5rem 1.5rem;
+  }
 }
 
 /* 猫1匹分の置き場:ゆっくり、ふわふわ動く */
@@ -673,10 +682,10 @@ code {
 
 /* 0%と100%は元の位置。そのあいだに、3か所の目的地を、順番に巡る */
 @keyframes floater-drift {
-  0%, 100% { translate: 0 0; }
-  25% { translate: var(--x1, 20px) var(--y1, -20px); }
-  50% { translate: var(--x2, -20px) var(--y2, 10px); }
-  75% { translate: var(--x3, 10px) var(--y3, 20px); }
+  0%, 100% { translate: 0 0;                   scale: 1; }
+  25%      { translate: var(--x1) var(--y1);   scale: 1.05; }   /* 少しふくらむ */
+  50%      { translate: var(--x2) var(--y2);   scale: 0.96; }   /* 少し縮む */
+  75%      { translate: var(--x3) var(--y3);   scale: 1.03; }
 }
 
 /* 丸い写真(押せるボタン) */

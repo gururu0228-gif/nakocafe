@@ -182,14 +182,17 @@ function createFloater(cat) {
   const item = document.createElement('div');
   item.className = 'floater';
  // 揺れ方を、猫ごとに、ばらばらにする(CSS変数に、数字を書き込む)
-  const range = 40;                                              // 動く範囲(px)。大きいほど、遠くまで漂う
-  item.style.setProperty('--dur', rand(16, 26) + 's');           // 1周にかかる時間(長いほど、ゆっくり)
-  item.style.setProperty('--delay', -rand(0, 26) + 's');         // マイナスにして、最初から途中の状態で動かす
-  item.style.setProperty('--shift', rand(0, 40) + 'px');         // 縦の位置のずれ
+  const range  = window.innerWidth >= 768 ? 140 : 24;   // 動く範囲(横)。スマホは40、広い画面は100
+  floaters.style.setProperty('--range', range + 'px');   // 動く範囲を、CSS変数 --range に書き込む
+  const yRange = range * 0.8;                            // 縦の動きは、横の6割にする(縦が長くならない・重なりにくい)
+  const slow   = range / 60;
+  item.style.setProperty('--dur', rand(20, 32) * slow + 's');
+  item.style.setProperty('--delay', -rand(0, 26 * slow) + 's');
+  item.style.setProperty('--shift', rand(0, 15) + 'px');   // 前: rand(0, 30)
 
   for (let k = 1; k <= 3; k++) {                                 // 目的地を、3か所、決める
     item.style.setProperty('--x' + k, rand(-range, range) + 'px');
-    item.style.setProperty('--y' + k, rand(-range, range) + 'px');
+    item.style.setProperty('--y' + k, rand(-yRange, yRange) + 'px');
   }
 
   const button = document.createElement('button');
