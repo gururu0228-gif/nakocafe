@@ -231,7 +231,7 @@ function startBubbles() {
 
   let W = box.clientWidth;    // 枠の幅
   let H = box.clientHeight;   // 枠の高さ
-  const collide = window.innerWidth >= 768;   // 広い画面だけ、丸どうしがぶつかる(スマホは、重なってよい)
+  const collide = true;                       // 前: window.innerWidth >= 768。スマホでも、ぶつかる
   const over = 0.35;                          // 丸の大きさの何割まで、枠の上下からはみ出してよいか
 
   // 丸ごとに、位置(x,y)と、速さ(vx,vy)を、ランダムに決める
