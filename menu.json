@@ -1,0 +1,41 @@
+[
+  { "id": "takoyaki", "name": "たこ焼き(6個)", "items": [
+    { "name": "ソース", "price": 500, "kind": "savory" },
+    { "name": "チーズ", "price": 550, "kind": "savory" }
+  ]},
+  { "id": "fries", "name": "フライドポテト", "items": [
+    { "name": "しお", "price": 400, "kind": "savory" },
+    { "name": "コンソメ", "price": 400, "kind": "savory" }
+  ]},
+  { "id": "popcorn", "name": "ポップコーン", "items": [
+    { "name": "キャラメルプレッツェル", "price": 500, "kind": "sweet" },
+    { "name": "バター醤油ピーナッツ", "price": 450, "kind": "savory" }
+  ]},
+  { "id": "hotsand", "name": "ホットサンド(ラスク付き)", "items": [
+    { "name": "ボロネーゼチーズ", "price": 400, "kind": "savory" },
+    { "name": "ツナマヨ", "price": 400, "kind": "savory" }
+  ]},
+  { "id": "potato", "name": "じゃがバター", "items": [
+    { "name": "きたあかりの北海道じゃがバター", "price": 500, "kind": "savory" }
+  ]},
+  { "id": "pizza", "name": "ピザ", "items": [
+    { "name": "にくきゅうマルゲリータ", "price": 1200, "kind": "savory" },
+    { "name": "フルーツグラタンピザ", "price": 1500, "kind": "sweet" }
+  ]},
+  { "id": "ice", "name": "アイス", "items": [
+    { "name": "稚内牛乳バニラ", "price": 500, "kind": "sweet" },
+    { "name": "抹茶", "price": 400, "kind": "sweet" },
+    { "name": "エスプレッソクッキー", "price": 400, "kind": "sweet" }
+  ]},
+  { "id": "taiyaki", "name": "たい焼き", "items": [
+    { "name": "つぶあん", "price": 250, "kind": "sweet" }
+  ]},
+  { "id": "taiyaki-mt", "name": "たい焼きマウンテン", "items": [
+    { "name": "たい焼きマウンテン", "price": 800, "kind": "sweet" }
+  ]},
+  { "id": "burrito", "name": "ブリトー", "items": [
+    { "name": "ハムチーズ", "price": 400, "kind": "savory" },
+    { "name": "明太もち", "price": 550, "kind": "savory" },
+    { "name": "ベリー", "price": 650, "kind": "sweet" }
+  ]}
+]
