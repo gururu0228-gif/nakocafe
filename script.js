@@ -457,6 +457,62 @@ updateHscroll();
 
 // ナビの、ABOUTのサブ項目:押した画面へ、スクロールする
 document.querySelectorAll('.nav__sub a[data-go]').forEach((link) => {
+  
+  // ==============================
+// ABOUT:スクロールが止まったら、いちばん近い画面に、ぽよんと吸いつく
+// ==============================
+let snapTimer = null;      // 「止まったか」を測る、タイマー
+let snapFrame = null;      // 吸いつく動きの、アニメーションの番号
+let touching = false;      // 指が、画面に、触れているか
+
+// 行きすぎて、戻る動きの、数式(最初は速く、少し行きすぎて、戻る)
+function easeOutBack(t) {
+  const c1 = 2.2;                 // 大きいほど、行きすぎる(ぽよんが、強くなる)
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
+
+// スクロール位置を、from から to まで、duration ミリ秒かけて、動かす
+function animateScroll(from, to, duration) {
+  cancelAnimationFrame(snapFrame);
+  const t0 = performance.now();
+  function step(now) {
+    const t = Math.min(1, (now - t0) / duration);                                   // 進み具合(0〜1)
+    const y = from + (to - from) * easeOutBack(t);                                  // 数式に通して、今の位置を決める
+    window.scrollTo({ top: y, behavior: 'instant' });                               // その位置へ、すぐ動かす
+    if (t < 1) snapFrame = requestAnimationFrame(step);                             // まだなら、次のフレームへ
+  }
+  snapFrame = requestAnimationFrame(step);
+}
+
+// いちばん近い画面の位置を探して、そこへ動かす
+function snapToNearest() {
+  const stickTop = parseFloat(getComputedStyle(hscrollSticky).top);
+  const scrollable = hscroll.offsetHeight - hscrollSticky.offsetHeight;
+  const start = hscroll.getBoundingClientRect().top + window.scrollY - stickTop;    // 1枚目が、ちょうど出る位置
+  const now = window.scrollY;
+  if (now < start || now > start + scrollable) return;                              // ABOUTの外なら、何もしない
+
+  const stepLen = scrollable / (hscrollCount - 1);                                  // 1枚ぶんの、スクロールの長さ
+  const i = Math.round((now - start) / stepLen);                                    // いちばん近いのは、何枚目か
+  const target = start + i * stepLen;
+  if (Math.abs(target - now) < 1) return;                                           // もう、ぴったりなら、何もしない
+  animateScroll(now, target, 700);                                                  // 0.7秒かけて、ぽよんと、吸いつく
+}
+
+// スクロールが止まって、約0.14秒たったら、吸いつかせる(指が触れている間は、しない)
+function scheduleSnap() {
+  clearTimeout(snapTimer);
+  snapTimer = setTimeout(() => { if (!touching) snapToNearest(); }, 140);
+}
+
+if (!reduceMotion) {                                           // 「動きを減らす」設定の人には、しない
+  window.addEventListener('scroll', scheduleSnap, { passive: true });
+  window.addEventListener('touchstart', () => { touching = true; cancelAnimationFrame(snapFrame); }, { passive: true });
+  window.addEventListener('touchend', () => { touching = false; scheduleSnap(); }, { passive: true });
+  window.addEventListener('wheel', () => cancelAnimationFrame(snapFrame), { passive: true });   // ホイールを回したら、吸いつく動きは、やめる
+}
+  
   link.addEventListener('click', (event) => {
     event.preventDefault();                                          // 標準の、ページ内リンクの動きは、止める
     const i = Number(link.dataset.go);                               // 何枚目か(HTMLの data-go)
@@ -468,3 +524,65 @@ document.querySelectorAll('.nav__sub a[data-go]').forEach((link) => {
     window.scrollTo({ top: target, behavior: 'smooth' });
   });
 });
+
+// ==============================
+// ABOUT:カフェメニューを、menu.json から読み込んで、並べる
+// ==============================
+const menuList = document.getElementById('menuList');
+const treatList = document.getElementById('treatList');
+const menuChips = document.querySelectorAll('.menu__chip');
+let menuData = [];                // menu.json の中身を、入れておく場所
+let menuKind = 'savory';          // いま選んでいるのは、しょっぱい系
+
+// 「品名 ... 値段」の1行(<li>)を作って返す道具
+function makeMenuRow(label, price) {
+  const li = document.createElement('li');
+  const name = document.createElement('span');
+  name.textContent = label;
+  const cost = document.createElement('span');
+  cost.className = 'menu__price';
+  cost.textContent = price.toLocaleString() + '円';    // 1200 → 1,200 のように、カンマをつける
+  li.append(name, cost);
+  return li;
+}
+
+// いま選んでいる種類(menuKind)だけを、並べ直す
+function renderMenu() {
+  menuList.replaceChildren();                           // 前の一覧を、空にする
+  menuData.forEach((group) => {
+    group.items
+      .filter((item) => item.kind === menuKind)         // 選んでいる種類の品だけに、絞る
+      .forEach((item) => {
+        // グループに品が1つだけなら、品名だけ。複数あるなら「グループ名 品名」
+        const label = group.items.length === 1 ? item.name : group.name + ' ' + item.name;
+        menuList.append(makeMenuRow(label, item.price));
+      });
+  });
+}
+
+// 切り替えボタン:押したら、種類を変えて、並べ直す
+menuChips.forEach((chip) => {
+  chip.addEventListener('click', () => {
+    menuKind = chip.dataset.kind;                       // HTMLの data-kind を読む
+    menuChips.forEach((c) => c.classList.toggle('is-on', c === chip));   // 押したボタンだけ、色をつける
+    renderMenu();
+  });
+});
+
+// 2つのJSONを読み込む
+async function loadMenu() {
+  try {
+    const [menuRes, treatRes] = await Promise.all([fetch('menu.json'), fetch('treats.json')]);   // 2つを、同時に取りに行く
+    if (!menuRes.ok || !treatRes.ok) throw new Error('menu.json か treats.json を読み込めませんでした');
+    menuData = await menuRes.json();
+    const treats = await treatRes.json();
+
+    renderMenu();
+    treats.forEach((treat) => treatList.append(makeMenuRow(treat.name, treat.price)));
+  } catch (error) {
+    console.error(error);
+    menuList.textContent = 'メニューを読み込めませんでした。';
+  }
+}
+
+loadMenu();

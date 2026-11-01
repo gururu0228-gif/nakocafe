@@ -1069,3 +1069,65 @@ code {
     border-radius: 12px;
   }
 }
+
+/* ==============================
+   ABOUT:カフェメニューのカード
+   ============================== */
+.panel__card.menu { width: min(100%, 38rem); }
+
+/* しょっぱい系 / あまい系 の、切り替えボタン */
+.menu__chips {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.menu__chip {
+  padding: 0.35rem 1rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.menu__chip.is-on { background: var(--sakura); }   /* 選んでいるほうは、さくら色 */
+
+/* 品名と値段の一覧(2列) */
+.menu__list,
+.menu__treats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.menu__list li,
+.menu__treats li {
+  display: flex;
+  justify-content: space-between;     /* 品名は左、値段は右 */
+  gap: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px dashed rgba(90, 90, 96, 0.4);
+}
+.menu__price {
+  white-space: nowrap;                /* 値段は、途中で、折り返さない */
+  font-weight: 700;
+  font-variant-numeric: tabular-nums; /* 数字の幅を、そろえる */
+}
+
+.menu__sub {
+  margin: 1.2rem 0 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+.menu__note {
+  margin-top: 0.9rem;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}

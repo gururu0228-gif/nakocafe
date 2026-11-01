@@ -154,10 +154,28 @@
             </div>
           </article>
 
-          <article class="panel">
-            <div class="panel__card">
+                    <article class="panel">
+            <div class="panel__card menu">
               <h3 class="card__title">カフェメニュー</h3>
-              <p class="card__text">じゅんびちゅう</p>
+
+              <!-- しょっぱい系 / あまい系 の、切り替えボタン -->
+              <div class="menu__chips" role="group" aria-label="メニューの絞り込み">
+                <button type="button" class="menu__chip is-on" data-kind="savory">しょっぱい系</button>
+                <button type="button" class="menu__chip" data-kind="sweet">あまい系</button>
+              </div>
+
+              <!-- メニューの一覧(JSが、menu.json から、ここに並べる) -->
+              <ul class="menu__list" id="menuList"></ul>
+
+              <!-- 猫とのふれあい(JSが、treats.json から、ここに並べる) -->
+              <h4 class="menu__sub">猫とのふれあい(おやつ)</h4>
+              <ul class="menu__treats" id="treatList"></ul>
+
+              <!-- 猫の安全について(仮の文面。あとで、直します) -->
+              <p class="menu__note">
+                猫に危険な食材(ネギ類、ブドウ・レーズン、アボカド、チョコレート、キシリトール)は、使っていません。<br>
+                お客さまの飲食物を、猫にあげないでください。猫には、専用のおやつをご用意しています。
+              </p>
             </div>
           </article>
 
