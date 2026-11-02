@@ -1131,3 +1131,85 @@ code {
   line-height: 1.6;
   opacity: 0.8;
 }
+
+/* ==============================
+   オープニング(ローディング → ねんね)
+   ============================== */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;                           /* ヘッダー(100)や、モーダル(500)より、手前 */
+  background: var(--paper);
+  overflow: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s;
+}
+.intro-screen.is-done {                    /* おわったら、すっと消える */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+body.is-intro { overflow: hidden; }        /* オープニングの間は、下の画面を、スクロールさせない */
+
+/* 「ねんね」とキャッチコピー(縦書き)。最初は、見えなくて、大きい(ズームイン状態) */
+.intro-screen__text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1rem, 6vw, 3.5rem);
+  opacity: 0;
+  scale: 1.5;
+  transition: opacity 1.2s ease, scale 1.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.intro-screen__title,
+.intro-screen__copy {
+  writing-mode: vertical-rl;               /* 縦書き */
+  color: var(--ink);
+}
+.intro-screen__title {
+  font-size: clamp(5rem, 22vw, 11rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+.intro-screen__copy {
+  font-size: clamp(1.1rem, 4vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  color: #6b6b72;
+  align-self: flex-start;                  /* キャッチコピーは、上寄せ */
+  margin-top: 18vh;
+}
+
+/* オープニング開始:ズームアウトして、はっきり見える */
+.intro-screen.is-opening .intro-screen__text {
+  opacity: 1;
+  scale: 1;
+}
+
+/* ロケットくん:大きさは、ずっと同じ。移動と縮小は、translate と scale で行う(なめらか) */
+.intro-screen__rocket {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: clamp(12rem, 48vh, 30rem);       /* ローディング中の大きさ */
+  aspect-ratio: 1 / 1;
+  translate: -50% -50%;                    /* 自分の半分だけ戻して、真ん中に置く */
+  scale: 1;
+  transition: translate 2.2s cubic-bezier(0.5, 0, 0.2, 1),
+              scale 2.2s cubic-bezier(0.5, 0, 0.2, 1);
+  will-change: translate, scale;           /* 「動くよ」と、ブラウザに伝える */
+}
+.intro-screen.is-opening .intro-screen__rocket {
+  /* 中心を、左から14%、上から84%の位置へ(真ん中から、左へ36vw、下へ34vh) */
+  translate: calc(-50% - 36vw) calc(-50% + 34vh);
+  scale: 0.8;                              /* 大きさの、3割に縮める */
+}
+
+/* 歩く揺れは、中の絵に付ける(外側の移動と、ぶつからないように) */
+.intro-screen__rocket img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

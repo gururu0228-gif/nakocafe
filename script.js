@@ -395,38 +395,53 @@ document.addEventListener('keydown', (event) => {
 });
 
 // ------------------------------
-// マウスのあとを、猫の足あとが、ついてくる
+// マウス(PC)や指(スマホ・iPad)のあとを、猫の足あとが、ついてくる
 // ------------------------------
-const canHover = window.matchMedia('(hover: hover)').matches;   // マウスがある環境か(スマホは、動かさない)
-
-if (canHover && !reduceMotion) {            // reduceMotion は、ふわっと出る動きのところで、もう作ってある
+if (!reduceMotion) {                        // reduceMotion は、ふわっと出る動きのところで、もう作ってある
   let lastX = null;
   let lastY = null;
   let side = 1;                             // 1と-1を、交互に入れ替える(左足・右足)
   const STEP = 46;                          // 何px動くたびに、足あとを1つ置くか
 
-  window.addEventListener('pointermove', (e) => {
-    if (lastX === null) { lastX = e.clientX; lastY = e.clientY; return; }   // 最初の1回は、位置を覚えるだけ
+  // 足あとを置く、共通の処理(マウスも、指も、ここを使う)
+  function leavePaw(x, y) {
+    if (lastX === null) { lastX = x; lastY = y; return; }   // 最初の1回は、位置を覚えるだけ
 
-    const dx = e.clientX - lastX;
-    const dy = e.clientY - lastY;
+    const dx = x - lastX;
+    const dy = y - lastY;
     if (Math.hypot(dx, dy) < STEP) return;  // まだ、遠くへ動いていない → 何もしない
 
     const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;   // 進む向き(度)。足先が前を向くよう+90
 
     const paw = document.createElement('span');
     paw.className = 'paw';
-    paw.style.left = e.clientX + 'px';
-    paw.style.top = e.clientY + 'px';
+    paw.style.left = x + 'px';
+    paw.style.top = y + 'px';
     paw.style.setProperty('--rot', angle + 'deg');
     paw.style.setProperty('--side', side * 9 + 'px');         // 進行方向と直角に、左右へずらす
     side *= -1;
     document.body.append(paw);
     paw.addEventListener('animationend', () => paw.remove()); // 消えたら、要素も削除
 
-    lastX = e.clientX;
-    lastY = e.clientY;
+    lastX = x;
+    lastY = y;
+  }
+
+  // マウス・ペン(PC、iPadにつないだマウスなど)
+  window.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch') return;  // 指は、下の touchmove で扱う
+    leavePaw(e.clientX, e.clientY);
   });
+
+  // 指(スマホ・iPad)
+  window.addEventListener('touchstart', (e) => {
+    lastX = e.touches[0].clientX;           // 指を置いた位置から、始める(前回の位置との距離で、足あとが、飛ばないように)
+    lastY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    leavePaw(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
 }
 
 // ==============================
@@ -586,3 +601,67 @@ async function loadMenu() {
 }
 
 loadMenu();
+
+
+// ==============================
+// オープニング:ローディング → ロケットくんが左下へ → 「ねんね」が出る → 消える
+// ==============================
+const introScreen = document.getElementById('introScreen');
+
+if (introScreen) {
+  const MIN_LOADING = 3000;                 // ローディングを、最低、これだけ(ミリ秒)見せる
+  const OPENING_TIME = 5000;                // 「ねんね」の画面を、見せている時間
+  const started = performance.now();
+
+  if (reduceMotion) {
+    introScreen.remove();                   // 「動きを減らす」設定の人には、出さない
+  } else {
+    document.body.classList.add('is-intro');            // 下の画面を、スクロールさせない
+
+    // --- ロケットくんの歩き:コマを、順番に入れ替える(パラパラ漫画) ---
+    const WALK_FRAMES = [1, 2, 3, 4, 5, 6, 7, 8];       // 使うコマの番号(全部)
+    const FRAME_MS = 200;                               // 8コマ × 200ms = 1.6秒。体の揺れと、そろう
+    const rocketImg = document.getElementById('rocketImg');
+    let frameIndex = 0;
+
+    // 先に、全部の絵を、読み込んでおく(ちらつかないように)
+    WALK_FRAMES.forEach((n) => {
+      new Image().src = `images/rocket-${n}.png`;
+    });
+
+    const walkTimer = setInterval(() => {
+      frameIndex = (frameIndex + 1) % WALK_FRAMES.length;   // 0→1→2…→最後→0 と、くり返す
+      rocketImg.src = `images/rocket-${WALK_FRAMES[frameIndex]}.png`;
+    }, FRAME_MS);
+
+    // --- ローディング → オープニングへ ---
+    let opened = false;                                 // 二重に、始まらないための、目印
+    function startOpening() {
+      if (opened) return;
+      opened = true;
+      introScreen.classList.remove('is-loading');
+      introScreen.classList.add('is-opening');          // ロケットくんが左下へ。「ねんね」が、ズームアウトで出る
+      setTimeout(() => {
+        introScreen.classList.add('is-done');           // 画面全体を、すっと消す
+        document.body.classList.remove('is-intro');     // スクロールを、元に戻す
+        clearInterval(walkTimer);                       // コマ送りを、止める
+      }, OPENING_TIME);
+    }
+
+    function whenReady() {
+      const rest = Math.max(0, MIN_LOADING - (performance.now() - started));   // 最低の時間まで、あと何ミリ秒か
+      setTimeout(startOpening, rest);
+    }
+
+    // ページの全部が、読み込めたら、始める
+    if (document.readyState === 'complete') whenReady();
+    else window.addEventListener('load', whenReady);
+
+    setTimeout(startOpening, 6000);                     // 保険:6秒たったら、読み込みが終わっていなくても、始める
+
+    // 消えたら、要素ごと、取り除く
+    introScreen.addEventListener('transitionend', (e) => {
+      if (e.target === introScreen && e.propertyName === 'opacity') introScreen.remove();
+    });
+  }
+}

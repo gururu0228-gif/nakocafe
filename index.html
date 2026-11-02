@@ -25,6 +25,19 @@
 
 <body>
 
+  <!-- オープニング:ローディング → ロケットくんが左下へ → 「ねんね」が出る -->
+  <div class="intro-screen is-loading" id="introScreen" aria-hidden="true">
+    <div class="intro-screen__text">
+      <p class="intro-screen__title">ねんね</p>
+      <p class="intro-screen__copy">ねこと くつろげる お部屋</p>
+    </div>
+    <div class="intro-screen__rocket">
+      <img id="rocketImg" src="images/rocket-1.png" alt="">
+    </div>
+  </div>
+  <!-- JavaScriptが使えない環境では、この画面を出さない -->
+  <noscript><style>.intro-screen { display: none; }</style></noscript>
+
   <!-- 進み具合バー  -->
   <div class="progress" id="progress" aria-hidden="true"></div>
 
