@@ -469,11 +469,8 @@ function updateHscroll() {
 window.addEventListener('scroll', updateHscroll, { passive: true });   // ← この3行は、今ある行。そのまま
 window.addEventListener('resize', updateHscroll);
 updateHscroll();
-
-// ナビの、ABOUTのサブ項目:押した画面へ、スクロールする
-document.querySelectorAll('.nav__sub a[data-go]').forEach((link) => {
-  
-  // ==============================
+ 
+// ==============================
 // ABOUT:スクロールが止まったら、いちばん近い画面に、ぽよんと吸いつく
 // ==============================
 let snapTimer = null;      // 「止まったか」を測る、タイマー
@@ -527,7 +524,9 @@ if (!reduceMotion) {                                           // 「動きを�
   window.addEventListener('touchend', () => { touching = false; scheduleSnap(); }, { passive: true });
   window.addEventListener('wheel', () => cancelAnimationFrame(snapFrame), { passive: true });   // ホイールを回したら、吸いつく動きは、やめる
 }
-  
+
+// ナビの、ABOUTのサブ項目:押した画面へ、スクロールする
+document.querySelectorAll('.nav__sub a[data-go]').forEach((link) => {
   link.addEventListener('click', (event) => {
     event.preventDefault();                                          // 標準の、ページ内リンクの動きは、止める
     const i = Number(link.dataset.go);                               // 何枚目か(HTMLの data-go)
@@ -620,7 +619,8 @@ if (introScreen) {
 
     // --- ロケットくんの歩き:コマを、順番に入れ替える(パラパラ漫画) ---
     const WALK_FRAMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];   // 使うコマの番号(10コマ)
-    const FRAME_MS = 140;                                  // 1コマを、見せる時間    const rocketImg = document.getElementById('rocketImg');
+    const FRAME_MS = 140;                                  // 1コマを、見せる時間
+    const rocketImg = document.getElementById('rocketImg');
     let frameIndex = 0;
 
     // 先に、全部の絵を、読み込んでおく(ちらつかないように)
