@@ -619,9 +619,8 @@ if (introScreen) {
     document.body.classList.add('is-intro');            // 下の画面を、スクロールさせない
 
     // --- ロケットくんの歩き:コマを、順番に入れ替える(パラパラ漫画) ---
-    const WALK_FRAMES = [1, 2, 3, 4, 5, 6, 7, 8];       // 使うコマの番号(全部)
-    const FRAME_MS = 200;                               // 8コマ × 200ms = 1.6秒。体の揺れと、そろう
-    const rocketImg = document.getElementById('rocketImg');
+    const WALK_FRAMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];   // 使うコマの番号(10コマ)
+    const FRAME_MS = 140;                                  // 1コマを、見せる時間    const rocketImg = document.getElementById('rocketImg');
     let frameIndex = 0;
 
     // 先に、全部の絵を、読み込んでおく(ちらつかないように)
