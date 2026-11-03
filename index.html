@@ -206,10 +206,50 @@
             </div>
           </article>
 
-          <article class="panel">
-            <div class="panel__card">
+                    <article class="panel">
+            <div class="panel__card sys">
               <h3 class="card__title">システム</h3>
-              <p class="card__text">じゅんびちゅう</p>
+
+              <!-- 切り替えボタン:料金 / 時間 / ルール -->
+              <div class="sys__chips" role="group" aria-label="システムの絞り込み">
+                <button type="button" class="sys__chip is-on" data-pane="price">料金</button>
+                <button type="button" class="sys__chip" data-pane="time">時間</button>
+                <button type="button" class="sys__chip" data-pane="rules">ルール</button>
+              </div>
+
+              <div class="sys__body">
+                <!-- 料金 -->
+                <div class="sys__pane" data-pane="price">
+                  <table class="price-table">
+                    <thead>
+                      <tr><th>コース</th><th>平日</th><th>土日祝</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>10分ごと</td><td>250円</td><td>300円</td></tr>
+                      <tr><td>最大料金</td><td>2,500円</td><td>3,000円</td></tr>
+                      <tr><td>回数券(10回分)</td><td colspan="2">25,000円</td></tr>
+                    </tbody>
+                  </table>
+                  <p class="price-note">フリードリンク付き</p>
+                </div>
+
+                <!-- 時間(最初は、隠しておく) -->
+                <div class="sys__pane" data-pane="time" hidden>
+                  <dl class="info sys__info">
+                    <dt>営業時間</dt><dd>10:00〜20:00(仮)</dd>
+                    <dt>定休日</dt><dd>不定休(仮)</dd>
+                  </dl>
+                </div>
+
+                <!-- ルール(最初は、隠しておく) -->
+                <div class="sys__pane" data-pane="rules" hidden>
+                  <ul class="card__list sys__rules">
+                    <li>猫を追いかけたり、無理に抱っこしたりしないでください。</li>
+                    <li>入店前に手洗い・消毒をお願いします。</li>
+                    <li>小学生以下のお子さまは保護者同伴でご利用ください。</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </article>
 

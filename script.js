@@ -664,3 +664,19 @@ if (introScreen) {
     });
   }
 }
+
+
+// ==============================
+// ABOUT:システムのカードの、切り替え(料金 / 時間 / ルール)
+// ==============================
+const sysChips = document.querySelectorAll('.sys__chip');
+const sysPanes = document.querySelectorAll('.sys__pane');
+
+sysChips.forEach((chip) => {
+  chip.addEventListener('click', () => {
+    sysChips.forEach((c) => c.classList.toggle('is-on', c === chip));        // 押したボタンだけ、色をつける
+    sysPanes.forEach((pane) => {
+      pane.hidden = pane.dataset.pane !== chip.dataset.pane;                 // 名札が合う塊だけ、見せる
+    });
+  });
+});

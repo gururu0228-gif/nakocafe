@@ -1213,3 +1213,35 @@ body.is-intro { overflow: hidden; }        /* オープニングの間は、下�
   height: 100%;
   object-fit: contain;
 }
+
+/* ==============================
+   ABOUT:システムのカード
+   ============================== */
+.panel__card.sys { width: min(100%, 36rem); }
+
+/* 切り替えボタン(メニューのボタンと、同じ見た目) */
+.sys__chips {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.sys__chip {
+  padding: 0.35rem 1.2rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.sys__chip.is-on { background: var(--sakura); }
+
+/* 中身の高さ:切り替えても、カードが、ガタつかないように、最低の高さを決める */
+.sys__body { min-height: 15rem; }
+
+.sys__pane .price-table { margin: 0 auto; }
+.sys__pane .price-note { margin-top: 0.8rem; }
+.sys__info { margin: 0 auto; }
+.panel .sys__rules li { font-size: 1rem; margin-bottom: 0.8rem; }
