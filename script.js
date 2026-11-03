@@ -203,6 +203,7 @@ function createFloater(cat) {
 
   // 写真があれば写真、なければ仮の絵(絵文字)
   if (cat.photo) {
+    button.classList.add('has-photo');          // ← この1行を足す(写真がある猫に、印を付ける)
     const img = document.createElement('img');
     img.src = cat.photo;
     img.alt = cat.name + 'の写真';
@@ -344,6 +345,7 @@ function openModal(cat, button) {
   // 写真(なければ、仮の絵文字)を入れる
   const photo = document.getElementById('catModalPhoto');
   photo.style.setProperty('--tint', cat.tint);
+  photo.classList.toggle('has-photo', Boolean(cat.photo));   //(写真があれば、印を付ける)
   if (cat.photo) {
     const img = document.createElement('img');
     img.src = cat.photo;
@@ -680,3 +682,133 @@ sysChips.forEach((chip) => {
     });
   });
 });
+
+
+// ==============================
+// ABOUT:店内あんない。tour.json から、写真と動画を並べて、押したら、大きく見せる
+// ==============================
+const tourGrid = document.getElementById('tourGrid');
+const lightbox = document.getElementById('lightbox');
+const lightboxMedia = document.getElementById('lightboxMedia');
+const lightboxCaption = document.getElementById('lightboxCaption');
+let tourItems = [];          // tour.json の中身を、入れておく場所
+let tourIndex = 0;           // いま、大きく見ているのは、何番目か
+let lastTourButton = null;   // 最後に押した、小さな一覧(閉じたあとに、ここへ戻す)
+
+// 小さな一覧の、1つ分(押せるボタン)を作って返す
+function makeTourThumb(item, index) {
+  const li = document.createElement('li');
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'tour__item';
+  btn.style.setProperty('--tint', item.tint || '#ffd9cf');
+  btn.setAttribute('aria-label', item.caption + (item.type === 'video' ? '(動画)' : '') + 'を、大きく見る');
+
+  // 写真なら写真、動画なら表紙。なければ、仮の絵(絵文字)
+  const thumb = item.type === 'video' ? item.poster : item.src;
+  if (thumb) {
+    const img = document.createElement('img');
+    img.src = thumb;
+    img.alt = '';
+    btn.append(img);
+  } else {
+    btn.append(item.emoji || '🐾');
+  }
+
+  if (item.type === 'video') {                         // 動画には、▶マークを付ける
+    const play = document.createElement('span');
+    play.className = 'tour__play';
+    play.textContent = '▶';
+    btn.append(play);
+  }
+
+  const cap = document.createElement('span');
+  cap.className = 'tour__cap';
+  cap.textContent = item.caption;
+  btn.append(cap);
+
+  btn.addEventListener('click', () => openLightbox(index, btn));
+  li.append(btn);
+  return li;
+}
+
+// 大きな画面に、index 番目を、出す
+function showLightboxItem(index) {
+  tourIndex = (index + tourItems.length) % tourItems.length;   // 最後の次は、最初に戻る(逆も)
+  const item = tourItems[tourIndex];
+  lightboxMedia.replaceChildren();                             // 前の中身を、空にする(動画も止まる)
+
+  if (item.type === 'video' && item.src) {
+    const video = document.createElement('video');
+    video.src = item.src;
+    if (item.poster) video.poster = item.poster;
+    video.controls = true;                                     // 再生ボタンを出す
+    video.playsInline = true;                                  // iPhoneで、全画面に、ならずに再生
+    video.preload = 'metadata';                                // 必要な情報だけ先に、読む
+    lightboxMedia.append(video);
+  } else if (item.type === 'photo' && item.src) {
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.alt = item.caption;
+    lightboxMedia.append(img);
+  } else {                                                     // 写真・動画が、まだないとき:仮の絵
+    const ph = document.createElement('div');
+    ph.className = 'lightbox__ph';
+    ph.style.setProperty('--tint', item.tint || '#ffd9cf');
+    ph.textContent = item.emoji || '🐾';
+    lightboxMedia.append(ph);
+  }
+  lightboxCaption.textContent = item.caption;
+}
+
+function openLightbox(index, button) {
+  lastTourButton = button;
+  showLightboxItem(index);
+  lightbox.hidden = false;
+}
+
+function closeLightbox() {
+  lightbox.hidden = true;
+  lightboxMedia.replaceChildren();                             // 動画を止めて、空にする
+  if (lastTourButton) lastTourButton.focus();
+}
+
+// 暗い幕か、×を押したら、閉じる
+lightbox.addEventListener('click', (event) => {
+  if (event.target.closest('[data-close-lb]')) closeLightbox();
+});
+document.getElementById('lightboxPrev').addEventListener('click', () => showLightboxItem(tourIndex - 1));
+document.getElementById('lightboxNext').addEventListener('click', () => showLightboxItem(tourIndex + 1));
+
+// キーボード:Escで閉じる、← → で前後
+document.addEventListener('keydown', (event) => {
+  if (lightbox.hidden) return;
+  if (event.key === 'Escape') closeLightbox();
+  if (event.key === 'ArrowLeft') showLightboxItem(tourIndex - 1);
+  if (event.key === 'ArrowRight') showLightboxItem(tourIndex + 1);
+});
+
+// スマホ:左右に、スワイプして、前後
+let swipeX = null;
+lightbox.addEventListener('touchstart', (event) => { swipeX = event.touches[0].clientX; }, { passive: true });
+lightbox.addEventListener('touchend', (event) => {
+  if (swipeX === null) return;
+  const dx = event.changedTouches[0].clientX - swipeX;         // 指が、どれだけ、横に動いたか
+  swipeX = null;
+  if (Math.abs(dx) > 50) showLightboxItem(tourIndex + (dx < 0 ? 1 : -1));   // 左へ → 次、右へ → 前
+}, { passive: true });
+
+// tour.json を読み込んで、並べる
+async function loadTour() {
+  try {
+    const response = await fetch('tour.json');
+    if (!response.ok) throw new Error('tour.json を読み込めませんでした');
+    tourItems = await response.json();
+    tourItems.forEach((item, i) => tourGrid.append(makeTourThumb(item, i)));
+  } catch (error) {
+    console.error(error);
+    tourGrid.textContent = '読み込めませんでした。';
+  }
+}
+
+loadTour();

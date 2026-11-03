@@ -1,0 +1,8 @@
+[
+  { "type": "photo", "caption": "入口",             "emoji": "🚪", "tint": "#ffd9cf" },
+  { "type": "photo", "caption": "猫の部屋",         "emoji": "🐈", "tint": "#cfeff2" },
+  { "type": "photo", "caption": "窓ぎわの席",       "emoji": "🪟", "tint": "#e6defa" },
+  { "type": "photo", "caption": "ラグ作りの席",     "emoji": "🧶", "tint": "#ffe6c9" },
+  { "type": "photo", "caption": "カウンター",       "emoji": "☕", "tint": "#e8f3df" },
+  { "type": "video", "caption": "お店のようす(動画)", "emoji": "🎬", "tint": "#fff1d6" }
+]

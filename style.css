@@ -1245,3 +1245,150 @@ body.is-intro { overflow: hidden; }        /* オープニングの間は、下�
 .sys__pane .price-note { margin-top: 0.8rem; }
 .sys__info { margin: 0 auto; }
 .panel .sys__rules li { font-size: 1rem; margin-bottom: 0.8rem; }
+
+/* ==============================
+   ABOUT:店内あんない(写真・動画の一覧と、拡大画面)
+   ============================== */
+.panel__card.tour { width: min(100%, 36rem); }
+.panel .tour .card__text { margin-bottom: 1rem; font-size: 0.95rem; }
+
+/* 小さな一覧:3列 × 2段 */
+.tour__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.tour__item {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;                          /* 正方形 */
+  padding: 0;
+  font-size: 2.2rem;                        /* 仮の絵文字の大きさ */
+  background: var(--tint, #ffd9cf);
+  border: 3px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: scale 0.2s;
+}
+.tour__item:hover { scale: 1.05; }
+.tour__item img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 小さな、名前のラベル(下) */
+.tour__cap {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 0.1rem 0.3rem;
+  background: rgba(255, 255, 255, 0.88);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* 動画の、▶マーク */
+.tour__play {
+  position: absolute;
+  top: 8px; right: 8px;
+  display: grid;
+  place-items: center;
+  width: 1.6rem; height: 1.6rem;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+/* ----- 拡大画面 ----- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 600;                             /* 猫のカード(500)より、手前 */
+  display: grid;
+  place-items: center;
+}
+.lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(40, 40, 46, 0.78);
+  animation: fade-in 0.3s both;
+}
+.lightbox__figure {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  max-width: 92vw;
+  animation: grow 0.45s cubic-bezier(0.2, 1.3, 0.4, 1) both;   /* 猫のカードと、同じ「ぽんっ」 */
+}
+.lightbox__media img,
+.lightbox__media video {
+  display: block;
+  max-width: 92vw;
+  max-height: 78svh;                        /* 縦長の動画も、画面に収まる */
+  background: #000;
+  border: 3px solid var(--line);
+  border-radius: 20px;
+}
+
+/* 仮の絵(写真や動画が、まだないとき) */
+.lightbox__ph {
+  display: grid;
+  place-items: center;
+  width: min(80vw, 26rem);
+  aspect-ratio: 1;
+  font-size: 6rem;
+  background: var(--tint, #ffd9cf);
+  border: 3px solid var(--line);
+  border-radius: 28px;
+}
+.lightbox__caption {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+/* 丸いボタン(閉じる・前へ・次へ) */
+.lightbox__btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 2.8rem; height: 2.8rem;
+  font-size: 1.6rem;
+  line-height: 1;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.lightbox__close { top: 1rem; right: 1rem; }
+.lightbox__prev  { left: 0.8rem;  top: 50%; translate: 0 -50%; }
+.lightbox__next  { right: 0.8rem; top: 50%; translate: 0 -50%; }
+
+/* ===== 写真がある猫:丸に切らず、画像の形のまま見せる ===== */
+.floater__btn.has-photo {
+  background: none;                          /* 丸の背景を、なくす */
+  border: none;                              /* 丸の枠線を、なくす */
+  border-radius: 0;
+  box-shadow: none;
+}
+.floater__btn.has-photo img {
+  object-fit: contain;                       /* 切らずに、全体が収まるように(比率は保つ) */
+  border-radius: 0;                          /* 丸く切らない */
+  filter: drop-shadow(4px 4px 0 var(--sakura));   /* 画像の輪郭に沿った、さくら色の影 */
+}
+
+.modal__photo.has-photo {
+  background: none;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.modal__photo.has-photo img {
+  object-fit: contain;
+  filter: drop-shadow(4px 4px 0 var(--sakura));
+}

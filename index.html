@@ -204,9 +204,11 @@
           </article>
 
           <article class="panel">
-            <div class="panel__card">
+            <div class="panel__card tour">
               <h3 class="card__title">店内あんない</h3>
-              <p class="card__text">じゅんびちゅう</p>
+              <p class="card__text">タップすると、大きく見られます。</p>
+              <!-- 写真と動画の、小さな一覧(JSが、tour.json から、ここに並べる) -->
+              <ul class="tour__grid" id="tourGrid"></ul>
             </div>
           </article>
 
@@ -333,6 +335,18 @@
       <ul class="chips" id="catModalTraits"></ul>
       <p id="catModalText"></p>
     </div>
+  </div>
+
+    <!-- 写真・動画を、大きく見る画面(最初は hidden で隠しておく) -->
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox__backdrop" data-close-lb></div>
+    <figure class="lightbox__figure">
+      <div class="lightbox__media" id="lightboxMedia"></div>
+      <figcaption class="lightbox__caption" id="lightboxCaption"></figcaption>
+    </figure>
+    <button class="lightbox__btn lightbox__close" type="button" data-close-lb aria-label="閉じる">×</button>
+    <button class="lightbox__btn lightbox__prev" id="lightboxPrev" type="button" aria-label="前へ">‹</button>
+    <button class="lightbox__btn lightbox__next" id="lightboxNext" type="button" aria-label="次へ">›</button>
   </div>
 
   <script src="script.js"></script>
