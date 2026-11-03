@@ -82,7 +82,6 @@
             </ul>
           </li>
           <li><a href="#cats">猫の紹介</a></li>
-          <li><a href="#price">料金</a></li>
           <li><a href="#faq">よくある質問</a></li>
           <li><a href="#access">アクセス</a></li>
         </ul>
@@ -136,6 +135,18 @@
        <li class="news-list__message">読み込み中…</li>
       </ul>
     </section>
+
+   <!-- 猫の紹介 -->
+      <section class="section section--tinted" id="cats">
+      <h2 class="oval-title reveal"><span>猫の紹介</span></h2>
+      <!-- <ul class="cat-list"> ... </ul> -->
+
+      <!-- ふわふわ漂う猫たち。丸い写真は、cats.json から、JSが並べる -->
+      <div class="floaters reveal" id="floaters" aria-label="ねこの写真(ふわふわ漂っています。押すと、くわしく見られます)"></div>
+
+      <p class="note">※ 写真は仮の絵です。名前に(仮)とあるものは、ダミーです。</p>
+    </section>
+
 
     <!-- ABOUT:縦にスクロールすると、横にスライドする -->
     <!-- style="--n:6" は、カードの枚数(CSSとJSが、この数字を使う) -->
@@ -272,54 +283,6 @@
         </div>
 
       </div>
-    </section>
-
-    <!-- 猫の紹介 -->
-      <section class="section section--tinted" id="cats">
-      <h2 class="oval-title reveal"><span>猫の紹介</span></h2>
-      <!-- <ul class="cat-list"> ... </ul> -->
-
-      <!-- ふわふわ漂う猫たち。丸い写真は、cats.json から、JSが並べる -->
-      <div class="floaters reveal" id="floaters" aria-label="ねこの写真(ふわふわ漂っています。押すと、くわしく見られます)"></div>
-
-      <p class="note">※ 写真は仮の絵です。名前に(仮)とあるものは、ダミーです。</p>
-    </section>
-    
-    <!-- 料金 -->
-    <section class="section" id="price">
-      <h2 class="oval-title"><span>料金・システム</span></h2>
-      <table class="price-table">
-  <thead>
-    <tr>
-      <th>コース</th>
-      <th>平日</th>
-      <th>土日祝</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>10分ごと</td>
-      <td>250円</td>
-      <td>300円</td>
-    </tr>
-    <tr>
-      <td>最大料金</td>
-      <td>2,500円</td>
-      <td>3,000円</td>
-    </tr>
-    <tr>
-      <td>回数券(10回分)</td>
-      <td colspan="2">25,000円</td>
-    </tr>
-  </tbody>
-</table>
-
-<p class="price-note">フリードリンク付き / 営業時間 10:00〜20:00</p>
-      <ul class="rules">
-        <li>猫を追いかけたり、無理に抱っこしたりしないでください。</li>
-        <li>入店前に手洗い・消毒をお願いします。</li>
-        <li>小学生以下のお子さまは保護者同伴でご利用ください。</li>
-      </ul>
     </section>
 
     <!-- よくある質問(JSで開閉)(aria-expandedは要素が展開されているか折りたたまれているか) -->
