@@ -1392,3 +1392,55 @@ body.is-intro { overflow: hidden; }        /* オープニングの間は、下�
   object-fit: contain;
   filter: drop-shadow(4px 4px 0 var(--sakura));
 }
+
+/* ==============================
+   ABOUT:スタッフ紹介
+   ============================== */
+.panel__card.staff { width: min(100%, 36rem); }
+.panel .staff .card__text { margin-bottom: 1rem; font-size: 0.95rem; }
+
+.staff__list { display: grid; gap: 1rem; }
+
+/* 1人分(押せるボタン):左に丸い写真、右に名前とひとこと */
+.staff__item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: #fff;
+  border: 3px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 5px 5px 0 var(--sakura);
+  cursor: pointer;
+  transition: scale 0.2s;
+}
+.staff__item:hover { scale: 1.03; }
+
+.staff__avatar {
+  flex: 0 0 4.2rem;                          /* 幅を固定(縮まない) */
+  width: 4.2rem;
+  height: 4.2rem;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;                           /* 仮の絵文字の大きさ */
+  background: var(--tint, #ffd9cf);
+  border: 3px solid var(--line);
+  border-radius: 50%;
+  overflow: hidden;
+}
+.staff__avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.staff__name { font-weight: 900; letter-spacing: 0.08em; }
+.staff__text { margin-top: 0.2rem; font-size: 0.85rem; line-height: 1.6; }
+
+/* 自己紹介カードの、文章 */
+#staffModalText {
+  margin-top: 0.8rem;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  text-align: left;
+}

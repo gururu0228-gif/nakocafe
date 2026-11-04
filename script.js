@@ -812,3 +812,103 @@ async function loadTour() {
 }
 
 loadTour();
+
+// ==============================
+// ABOUT:スタッフ紹介。staff.json から並べて、押したら、自己紹介のカードを開く
+// ==============================
+const staffList = document.getElementById('staffList');
+const staffModal = document.getElementById('staffModal');
+let lastStaffButton = null;                                   // 最後に押したボタン(閉じたあとに、ここへ戻す)
+
+// 1人分(<li>の中の、押せるボタン)を作って返す
+function makeStaffRow(person) {
+  const li = document.createElement('li');
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'staff__item';
+  btn.setAttribute('aria-label', person.name + 'の自己紹介を見る');
+
+  const avatar = document.createElement('div');
+  avatar.className = 'staff__avatar';
+  avatar.style.setProperty('--tint', person.tint || '#ffd9cf');
+  if (person.photo) {                                         // 写真があれば写真。見つからなければ、絵文字
+    const img = document.createElement('img');
+    img.src = person.photo;
+    img.alt = '';
+    img.addEventListener('error', () => { avatar.textContent = person.emoji || '🐾'; });
+    avatar.append(img);
+  } else {
+    avatar.textContent = person.emoji || '🐾';
+  }
+
+  const body = document.createElement('div');
+  const name = document.createElement('p');
+  name.className = 'staff__name';
+  name.textContent = person.name;
+  const text = document.createElement('p');
+  text.className = 'staff__text';
+  text.textContent = person.text;
+  body.append(name, text);
+
+  btn.append(avatar, body);
+  btn.addEventListener('click', () => openStaffModal(person, btn));   // 押したら、自己紹介を開く
+  li.append(btn);
+  return li;
+}
+
+// 自己紹介のカードを、開く
+function openStaffModal(person, button) {
+  const photo = document.getElementById('staffModalPhoto');
+  photo.style.setProperty('--tint', person.tint || '#ffd9cf');
+  if (person.photo) {
+    const img = document.createElement('img');
+    img.src = person.photo;
+    img.alt = person.name;
+    img.addEventListener('error', () => { photo.textContent = person.emoji || '🐾'; });
+    photo.replaceChildren(img);
+  } else {
+    photo.textContent = person.emoji || '🐾';
+  }
+  document.getElementById('staffModalName').textContent = person.name;
+  document.getElementById('staffModalText').textContent = person.intro || person.text;
+
+  staffModal.hidden = false;                                  // 表示する(先に表示してから、位置を測る)
+
+  // 押したボタンの位置から、ふくらむように見せる
+  const rect = button.getBoundingClientRect();
+  const card = staffModal.querySelector('.modal__card');
+  const cardRect = card.getBoundingClientRect();
+  card.style.setProperty('--ox', (rect.left + rect.width / 2 - cardRect.left) + 'px');
+  card.style.setProperty('--oy', (rect.top + rect.height / 2 - cardRect.top) + 'px');
+
+  lastStaffButton = button;
+  staffModal.querySelector('.modal__close').focus();
+}
+
+function closeStaffModal() {
+  staffModal.hidden = true;
+  if (lastStaffButton) lastStaffButton.focus();
+}
+
+// 暗い幕か、×を押したら、閉じる
+staffModal.addEventListener('click', (event) => {
+  if (event.target.closest('[data-close-staff]')) closeStaffModal();
+});
+// Escキーでも、閉じる
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !staffModal.hidden) closeStaffModal();
+});
+
+async function loadStaff() {
+  try {
+    const response = await fetch('staff.json');
+    if (!response.ok) throw new Error('staff.json を読み込めませんでした');
+    const staff = await response.json();
+    staff.forEach((person) => staffList.append(makeStaffRow(person)));
+  } catch (error) {
+    console.error(error);
+    staffList.textContent = '読み込めませんでした。';
+  }
+}
+
+loadStaff();
