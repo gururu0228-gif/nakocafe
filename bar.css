@@ -1,0 +1,135 @@
+/* ==============================
+   夜のページ(心霊Bar)の、見た目
+   body.bar の中だけ、変数を、夜の色に、上書きする
+   ============================== */
+body.bar {
+  --paper: #0b0a0d;           /* 背景:ほとんど黒 */
+  --paper-2: #131014;         /* 一段ふかい色 */
+  --ink: #d9d3c7;             /* 文字:古い骨のような、くすんだ白 */
+  --line: #7a2e2e;            /* 縁取り:乾いた血の色 */
+  --color-tint: #100e12;      /* 交互のセクションの背景 */
+  --sakura: #3d1010;          /* 影:ふかい赤黒 */
+  --color-main: #1a0f12;      /* フッターの背景 */
+  --color-main-dark: #d25a5a; /* 小さな見出し:血の赤 */
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+}
+
+/* ----- 画面全体の、雰囲気 ----- */
+/* ふちが、暗くなる(ビネット)。中央だけが、ぼんやり、見える */
+body.bar::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;                                /* 内容より手前、ヘッダー(100)より奥 */
+  pointer-events: none;                       /* クリックの邪魔をしない */
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.65) 100%);
+}
+/* ざらざらした、フィルムのノイズ(SVGで作った、細かい模様) */
+body.bar::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 51;
+  pointer-events: none;
+  opacity: 0.09;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ----- 見出し:明朝体で、冷たく ----- */
+.bar h1,
+.bar .oval-title {
+  font-family: "Shippori Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+}
+
+/* ----- 白に、固定してあった所を、夜の色に ----- */
+.bar .hero {
+  background:
+    radial-gradient(ellipse at 50% 115%, rgba(130, 20, 20, 0.5) 0, transparent 60%),   /* 足もとから、にじむ、赤 */
+    radial-gradient(circle at 50% 28%, #25212b 0, transparent 55%),                    /* 中央の、ぼんやりした、明かり */
+    var(--paper);
+}
+.bar .oval-title span {
+  background: var(--paper-2);
+  color: var(--ink);
+  letter-spacing: 0.25em;
+  box-shadow: 0 8px 0 -4px rgba(0, 0, 0, 0.7);
+}
+.bar .info {
+  background: var(--paper-2);
+  border: 2px solid var(--line);
+  box-shadow: 0 0 1.5rem rgba(130, 20, 20, 0.25);   /* ほんのり、赤くにじむ */
+}
+
+/* 切り替えボタン:輪郭だけ */
+.bar .mode-btn {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.bar .mode-btn:hover { background: var(--sakura); opacity: 1; }
+
+.bar .logo { color: var(--ink); }
+.bar .footer { color: #8a8478; }
+
+/* ----- はじまりの画面 ----- */
+.bar-hero__inner { text-align: center; }
+.bar-hero__sub {
+  font-size: 0.95rem;
+  letter-spacing: 0.5em;
+  color: var(--color-main-dark);
+}
+.bar-hero__title {
+  margin: 0.6rem 0 1rem;
+  font-size: clamp(2.6rem, 11vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 0.8rem rgba(200, 40, 40, 0.55), 0 0 2.5rem rgba(140, 20, 20, 0.5);   /* 赤く、にじむ */
+  animation: bar-flicker 6s infinite;                                                    /* ちらつく */
+}
+.bar-hero__copy { letter-spacing: 0.2em; opacity: 0.85; }
+
+/* 切れかけた、電球のように、ちらつく(不規則に、暗くなる) */
+@keyframes bar-flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%                          { opacity: 0.35; }
+  55%                               { opacity: 0.6; }
+}
+
+/* 本文 */
+.bar-lead { line-height: 2.4; letter-spacing: 0.12em; }
+
+/* ----- イベントのポスター ----- */
+.poster {
+  max-width: 26rem;
+  margin: 0 auto;
+  text-align: center;
+}
+.poster img,
+.poster__ph {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;                         /* 縦長 */
+  object-fit: cover;
+  border: 3px solid var(--line);
+  box-shadow: 0 0 2.5rem rgba(150, 20, 20, 0.5);   /* ポスターの、まわりが、赤く、にじむ */
+  rotate: -1.5deg;                             /* 少し傾けて、貼られた感じに */
+  transition: rotate 0.3s;
+}
+.poster a:hover img { rotate: 0deg; }
+.poster__ph {
+  display: grid;
+  place-items: center;
+  background: var(--paper-2);
+  letter-spacing: 0.3em;
+  line-height: 2.2;
+}
+.poster__cap {
+  margin-top: 1rem;
+  font-family: "Shippori Mincho", serif;
+  letter-spacing: 0.2em;
+}
+
+/* 「動きを減らす」設定の人には、ちらつかせない */
+@media (prefers-reduced-motion: reduce) {
+  .bar-hero__title { animation: none; }
+}

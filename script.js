@@ -613,8 +613,15 @@ if (introScreen) {
   const MIN_LOADING = 3000;                 // ローディングを、最低、これだけ(ミリ秒)見せる
   const OPENING_TIME = 5000;                // 「ねんね」の画面を、見せている時間
   const started = performance.now();
+  
+    // ボタンで、夜のページから、戻ってきたか(mode.js が、メモを残している)
+  let skipIntro = false;
+  try {
+    skipIntro = sessionStorage.getItem('skipIntro') === '1';
+    sessionStorage.removeItem('skipIntro');               // 1回使ったら、メモは、消す
+  } catch (e) {}
 
-  if (reduceMotion) {
+  if (reduceMotion || skipIntro) {
     introScreen.remove();                   // 「動きを減らす」設定の人には、出さない
   } else {
     document.body.classList.add('is-intro');            // 下の画面を、スクロールさせない

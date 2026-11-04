@@ -1444,3 +1444,20 @@ body.is-intro { overflow: hidden; }        /* オープニングの間は、下�
   line-height: 1.9;
   text-align: left;
 }
+
+/* ==============================
+   ページを移るときの、暗転の幕(昼夜、共通)
+   ============================== */
+.page-fade {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;                             /* オープニング(1000)より、手前 */
+  background: #0b0a10;
+  opacity: 0;                                /* ふだんは、透明 */
+  pointer-events: none;                      /* クリックの邪魔をしない */
+  transition: opacity 0.7s ease;
+}
+.page-fade.is-on {                           /* 印が付くと、画面を、覆う */
+  opacity: 1;
+  pointer-events: auto;
+}

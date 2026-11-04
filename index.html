@@ -19,11 +19,14 @@
 
    <!--今回は外部CSSを読み込む。レルは参照するファイルの属性をおしえる、エイチレフはその参照先 -->
    <link rel="stylesheet" href="style.css">
-   <link rel="stylesheet" href="bar.css">
    
 </head>
 
 <body>
+
+   <!-- ページを移るときの、暗転の幕 -->
+  <div class="page-fade" id="pageFade"></div>
+
 
   <!-- オープニング:ローディング → ロケットくんが左下へ → 「ねんね」が出る -->
   <div class="intro-screen is-loading" id="introScreen" aria-hidden="true">
@@ -51,8 +54,8 @@
 
       <!-- 昼夜の切り替えボタン(動きは、あとで足す) -->
       <!-- type="button":フォームの送信ボタンではない、ただのボタンという印 -->
-      <button class="mode-btn" id="modeBtn" type="button" aria-label="心霊Barに切り替える">
-        <span id="modeIcon">☾</span> <span id="modeLabel">心霊Barへ</span>
+      <button class="mode-btn" id="modeBtn" type="button" data-target="bar.html" aria-label="心霊Barに切り替える">
+        <span id="modeIcon">☾</span> <span id="modeLabel">ねんね閉店後へ…</span>
       </button>
 
       <!-- ハンバーガーボタン(スマホのみ表示) -->
@@ -364,11 +367,12 @@
 
 
   <script src="script.js"></script>
-  <script src="sections.js"></script>   
-  <script src="bar.js"></script>         
+  <script src="sections.js"></script>    
+  <script src="mode.js"></script> 
   <!--JavaScriptのファイルをHTMLに読み込む行,<link> と同じ役割で、script.js とHTMLをつなぐ。src属性=読み込むファイルの場所を指定する属性 -->
   <!-- JavaScriptは、HTMLの要素を探して操作するため最後に指示を書く -->
   <!-- <head> に書いて、defer を付ける方法もある。「HTMLを全部読み込んでから実行してね」という指定になる　 -->
 </body>
+
 
 </html>

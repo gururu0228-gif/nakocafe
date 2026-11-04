@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ねんね BAR | 夜だけひらく、心霊Bar</title>
+  <meta name="description" content="猫カフェ ねんねが、夜だけひらく、心霊Barです。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
+  <!-- 土台は、昼と共通。夜の見た目は、bar.css で、上書きする(あとに読み込むほうが、勝つ) -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="bar.css">
+</head>
+
+<!-- class="bar" が、夜の印。bar.css は、この印がある所だけを、変える -->
+<body class="bar">
+
+  <!-- ページを移るときの、暗転の幕。夜のページは、最初から、かぶせておいて、ふわっと外す -->
+  <div class="page-fade is-on" id="pageFade" style="background:#0b0a10"></div>
+  <noscript><style>.page-fade { display: none; }</style></noscript>
+
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="header__inner">
+      <a href="#top" class="logo">🕯 ねんね BAR</a>
+
+      <!-- 昼のページへ戻るボタン。data-target が、行き先 -->
+      <button class="mode-btn" id="modeBtn" type="button" data-target="index.html" aria-label="昼のねんねに切り替える">
+        <span id="modeIcon">☀</span> <span id="modeLabel">昼のねんねへ</span>
+      </button>
+
+      <button class="menu-btn" id="menuBtn" aria-label="メニューを開く" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav">
+        <ul>
+          <li><a href="#concept">コンセプト</a></li>
+          <li><a href="#event">イベント</a></li>
+          <li><a href="#drink">ドリンク</a></li>
+          <li><a href="#hours">営業時間</a></li>
+          <li><a href="#access">アクセス</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- はじまりの画面 -->
+    <section class="hero bar-hero">
+      <div class="bar-hero__inner">
+        <p class="bar-hero__sub">夜だけ ひらく</p>
+        <h1 class="bar-hero__title">ねんね BAR</h1>
+        <p class="bar-hero__copy">(仮)ここに、猫は、いません。</p>
+      </div>
+    </section>
+
+    <!-- コンセプト -->
+    <section class="section" id="concept">
+      <h2 class="oval-title"><span>コンセプト</span></h2>
+      <p class="lead bar-lead">
+        (仮)昼は、猫と、くつろぐ、お部屋。<br>
+        夜は、猫の、いない、お部屋。<br><br>
+        それなのに、ときどき、足もとで、なにかが、動く。
+      </p>
+    </section>
+
+    <!-- イベント(ポスター1枚) -->
+    <section class="section section--tinted" id="event">
+      <h2 class="oval-title"><span>イベント</span></h2>
+      <figure class="poster">
+        <!-- ポスターができたら、下の <div class="poster__ph"> ... </div> を消して、この2行に置き換える:
+        <a href="images/event-poster.jpg" target="_blank"><img src="images/event-poster.jpg" alt="イベントのポスター"></a>
+        -->
+        <div class="poster__ph">ポスター<br>じゅんびちゅう</div>
+        <figcaption class="poster__cap">(仮)今月の、怪談ナイト</figcaption>
+      </figure>
+    </section>
+
+    <!-- ドリンク -->
+    <section class="section" id="drink">
+      <h2 class="oval-title"><span>ドリンク</span></h2>
+      <p class="lead bar-lead">じゅんびちゅう</p>
+    </section>
+
+    <!-- 営業時間 -->
+    <section class="section section--tinted" id="hours">
+      <h2 class="oval-title"><span>営業時間</span></h2>
+      <dl class="info">
+        <dt>営業時間</dt><dd>(仮)20:00〜24:00</dd>
+        <dt>定休日</dt><dd>(仮)不定休</dd>
+        <dt>ご予約</dt><dd>不要です。ふらっと、どうぞ。</dd>
+      </dl>
+    </section>
+
+    <!-- アクセス -->
+    <section class="section" id="access">
+      <h2 class="oval-title"><span>アクセス</span></h2>
+      <dl class="info">
+        <dt>住所</dt><dd>〒000-0000 ○○県○○市○○町1-2-3 2F</dd>
+        <dt>最寄り駅</dt><dd>○○駅 徒歩5分</dd>
+      </dl>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 猫カフェ ねんね</p>
+  </footer>
+
+  <script src="bar.js"></script>
+  <script src="mode.js"></script>
+</body>
+</html>
