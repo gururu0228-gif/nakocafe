@@ -1,63 +1,54 @@
 /* ==============================
-   夜のページ(心霊Bar)の、見た目
-   body.bar の中だけ、変数を、夜の色に、上書きする
+   夜のページ(心霊Bar):黒 + クリーム色 + ざらざら
    ============================== */
 body.bar {
-  --paper: #0b0a0d;           /* 背景:ほとんど黒 */
-  --paper-2: #131014;         /* 一段ふかい色 */
-  --ink: #d9d3c7;             /* 文字:古い骨のような、くすんだ白 */
-  --line: #7a2e2e;            /* 縁取り:乾いた血の色 */
-  --color-tint: #100e12;      /* 交互のセクションの背景 */
-  --sakura: #3d1010;          /* 影:ふかい赤黒 */
-  --color-main: #1a0f12;      /* フッターの背景 */
-  --color-main-dark: #d25a5a; /* 小さな見出し:血の赤 */
+  --paper: #050505;           /* 背景:ほぼ真っ黒 */
+  --paper-2: #0b0b0b;
+  --ink: #e9e4d8;             /* 文字:画像の光の色(くすんだクリーム) */
+  --line: #3b3a37;            /* 縁取り:灰色 */
+  --color-tint: #050505;      /* 交互の背景も黒(青みなし) */
+  --sakura: #1a1a1a;
+  --color-main: #050505;
+  --color-main-dark: #e9e4d8; /* 小さな見出し */
   font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+
+  /* 懐中電灯の設定(bar.js が --x --y を書き換える) */
+  --x: 50%;                   /* 光の中心(横) */
+  --y: 35%;                   /* 光の中心(縦) */
+  --r: 15rem;                 /* 光の大きさ */
+  --dark: 0.94;               /* 暗さ(1に近いほど真っ暗) */
 }
 
-/* ----- 画面全体の、雰囲気 ----- */
-/* ふちが、暗くなる(ビネット)。中央だけが、ぼんやり、見える */
-body.bar::before {
-  content: "";
+/* ----- 暗闇:JS が canvas に、点描で描く ----- */
+.dark-canvas {
   position: fixed;
   inset: 0;
-  z-index: 50;                                /* 内容より手前、ヘッダー(100)より奥 */
-  pointer-events: none;                       /* クリックの邪魔をしない */
-  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.65) 100%);
-}
-/* ざらざらした、フィルムのノイズ(SVGで作った、細かい模様) */
-body.bar::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 51;
-  pointer-events: none;
-  opacity: 0.09;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  width: 100vw;
+  height: 100vh;
+  z-index: 50;                  /* 内容より手前、ヘッダー(100)より奥 */
+  pointer-events: none;         /* クリックの邪魔をしない */
+  image-rendering: pixelated;   /* 粒を、ぼかさず、くっきり表示 */
 }
 
-/* ----- 見出し:明朝体で、冷たく ----- */
+/* ----- 見出し:明朝体 ----- */
 .bar h1,
 .bar .oval-title {
   font-family: "Shippori Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
 }
 
-/* ----- 白に、固定してあった所を、夜の色に ----- */
-.bar .hero {
-  background:
-    radial-gradient(ellipse at 50% 115%, rgba(130, 20, 20, 0.5) 0, transparent 60%),   /* 足もとから、にじむ、赤 */
-    radial-gradient(circle at 50% 28%, #25212b 0, transparent 55%),                    /* 中央の、ぼんやりした、明かり */
-    var(--paper);
-}
+/* ----- グラデーションをやめて、黒一色 ----- */
+.bar .hero { background: var(--paper); }
 .bar .oval-title span {
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink);
   letter-spacing: 0.25em;
-  box-shadow: 0 8px 0 -4px rgba(0, 0, 0, 0.7);
+  box-shadow: none;
+  border: 1px solid var(--line);
 }
 .bar .info {
   background: var(--paper-2);
-  border: 2px solid var(--line);
-  box-shadow: 0 0 1.5rem rgba(130, 20, 20, 0.25);   /* ほんのり、赤くにじむ */
+  border: 1px solid var(--line);
+  box-shadow: none;
 }
 
 /* 切り替えボタン:輪郭だけ */
@@ -67,7 +58,6 @@ body.bar::after {
   border-color: var(--ink);
 }
 .bar .mode-btn:hover { background: var(--sakura); opacity: 1; }
-
 .bar .logo { color: var(--ink); }
 .bar .footer { color: #8a8478; }
 
@@ -76,26 +66,23 @@ body.bar::after {
 .bar-hero__sub {
   font-size: 0.95rem;
   letter-spacing: 0.5em;
-  color: var(--color-main-dark);
+  color: var(--ink);
 }
 .bar-hero__title {
   margin: 0.6rem 0 1rem;
   font-size: clamp(2.6rem, 11vw, 5.5rem);
   font-weight: 800;
   letter-spacing: 0.18em;
-  text-shadow: 0 0 0.8rem rgba(200, 40, 40, 0.55), 0 0 2.5rem rgba(140, 20, 20, 0.5);   /* 赤く、にじむ */
-  animation: bar-flicker 6s infinite;                                                    /* ちらつく */
+  animation: bar-flicker 6s infinite;
 }
 .bar-hero__copy { letter-spacing: 0.2em; opacity: 0.85; }
 
-/* 切れかけた、電球のように、ちらつく(不規則に、暗くなる) */
 @keyframes bar-flicker {
   0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
   20%, 24%                          { opacity: 0.35; }
   55%                               { opacity: 0.6; }
 }
 
-/* 本文 */
 .bar-lead { line-height: 2.4; letter-spacing: 0.12em; }
 
 /* ----- イベントのポスター ----- */
@@ -108,11 +95,10 @@ body.bar::after {
 .poster__ph {
   display: block;
   width: 100%;
-  aspect-ratio: 3 / 4;                         /* 縦長 */
+  aspect-ratio: 3 / 4;
   object-fit: cover;
-  border: 3px solid var(--line);
-  box-shadow: 0 0 2.5rem rgba(150, 20, 20, 0.5);   /* ポスターの、まわりが、赤く、にじむ */
-  rotate: -1.5deg;                             /* 少し傾けて、貼られた感じに */
+  border: 1px solid var(--line);
+  rotate: -1.5deg;
   transition: rotate 0.3s;
 }
 .poster a:hover img { rotate: 0deg; }
@@ -129,7 +115,6 @@ body.bar::after {
   letter-spacing: 0.2em;
 }
 
-/* 「動きを減らす」設定の人には、ちらつかせない */
 @media (prefers-reduced-motion: reduce) {
   .bar-hero__title { animation: none; }
 }
