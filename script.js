@@ -447,97 +447,60 @@ if (!reduceMotion) {                        // reduceMotion は、ふわっと�
 }
 
 // ==============================
-// ABOUT:縦にスクロールした量を、横のスライドに変える
+// 本:右から左へ進む、一枚の帯
 // ==============================
-const hscroll = document.getElementById('book');
-const hscrollSticky = hscroll.querySelector('.hscroll__sticky');
-const hscrollCount = hscroll.querySelectorAll('.hscroll__track > *').length;   // 本の、ページ数
+const book = document.querySelector('.book');
 
-function updateHscroll() {
-  const stickTop = parseFloat(getComputedStyle(hscrollSticky).top);   // 貼りつく位置(64px)
-  const rect = hscroll.getBoundingClientRect();
-  const scrollable = rect.height - hscrollSticky.offsetHeight;
-  const p = Math.min(1, Math.max(0, (stickTop - rect.top) / scrollable));   // 全体の進み具合(0〜1)
-
-  const steps = p * (hscrollCount - 1);                // いま、何枚目と何枚目のあいだか
-  const u = steps - Math.floor(steps);                 // 今の切り替えが、何割進んだか(0〜1)
-  const lift = Math.sin(Math.PI * u);                  // 手の出具合。0 → 1 → 0 と、山なりに変わる
-
-  hscroll.style.setProperty('--p', p);
-  hscroll.style.setProperty('--u', u);
-  hscroll.style.setProperty('--lift', lift);
+// どこまで進めるか(右の端 = 0、左へ進むほど、マイナスの数字になる)
+function bookMax() {
+  return book.scrollWidth - book.clientWidth;
 }
 
-window.addEventListener('scroll', updateHscroll, { passive: true });   // ← この3行は、今ある行。そのまま
-window.addEventListener('resize', updateHscroll);
-updateHscroll();
- 
-// ==============================
-// ABOUT:スクロールが止まったら、いちばん近い画面に、ぽよんと吸いつく
-// ==============================
-let snapTimer = null;      // 「止まったか」を測る、タイマー
-let snapFrame = null;      // 吸いつく動きの、アニメーションの番号
-let touching = false;      // 指が、画面に、触れているか
+// --- PC:ホイールの縦の動きを、横の動きに変える(なめらかに追いかける) ---
+let wheelTarget = 0;       // 行きたい位置
+let wheelFrame = null;     // 動いている間の、アニメーション番号
 
-// 行きすぎて、戻る動きの、数式(最初は速く、少し行きすぎて、戻る)
-function easeOutBack(t) {
-  const c1 = 2.2;                 // 大きいほど、行きすぎる(ぽよんが、強くなる)
-  const c3 = c1 + 1;
-  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-}
-
-// スクロール位置を、from から to まで、duration ミリ秒かけて、動かす
-function animateScroll(from, to, duration) {
-  cancelAnimationFrame(snapFrame);
-  const t0 = performance.now();
-  function step(now) {
-    const t = Math.min(1, (now - t0) / duration);                                   // 進み具合(0〜1)
-    const y = from + (to - from) * easeOutBack(t);                                  // 数式に通して、今の位置を決める
-    window.scrollTo({ top: y, behavior: 'instant' });                               // その位置へ、すぐ動かす
-    if (t < 1) snapFrame = requestAnimationFrame(step);                             // まだなら、次のフレームへ
+function glide() {
+  const diff = wheelTarget - book.scrollLeft;
+  if (Math.abs(diff) < 0.5) {                       // ほぼ着いたら、終わる
+    book.scrollLeft = wheelTarget;
+    wheelFrame = null;
+    return;
   }
-  snapFrame = requestAnimationFrame(step);
+  book.scrollLeft += diff * 0.12;                   // 残りの12%ずつ、近づく
+  wheelFrame = requestAnimationFrame(glide);
 }
 
-// いちばん近い画面の位置を探して、そこへ動かす
-function snapToNearest() {
-  const stickTop = parseFloat(getComputedStyle(hscrollSticky).top);
-  const scrollable = hscroll.offsetHeight - hscrollSticky.offsetHeight;
-  const start = hscroll.getBoundingClientRect().top + window.scrollY - stickTop;    // 1枚目が、ちょうど出る位置
-  const now = window.scrollY;
-  if (now < start || now > start + scrollable) return;                              // ABOUTの外なら、何もしない
+book.addEventListener('wheel', (e) => {
+  if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;       // 横の動きは、そのまま
+  e.preventDefault();                                          // 縦の動きは、こちらで受ける
+  const delta = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY;  // 行単位の機器も、px に直す
+  if (wheelFrame === null) wheelTarget = book.scrollLeft;      // 止まっていたら、いまの位置から
+  wheelTarget = Math.max(-bookMax(), Math.min(0, wheelTarget - delta));   // 下へ回すと、左へ進む
+  if (wheelFrame === null) wheelFrame = requestAnimationFrame(glide);
+}, { passive: false });
 
-  const stepLen = scrollable / (hscrollCount - 1);                                  // 1枚ぶんの、スクロールの長さ
-  const i = Math.round((now - start) / stepLen);                                    // いちばん近いのは、何枚目か
-  const target = start + i * stepLen;
-  if (Math.abs(target - now) < 1) return;                                           // もう、ぴったりなら、何もしない
-  animateScroll(now, target, 700);                                                  // 0.7秒かけて、ぽよんと、吸いつく
+// --- 進み具合バー:帯の位置から、0〜1 を計算 ---
+function updateBookProgress() {
+  const max = bookMax();
+  const p = max > 0 ? Math.min(1, Math.max(0, -book.scrollLeft / max)) : 0;
+  progress.style.setProperty('--p', p);
 }
+book.addEventListener('scroll', updateBookProgress, { passive: true });
+window.addEventListener('resize', updateBookProgress);
 
-// スクロールが止まって、約0.14秒たったら、吸いつかせる(指が触れている間は、しない)
-function scheduleSnap() {
-  clearTimeout(snapTimer);
-  snapTimer = setTimeout(() => { if (!touching) snapToNearest(); }, 140);
-}
-
-if (!reduceMotion) {                                           // 「動きを減らす」設定の人には、しない
-  window.addEventListener('scroll', scheduleSnap, { passive: true });
-  window.addEventListener('touchstart', () => { touching = true; cancelAnimationFrame(snapFrame); }, { passive: true });
-  window.addEventListener('touchend', () => { touching = false; scheduleSnap(); }, { passive: true });
-  window.addEventListener('wheel', () => cancelAnimationFrame(snapFrame), { passive: true });   // ホイールを回したら、吸いつく動きは、やめる
-}
-
-// ナビの、ABOUTのサブ項目:押した画面へ、スクロールする
-document.querySelectorAll('.nav a[data-go]').forEach((link) => {
+// --- ナビのリンク:押した場所の、右端が、画面の右端に来るように、動かす ---
+document.querySelectorAll('.nav a[href^="#"]').forEach((link) => {
   link.addEventListener('click', (event) => {
-    event.preventDefault();                                          // 標準の、ページ内リンクの動きは、止める
-    const i = Number(link.dataset.go);                               // 何枚目か(HTMLの data-go)
-    const stickTop = parseFloat(getComputedStyle(hscrollSticky).top);
-    const scrollable = hscroll.offsetHeight - hscrollSticky.offsetHeight;
-    const pageTop = hscroll.getBoundingClientRect().top + window.scrollY;   // ABOUT全体の、ページ上の位置
-    // i枚目の画面が出る位置 = 貼りつき始める位置 + 全体の長さの、i/(枚数-1)
-    const target = pageTop - stickTop + scrollable * (i / (hscrollCount - 1));
-    window.scrollTo({ top: target, behavior: 'smooth' });
+    const href = link.getAttribute('href');
+    const dest = document.querySelector(href);
+    if (!dest) return;
+    event.preventDefault();                                     // 標準の動きは、止める
+    let left = 0;                                               // #top(ロゴ)は、右の端へ
+    if (href !== '#top') {
+      left = book.scrollLeft + (dest.getBoundingClientRect().right - book.getBoundingClientRect().right);
+    }
+    book.scrollTo({ left: Math.max(-bookMax(), Math.min(0, left)), behavior: 'smooth' });
   });
 });
 

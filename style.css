@@ -1669,3 +1669,64 @@ body:not(.bar) .panel:nth-of-type(3) { background: #e9e5dd; color: var(--ink); }
 body:not(.bar) .panel:nth-of-type(4) { background: #2b2927; color: #e9e5dc; }
 body:not(.bar) .panel:nth-of-type(5) { background: #e5e1d7; color: var(--ink); }
 body:not(.bar) .panel:nth-of-type(6) { background: #2b2927; color: #e9e5dc; }
+
+/* ==============================
+   一枚の帯:右から左へ、途切れなく進む(ねんね昼ページ)
+   ============================== */
+body:not(.bar) { overflow: hidden; }     /* ページ自体は、縦に動かさない */
+
+.book {
+  margin-top: 64px;                      /* ヘッダーの高さ分 */
+  height: calc(100svh - 64px);
+  display: flex;
+  direction: rtl;                        /* 右から左へ並べる。スクロールの始まりも、右端 */
+  overflow-x: auto;                      /* 横に、スクロール(スマホは、指でなぞる) */
+  overflow-y: hidden;
+  scrollbar-width: none;                 /* バーは、隠す */
+  overscroll-behavior: contain;
+}
+.book::-webkit-scrollbar { display: none; }
+
+.book > * {
+  direction: ltr;                        /* 中の文字は、ふつうの向きに戻す */
+  flex: 0 0 auto;                        /* 縮まない。中身の幅で、並ぶ */
+  height: 100%;
+  overflow-y: auto;                      /* 1画面に収まらないときだけ、中で縦に動く */
+  scrollbar-width: thin;
+}
+
+/* 各要素の、横幅 */
+.book > .hero { width: 100vw; margin-top: 0; min-height: 0; }
+.book > .section { width: min(100vw, 80rem); padding: 24px 20px; display: flex; flex-direction: column; justify-content: center; }
+.book > .section > * { width: 100%; }
+.book > .section .oval-title { margin-bottom: 1.5rem; }
+.book > .panel { width: min(92vw, 42rem); }
+.book > .footer { width: 22rem; display: grid; place-items: center; }
+
+/* ----- モノトーン:背景は、暗い炭。写真は、白黒にして、暗く ----- */
+html:has(body:not(.bar)) { background: #1c1b1a; }
+body:not(.bar)::before { filter: grayscale(1) brightness(0.38); }
+
+/* ページごとの、色分けを、やめる(全部、透明。同じ背景の上に、並ぶ) */
+body:not(.bar) .book > .section,
+body:not(.bar) .book > .hero,
+body:not(.bar) .book > .panel:nth-of-type(n) {
+  background: transparent;
+  color: #e9e5dc;
+}
+body:not(.bar) .book > .footer { background: transparent; }
+
+/* 暗い背景では、見出しの帯を、紙色に */
+body:not(.bar) .book .oval-title span {
+  background: #eeece7;
+  color: #2b2927;
+  border-color: #eeece7;
+}
+
+/* 暗い背景の上の、文字の色 */
+body:not(.bar) .hero__vtext { color: #cfc9bd; }
+body:not(.bar) .floater__name,
+body:not(.bar) .tour__cap { color: #2d2c2b; }
+
+/* 進み具合バー:右から、左へ伸びる */
+body:not(.bar) .progress { transform-origin: 100% 50%; }

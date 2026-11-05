@@ -71,225 +71,203 @@
       <!-- ここはナビゲーションメニュー。リストのような書き方が一般的 -->
       <!-- nav(メニューの枠) > ul(リスト) > li(項目) > a(リンク) という入れ子 -->
                 <ul>
-          <li><a href="#news" data-go="2">お知らせ</a></li>
+          <li><a href="#news">お知らせ</a></li>
           <li class="nav__item nav__item--has-sub">
-            <a href="#about" data-go="4">ABOUT</a>
+            <a href="#about-concept">ABOUT</a>
             <ul class="nav__sub">
-              <li><a href="#about" data-go="4">コンセプト</a></li>
-              <li><a href="#about" data-go="5">できること</a></li>
-              <li><a href="#about" data-go="6">カフェメニュー</a></li>
-              <li><a href="#about" data-go="7">店内あんない</a></li>
-              <li><a href="#about" data-go="8">スタッフ紹介</a></li>
-              <li><a href="#about" data-go="9">システム</a></li>
+              <li><a href="#about-concept">コンセプト</a></li>
+              <li><a href="#about-can">できること</a></li>
+              <li><a href="#about-menu">カフェメニュー</a></li>
+              <li><a href="#about-tour">店内あんない</a></li>
+              <li><a href="#about-staff">スタッフ紹介</a></li>
+              <li><a href="#about-system">システム</a></li>
             </ul>
           </li>
-          <li><a href="#cats" data-go="3">猫の紹介</a></li>
-          <li><a href="#faq" data-go="10">よくある質問</a></li>
-          <li><a href="#access" data-go="11">アクセス</a></li>
+          <li><a href="#cats">猫の紹介</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+          <li><a href="#access">アクセス</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main id="top">
+    <main class="book" id="top">
 
-    <!-- 本:全部のページを、右から左へ並べる。--n は、ページの数(12ページ) -->
-    <section class="hscroll" id="book" style="--n:12">
-      <div class="hscroll__sticky">
-        <div class="hscroll__track">
-
-          <!-- 1ページ目(いちばん右):メインビジュアル -->
-          <section class="hero">
-            <h1 class="sr-only">猫カフェ ねんね</h1>
-            <div class="hero__stage">
-              <div class="hero__photos reveal" id="heroPhotos" role="img" aria-label="ねこの写真(スライド・仮)">
-                <div class="slide is-active" style="--tint:#ffd9cf">🐱</div>
-                <div class="slide" style="--tint:#cfeff2">😸</div>
-                <div class="slide" style="--tint:#e6defa">😺</div>
-                <div class="slide" style="--tint:#ffe6c9">🐈</div>
-              </div>
-              <p class="hero__vtext reveal" style="--delay:.2s">ねこと くつろげる</p>
-              <p class="hero__vtext hero__vtext--low reveal" style="--delay:.4s">おへやあります</p>
-            </div>
-          </section>
-
-          <!-- 2ページ目:お店について -->
-          <section class="section" id="intro">
-            <div class="intro reveal">
-              <figure class="intro__photo">🐾</figure>
-              <p class="intro__text">
-                保護猫たちと、ゆっくり過ごす、小さな猫カフェ。<br>
-                ここで、ひと眠りしていってね。
-              </p>
-            </div>
-          </section>
-
-          <!-- 3ページ目:お知らせ -->
-          <section class="section section--tinted" id="news">
-            <h2 class="oval-title"><span>お知らせ</span></h2>
-            <ul class="news-list" id="newsList">
-              <li class="news-list__message">読み込み中…</li>
-            </ul>
-          </section>
-
-          <!-- 4ページ目:猫の紹介 -->
-          <section class="section section--tinted" id="cats">
-            <h2 class="oval-title reveal"><span>猫の紹介</span></h2>
-            <div class="floaters reveal" id="floaters" aria-label="ねこの写真(ふわふわ漂っています。押すと、くわしく見られます)"></div>
-            <p class="note">※ 写真は仮の絵です。名前に(仮)とあるものは、ダミーです。</p>
-          </section>
-
-          <!-- 5〜10ページ目:ABOUT の6枚 -->
-          <article class="panel" id="about">
-            <div class="panel__card">
-              <h3 class="card__title">コンセプト</h3>
-              <p class="card__big">和のモダン</p>
-              <p class="card__text">おちつく空間には、<br>たまたま ねこがいた。</p>
-              <p class="card__text">好きなように、<br>ぐるぐるしよう。</p>
-            </div>
-          </article>
-
-          <article class="panel">
-            <div class="panel__card">
-              <h3 class="card__title">ねんねで できること</h3>
-              <ul class="card__list">
-                <li>べんきょう</li>
-                <li>しごと</li>
-                <li>ねこと あそぶ・いやされる</li>
-                <li>軽食をたべる</li>
-                <li>本をよんだり</li>
-                <li>お話したい</li>
-                <li>ひまつぶし</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="panel">
-            <div class="panel__card menu">
-              <h3 class="card__title">カフェメニュー</h3>
-              <div class="menu__chips" role="group" aria-label="メニューの絞り込み">
-                <button type="button" class="menu__chip is-on" data-kind="savory">しょっぱい系</button>
-                <button type="button" class="menu__chip" data-kind="sweet">あまい系</button>
-              </div>
-              <ul class="menu__list" id="menuList"></ul>
-              <h4 class="menu__sub">猫とのふれあい(おやつ)</h4>
-              <ul class="menu__treats" id="treatList"></ul>
-              <p class="menu__note">
-                猫に危険な食材(ネギ類、ブドウ・レーズン、アボカド、チョコレート、キシリトール)は、使っていません。<br>
-                お客さまの飲食物を、猫にあげないでください。猫には、専用のおやつをご用意しています。
-              </p>
-            </div>
-          </article>
-
-          <article class="panel">
-            <div class="panel__card tour">
-              <h3 class="card__title">店内あんない</h3>
-              <p class="card__text">タップすると、大きく見られます。</p>
-              <ul class="tour__grid" id="tourGrid"></ul>
-            </div>
-          </article>
-
-          <article class="panel">
-            <div class="panel__card staff">
-              <h3 class="card__title">スタッフ紹介</h3>
-              <p class="card__text">タップすると、自己紹介が見られます。</p>
-              <ul class="staff__list" id="staffList"></ul>
-            </div>
-          </article>
-
-          <article class="panel">
-            <div class="panel__card sys">
-              <h3 class="card__title">システム</h3>
-              <div class="sys__chips" role="group" aria-label="システムの絞り込み">
-                <button type="button" class="sys__chip is-on" data-pane="price">料金</button>
-                <button type="button" class="sys__chip" data-pane="time">時間</button>
-                <button type="button" class="sys__chip" data-pane="rules">ルール</button>
-              </div>
-              <div class="sys__body">
-                <div class="sys__pane" data-pane="price">
-                  <table class="price-table">
-                    <thead>
-                      <tr><th>コース</th><th>平日</th><th>土日祝</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>10分ごと</td><td>250円</td><td>300円</td></tr>
-                      <tr><td>最大料金</td><td>2,500円</td><td>3,000円</td></tr>
-                      <tr><td>回数券(10回分)</td><td colspan="2">25,000円</td></tr>
-                    </tbody>
-                  </table>
-                  <p class="price-note">フリードリンク付き</p>
-                </div>
-                <div class="sys__pane" data-pane="time" hidden>
-                  <dl class="info sys__info">
-                    <dt>営業時間</dt><dd>10:00〜20:00(仮)</dd>
-                    <dt>定休日</dt><dd>不定休(仮)</dd>
-                  </dl>
-                </div>
-                <div class="sys__pane" data-pane="rules" hidden>
-                  <ul class="card__list sys__rules">
-                    <li>猫を追いかけたり、無理に抱っこしたりしないでください。</li>
-                    <li>入店前に手洗い・消毒をお願いします。</li>
-                    <li>小学生以下のお子さまは保護者同伴でご利用ください。</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- 11ページ目:よくある質問 -->
-          <section class="section section--tinted" id="faq">
-            <h2 class="oval-title"><span>よくある質問</span></h2>
-            <div class="faq">
-              <div class="faq__item">
-                <button class="faq__q" aria-expanded="false">予約は必要ですか?</button>
-                <div class="faq__a"><p>平日は予約なしでご利用いただけます。土日祝は混み合うため、ご予約をおすすめします。</p></div>
-              </div>
-              <div class="faq__item">
-                <button class="faq__q" aria-expanded="false">猫アレルギーでも大丈夫ですか?</button>
-                <div class="faq__a"><p>症状が出る可能性があります。ご不安な方は、事前にご相談ください。</p></div>
-              </div>
-              <div class="faq__item">
-                <button class="faq__q" aria-expanded="false">猫を触っても良いですか?</button>
-                <div class="faq__a"><p>猫が寄ってきたら、やさしくなでてあげてください。寝ている子は、そっとしておいてくださいね。</p></div>
-              </div>
-            </div>
-          </section>
-
-          <!-- 12ページ目(いちばん左):アクセス -->
-          <section class="section" id="access">
-            <h2 class="oval-title"><span>アクセス</span></h2>
-            <dl class="info">
-              <dt>住所</dt><dd>〒000-0000 ○○県○○市○○町1-2-3 2F</dd>
-              <dt>営業時間</dt><dd>11:00〜19:00(最終受付 18:00)</dd>
-              <dt>定休日</dt><dd>毎週水曜日</dd>
-              <dt>最寄り駅</dt><dd>○○駅 徒歩5分</dd>
-            </dl>
-            <p class="note">※ 地図は Google マップの「共有 → 地図を埋め込む」で取得したコードをここに貼ります。</p>
-          </section>
-
+    <!-- 1:メインビジュアル(いちばん右) -->
+    <section class="hero">
+      <h1 class="sr-only">猫カフェ ねんね</h1>
+      <div class="hero__stage">
+        <div class="hero__photos reveal" id="heroPhotos" role="img" aria-label="ねこの写真(スライド・仮)">
+          <div class="slide is-active" style="--tint:#ffd9cf">🐱</div>
+          <div class="slide" style="--tint:#cfeff2">😸</div>
+          <div class="slide" style="--tint:#e6defa">😺</div>
+          <div class="slide" style="--tint:#ffe6c9">🐈</div>
         </div>
+        <p class="hero__vtext reveal" style="--delay:.2s">ねこと くつろげる</p>
+        <p class="hero__vtext hero__vtext--low reveal" style="--delay:.4s">おへやあります</p>
+      </div>
+    </section>
 
-        <!-- 猫の手:ページが切り替わるとき、下から出てきて、画面を押す -->
-        <div class="cat-hand" aria-hidden="true">
-          <svg viewBox="0 0 120 220">
-            <path d="M30 220 V85 Q30 45 60 45 Q90 45 90 85 V220 Z" fill="#fff" stroke="#5a5a60" stroke-width="4"/>
-            <g fill="#ffc9c0" stroke="#5a5a60" stroke-width="3">
-              <ellipse cx="60" cy="98" rx="17" ry="13"/>
-              <ellipse cx="39" cy="74" rx="7" ry="9"/>
-              <ellipse cx="53" cy="65" rx="7" ry="9"/>
-              <ellipse cx="68" cy="65" rx="7" ry="9"/>
-              <ellipse cx="82" cy="74" rx="7" ry="9"/>
-            </g>
-          </svg>
+    <!-- 2:お店について -->
+    <section class="section" id="intro">
+      <div class="intro reveal">
+        <figure class="intro__photo">🐾</figure>
+        <p class="intro__text">
+          保護猫たちと、ゆっくり過ごす、小さな猫カフェ。<br>
+          ここで、ひと眠りしていってね。
+        </p>
+      </div>
+    </section>
+
+    <!-- 3:お知らせ -->
+    <section class="section" id="news">
+      <h2 class="oval-title"><span>お知らせ</span></h2>
+      <ul class="news-list" id="newsList">
+        <li class="news-list__message">読み込み中…</li>
+      </ul>
+    </section>
+
+    <!-- 4:猫の紹介 -->
+    <section class="section" id="cats">
+      <h2 class="oval-title reveal"><span>猫の紹介</span></h2>
+      <div class="floaters reveal" id="floaters" aria-label="ねこの写真(ふわふわ漂っています。押すと、くわしく見られます)"></div>
+      <p class="note">※ 写真は仮の絵です。名前に(仮)とあるものは、ダミーです。</p>
+    </section>
+
+    <!-- 5〜10:ABOUT の6枚 -->
+    <article class="panel" id="about-concept">
+      <div class="panel__card">
+        <h3 class="card__title">コンセプト</h3>
+        <p class="card__big">和のモダン</p>
+        <p class="card__text">おちつく空間には、<br>たまたま ねこがいた。</p>
+        <p class="card__text">好きなように、<br>ぐるぐるしよう。</p>
+      </div>
+    </article>
+
+    <article class="panel" id="about-can">
+      <div class="panel__card">
+        <h3 class="card__title">ねんねで できること</h3>
+        <ul class="card__list">
+          <li>べんきょう</li>
+          <li>しごと</li>
+          <li>ねこと あそぶ・いやされる</li>
+          <li>軽食をたべる</li>
+          <li>本をよんだり</li>
+          <li>お話したい</li>
+          <li>ひまつぶし</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="panel" id="about-menu">
+      <div class="panel__card menu">
+        <h3 class="card__title">カフェメニュー</h3>
+        <div class="menu__chips" role="group" aria-label="メニューの絞り込み">
+          <button type="button" class="menu__chip is-on" data-kind="savory">しょっぱい系</button>
+          <button type="button" class="menu__chip" data-kind="sweet">あまい系</button>
+        </div>
+        <ul class="menu__list" id="menuList"></ul>
+        <h4 class="menu__sub">猫とのふれあい(おやつ)</h4>
+        <ul class="menu__treats" id="treatList"></ul>
+        <p class="menu__note">
+          猫に危険な食材(ネギ類、ブドウ・レーズン、アボカド、チョコレート、キシリトール)は、使っていません。<br>
+          お客さまの飲食物を、猫にあげないでください。猫には、専用のおやつをご用意しています。
+        </p>
+      </div>
+    </article>
+
+    <article class="panel" id="about-tour">
+      <div class="panel__card tour">
+        <h3 class="card__title">店内あんない</h3>
+        <p class="card__text">タップすると、大きく見られます。</p>
+        <ul class="tour__grid" id="tourGrid"></ul>
+      </div>
+    </article>
+
+    <article class="panel" id="about-staff">
+      <div class="panel__card staff">
+        <h3 class="card__title">スタッフ紹介</h3>
+        <p class="card__text">タップすると、自己紹介が見られます。</p>
+        <ul class="staff__list" id="staffList"></ul>
+      </div>
+    </article>
+
+    <article class="panel" id="about-system">
+      <div class="panel__card sys">
+        <h3 class="card__title">システム</h3>
+        <div class="sys__chips" role="group" aria-label="システムの絞り込み">
+          <button type="button" class="sys__chip is-on" data-pane="price">料金</button>
+          <button type="button" class="sys__chip" data-pane="time">時間</button>
+          <button type="button" class="sys__chip" data-pane="rules">ルール</button>
+        </div>
+        <div class="sys__body">
+          <div class="sys__pane" data-pane="price">
+            <table class="price-table">
+              <thead>
+                <tr><th>コース</th><th>平日</th><th>土日祝</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>10分ごと</td><td>250円</td><td>300円</td></tr>
+                <tr><td>最大料金</td><td>2,500円</td><td>3,000円</td></tr>
+                <tr><td>回数券(10回分)</td><td colspan="2">25,000円</td></tr>
+              </tbody>
+            </table>
+            <p class="price-note">フリードリンク付き</p>
+          </div>
+          <div class="sys__pane" data-pane="time" hidden>
+            <dl class="info sys__info">
+              <dt>営業時間</dt><dd>10:00〜20:00(仮)</dd>
+              <dt>定休日</dt><dd>不定休(仮)</dd>
+            </dl>
+          </div>
+          <div class="sys__pane" data-pane="rules" hidden>
+            <ul class="card__list sys__rules">
+              <li>猫を追いかけたり、無理に抱っこしたりしないでください。</li>
+              <li>入店前に手洗い・消毒をお願いします。</li>
+              <li>小学生以下のお子さまは保護者同伴でご利用ください。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 11:よくある質問 -->
+    <section class="section" id="faq">
+      <h2 class="oval-title"><span>よくある質問</span></h2>
+      <div class="faq">
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">予約は必要ですか?</button>
+          <div class="faq__a"><p>平日は予約なしでご利用いただけます。土日祝は混み合うため、ご予約をおすすめします。</p></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">猫アレルギーでも大丈夫ですか?</button>
+          <div class="faq__a"><p>症状が出る可能性があります。ご不安な方は、事前にご相談ください。</p></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" aria-expanded="false">猫を触っても良いですか?</button>
+          <div class="faq__a"><p>猫が寄ってきたら、やさしくなでてあげてください。寝ている子は、そっとしておいてくださいね。</p></div>
         </div>
       </div>
     </section>
 
-  </main>
+    <!-- 12:アクセス -->
+    <section class="section" id="access">
+      <h2 class="oval-title"><span>アクセス</span></h2>
+      <dl class="info">
+        <dt>住所</dt><dd>〒000-0000 ○○県○○市○○町1-2-3 2F</dd>
+        <dt>営業時間</dt><dd>11:00〜19:00(最終受付 18:00)</dd>
+        <dt>定休日</dt><dd>毎週水曜日</dd>
+        <dt>最寄り駅</dt><dd>○○駅 徒歩5分</dd>
+      </dl>
+      <p class="note">※ 地図は Google マップの「共有 → 地図を埋め込む」で取得したコードをここに貼ります。</p>
+    </section>
 
-  <footer class="footer">
-    <p>&copy; 2026 猫カフェ ねんね</p>
-  </footer>
+    <!-- 13:フッター(いちばん左の端) -->
+    <footer class="footer">
+      <p>&copy; 2026 猫カフェ ねんね</p>
+    </footer>
+
+  </main>
 
     <!-- 猫をおしたときに、ふくらんで出るカード(最初は hidden で隠しておく) -->
   <div class="modal" id="catModal" hidden>
