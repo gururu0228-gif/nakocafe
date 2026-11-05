@@ -1461,3 +1461,28 @@ body.is-intro { overflow: hidden; }        /* オープニングの間は、下�
   opacity: 1;
   pointer-events: auto;
 }
+
+/* ==============================
+   ねんね(昼):背景の写真を固定。内容が、その上を流れる
+   body:not(.bar) = Bar のページには、効かない
+   ============================== */
+body:not(.bar)::before {
+  content: "";
+  position: fixed;               /* スクロールしても、動かない */
+  inset: 0;
+  z-index: -1;                   /* いちばん奥の層 */
+  background: url("images/hero-bg.jpg") center / cover no-repeat;
+}
+
+/* ヒーローの背景を、透明に:写真が、見える */
+body:not(.bar) .hero {
+  background: transparent;
+}
+
+/* 背景色を html 側に移して、body を透明にする(写真が、body の背景に隠れないように) */
+html:has(body:not(.bar)) {
+  background: var(--paper);
+}
+body:not(.bar) {
+  background: transparent;
+}
