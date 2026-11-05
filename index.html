@@ -70,23 +70,22 @@
       <nav class="nav" id="nav">
       <!-- ここはナビゲーションメニュー。リストのような書き方が一般的 -->
       <!-- nav(メニューの枠) > ul(リスト) > li(項目) > a(リンク) という入れ子 -->
-        <ul>
-          <li><a href="#news">お知らせ</a></li>
+                <ul>
+          <li><a href="#news" data-go="2">お知らせ</a></li>
           <li class="nav__item nav__item--has-sub">
-            <a href="#about">ABOUT</a>
-            <!-- サブ項目:data-go は、何枚目の画面か(0から数える) -->
+            <a href="#about" data-go="4">ABOUT</a>
             <ul class="nav__sub">
-              <li><a href="#about" data-go="0">コンセプト</a></li>
-              <li><a href="#about" data-go="1">できること</a></li>
-              <li><a href="#about" data-go="2">カフェメニュー</a></li>
-              <li><a href="#about" data-go="3">店内あんない</a></li>
-              <li><a href="#about" data-go="4">スタッフ紹介</a></li>
-              <li><a href="#about" data-go="5">システム</a></li>
+              <li><a href="#about" data-go="4">コンセプト</a></li>
+              <li><a href="#about" data-go="5">できること</a></li>
+              <li><a href="#about" data-go="6">カフェメニュー</a></li>
+              <li><a href="#about" data-go="7">店内あんない</a></li>
+              <li><a href="#about" data-go="8">スタッフ紹介</a></li>
+              <li><a href="#about" data-go="9">システム</a></li>
             </ul>
           </li>
-          <li><a href="#cats">猫の紹介</a></li>
-          <li><a href="#faq">よくある質問</a></li>
-          <li><a href="#access">アクセス</a></li>
+          <li><a href="#cats" data-go="3">猫の紹介</a></li>
+          <li><a href="#faq" data-go="10">よくある質問</a></li>
+          <li><a href="#access" data-go="11">アクセス</a></li>
         </ul>
       </nav>
     </div>
@@ -94,70 +93,54 @@
 
   <main id="top">
 
-    <!-- メインビジュアル -->
-    <section class="hero">
-      <!-- 画面には出さず、読み上げソフトと検索エンジンだけに伝える見出し -->
-      <h1 class="sr-only">猫カフェ ねんね</h1>
-
-      <!-- 写真の枠と、縦書きの文字を、横に並べる入れ物 -->
-      <div class="hero__stage">
-
-        <!-- 写真の枠(いまは、猫の絵文字で仮置き。あとで画像に差し替える) -->
-        <div class="hero__photos reveal" id="heroPhotos" role="img" aria-label="ねこの写真(スライド・仮)">
-          <div class="slide is-active" style="--tint:#ffd9cf">🐱</div>
-          <div class="slide" style="--tint:#cfeff2">😸</div>
-          <div class="slide" style="--tint:#e6defa">😺</div>
-          <div class="slide" style="--tint:#ffe6c9">🐈</div>
-        </div>
-
-        <!-- 縦書きのキャッチコピー。2行目は、少し下にずらす -->
-        <p class="hero__vtext reveal" style="--delay:.2s">ねこと くつろげる</p>
-        <p class="hero__vtext hero__vtext--low reveal" style="--delay:.4s">おへやあります</p>
-      </div>
-
-      <!-- 今の中身は、あとで使うかもしれないので、コメントアウトして残す
-      <div class="hero__text"> ... </div>
-      -->
-    </section>
-
-    <!-- お店について -->
-    <section class="section" id="intro">
-     <div class="intro reveal">
-       <figure class="intro__photo">🐾</figure>   <!-- 写真は、あとで <img> に差し替える -->
-      <p class="intro__text">
-      保護猫たちと、ゆっくり過ごす、小さな猫カフェ。<br>
-      ここで、ひと眠りしていってね。
-      </p>
-     </div>
-    </section>
-
-    <!-- お知らせ(news.json から script.js が自動で表示する) -->
-    <section class="section section--tinted" id="news">
-      <h2 class="oval-title"><span>お知らせ</span></h2>
-      <ul class="news-list" id="newsList">
-       <li class="news-list__message">読み込み中…</li>
-      </ul>
-    </section>
-
-   <!-- 猫の紹介 -->
-      <section class="section section--tinted" id="cats">
-      <h2 class="oval-title reveal"><span>猫の紹介</span></h2>
-      <!-- <ul class="cat-list"> ... </ul> -->
-
-      <!-- ふわふわ漂う猫たち。丸い写真は、cats.json から、JSが並べる -->
-      <div class="floaters reveal" id="floaters" aria-label="ねこの写真(ふわふわ漂っています。押すと、くわしく見られます)"></div>
-
-      <p class="note">※ 写真は仮の絵です。名前に(仮)とあるものは、ダミーです。</p>
-    </section>
-
-
-    <!-- ABOUT:縦にスクロールすると、横にスライドする -->
-    <!-- style="--n:6" は、カードの枚数(CSSとJSが、この数字を使う) -->
-    <section class="hscroll" id="about" style="--n:6">
+    <!-- 本:全部のページを、右から左へ並べる。--n は、ページの数(12ページ) -->
+    <section class="hscroll" id="book" style="--n:12">
       <div class="hscroll__sticky">
         <div class="hscroll__track">
 
-          <article class="panel">
+          <!-- 1ページ目(いちばん右):メインビジュアル -->
+          <section class="hero">
+            <h1 class="sr-only">猫カフェ ねんね</h1>
+            <div class="hero__stage">
+              <div class="hero__photos reveal" id="heroPhotos" role="img" aria-label="ねこの写真(スライド・仮)">
+                <div class="slide is-active" style="--tint:#ffd9cf">🐱</div>
+                <div class="slide" style="--tint:#cfeff2">😸</div>
+                <div class="slide" style="--tint:#e6defa">😺</div>
+                <div class="slide" style="--tint:#ffe6c9">🐈</div>
+              </div>
+              <p class="hero__vtext reveal" style="--delay:.2s">ねこと くつろげる</p>
+              <p class="hero__vtext hero__vtext--low reveal" style="--delay:.4s">おへやあります</p>
+            </div>
+          </section>
+
+          <!-- 2ページ目:お店について -->
+          <section class="section" id="intro">
+            <div class="intro reveal">
+              <figure class="intro__photo">🐾</figure>
+              <p class="intro__text">
+                保護猫たちと、ゆっくり過ごす、小さな猫カフェ。<br>
+                ここで、ひと眠りしていってね。
+              </p>
+            </div>
+          </section>
+
+          <!-- 3ページ目:お知らせ -->
+          <section class="section section--tinted" id="news">
+            <h2 class="oval-title"><span>お知らせ</span></h2>
+            <ul class="news-list" id="newsList">
+              <li class="news-list__message">読み込み中…</li>
+            </ul>
+          </section>
+
+          <!-- 4ページ目:猫の紹介 -->
+          <section class="section section--tinted" id="cats">
+            <h2 class="oval-title reveal"><span>猫の紹介</span></h2>
+            <div class="floaters reveal" id="floaters" aria-label="ねこの写真(ふわふわ漂っています。押すと、くわしく見られます)"></div>
+            <p class="note">※ 写真は仮の絵です。名前に(仮)とあるものは、ダミーです。</p>
+          </section>
+
+          <!-- 5〜10ページ目:ABOUT の6枚 -->
+          <article class="panel" id="about">
             <div class="panel__card">
               <h3 class="card__title">コンセプト</h3>
               <p class="card__big">和のモダン</p>
@@ -181,24 +164,16 @@
             </div>
           </article>
 
-                    <article class="panel">
+          <article class="panel">
             <div class="panel__card menu">
               <h3 class="card__title">カフェメニュー</h3>
-
-              <!-- しょっぱい系 / あまい系 の、切り替えボタン -->
               <div class="menu__chips" role="group" aria-label="メニューの絞り込み">
                 <button type="button" class="menu__chip is-on" data-kind="savory">しょっぱい系</button>
                 <button type="button" class="menu__chip" data-kind="sweet">あまい系</button>
               </div>
-
-              <!-- メニューの一覧(JSが、menu.json から、ここに並べる) -->
               <ul class="menu__list" id="menuList"></ul>
-
-              <!-- 猫とのふれあい(JSが、treats.json から、ここに並べる) -->
               <h4 class="menu__sub">猫とのふれあい(おやつ)</h4>
               <ul class="menu__treats" id="treatList"></ul>
-
-              <!-- 猫の安全について(仮の文面。あとで、直します) -->
               <p class="menu__note">
                 猫に危険な食材(ネギ類、ブドウ・レーズン、アボカド、チョコレート、キシリトール)は、使っていません。<br>
                 お客さまの飲食物を、猫にあげないでください。猫には、専用のおやつをご用意しています。
@@ -210,7 +185,6 @@
             <div class="panel__card tour">
               <h3 class="card__title">店内あんない</h3>
               <p class="card__text">タップすると、大きく見られます。</p>
-              <!-- 写真と動画の、小さな一覧(JSが、tour.json から、ここに並べる) -->
               <ul class="tour__grid" id="tourGrid"></ul>
             </div>
           </article>
@@ -219,24 +193,19 @@
             <div class="panel__card staff">
               <h3 class="card__title">スタッフ紹介</h3>
               <p class="card__text">タップすると、自己紹介が見られます。</p>
-              <!-- スタッフの一覧(JSが、staff.json から、ここに並べる) -->
               <ul class="staff__list" id="staffList"></ul>
             </div>
           </article>
-            
+
           <article class="panel">
             <div class="panel__card sys">
               <h3 class="card__title">システム</h3>
-
-              <!-- 切り替えボタン:料金 / 時間 / ルール -->
               <div class="sys__chips" role="group" aria-label="システムの絞り込み">
                 <button type="button" class="sys__chip is-on" data-pane="price">料金</button>
                 <button type="button" class="sys__chip" data-pane="time">時間</button>
                 <button type="button" class="sys__chip" data-pane="rules">ルール</button>
               </div>
-
               <div class="sys__body">
-                <!-- 料金 -->
                 <div class="sys__pane" data-pane="price">
                   <table class="price-table">
                     <thead>
@@ -250,16 +219,12 @@
                   </table>
                   <p class="price-note">フリードリンク付き</p>
                 </div>
-
-                <!-- 時間(最初は、隠しておく) -->
                 <div class="sys__pane" data-pane="time" hidden>
                   <dl class="info sys__info">
                     <dt>営業時間</dt><dd>10:00〜20:00(仮)</dd>
                     <dt>定休日</dt><dd>不定休(仮)</dd>
                   </dl>
                 </div>
-
-                <!-- ルール(最初は、隠しておく) -->
                 <div class="sys__pane" data-pane="rules" hidden>
                   <ul class="card__list sys__rules">
                     <li>猫を追いかけたり、無理に抱っこしたりしないでください。</li>
@@ -271,14 +236,43 @@
             </div>
           </article>
 
+          <!-- 11ページ目:よくある質問 -->
+          <section class="section section--tinted" id="faq">
+            <h2 class="oval-title"><span>よくある質問</span></h2>
+            <div class="faq">
+              <div class="faq__item">
+                <button class="faq__q" aria-expanded="false">予約は必要ですか?</button>
+                <div class="faq__a"><p>平日は予約なしでご利用いただけます。土日祝は混み合うため、ご予約をおすすめします。</p></div>
+              </div>
+              <div class="faq__item">
+                <button class="faq__q" aria-expanded="false">猫アレルギーでも大丈夫ですか?</button>
+                <div class="faq__a"><p>症状が出る可能性があります。ご不安な方は、事前にご相談ください。</p></div>
+              </div>
+              <div class="faq__item">
+                <button class="faq__q" aria-expanded="false">猫を触っても良いですか?</button>
+                <div class="faq__a"><p>猫が寄ってきたら、やさしくなでてあげてください。寝ている子は、そっとしておいてくださいね。</p></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 12ページ目(いちばん左):アクセス -->
+          <section class="section" id="access">
+            <h2 class="oval-title"><span>アクセス</span></h2>
+            <dl class="info">
+              <dt>住所</dt><dd>〒000-0000 ○○県○○市○○町1-2-3 2F</dd>
+              <dt>営業時間</dt><dd>11:00〜19:00(最終受付 18:00)</dd>
+              <dt>定休日</dt><dd>毎週水曜日</dd>
+              <dt>最寄り駅</dt><dd>○○駅 徒歩5分</dd>
+            </dl>
+            <p class="note">※ 地図は Google マップの「共有 → 地図を埋め込む」で取得したコードをここに貼ります。</p>
+          </section>
+
         </div>
 
-         <!-- 猫の手:切り替わるとき、下から出てきて、画面を押す -->
+        <!-- 猫の手:ページが切り替わるとき、下から出てきて、画面を押す -->
         <div class="cat-hand" aria-hidden="true">
           <svg viewBox="0 0 120 220">
-            <!-- 腕 -->
             <path d="M30 220 V85 Q30 45 60 45 Q90 45 90 85 V220 Z" fill="#fff" stroke="#5a5a60" stroke-width="4"/>
-            <!-- 肉球 -->
             <g fill="#ffc9c0" stroke="#5a5a60" stroke-width="3">
               <ellipse cx="60" cy="98" rx="17" ry="13"/>
               <ellipse cx="39" cy="74" rx="7" ry="9"/>
@@ -288,39 +282,7 @@
             </g>
           </svg>
         </div>
-
       </div>
-    </section>
-
-    <!-- よくある質問(JSで開閉)(aria-expandedは要素が展開されているか折りたたまれているか) -->
-    <section class="section section--tinted" id="faq">
-      <h2 class="oval-title"><span>よくある質問</span></h2>
-      <div class="faq">
-        <div class="faq__item">
-          <button class="faq__q" aria-expanded="false">予約は必要ですか?</button>
-          <div class="faq__a"><p>平日は予約なしでご利用いただけます。土日祝は混み合うため、ご予約をおすすめします。</p></div>
-        </div>
-        <div class="faq__item">
-          <button class="faq__q" aria-expanded="false">猫アレルギーでも大丈夫ですか?</button>
-          <div class="faq__a"><p>症状が出る可能性があります。ご不安な方は、事前にご相談ください。</p></div>
-        </div>
-        <div class="faq__item">
-          <button class="faq__q" aria-expanded="false">猫を触っても良いですか?</button>
-          <div class="faq__a"><p>猫が寄ってきたら、やさしくなでてあげてください。寝ている子は、そっとしておいてくださいね。</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- アクセス -->
-    <section class="section" id="access">
-      <h2 class="oval-title"><span>アクセス</span></h2>
-      <dl class="info">
-        <dt>住所</dt><dd>〒000-0000 ○○県○○市○○町1-2-3 2F</dd>
-        <dt>営業時間</dt><dd>11:00〜19:00(最終受付 18:00)</dd>
-        <dt>定休日</dt><dd>毎週水曜日</dd>
-        <dt>最寄り駅</dt><dd>○○駅 徒歩5分</dd>
-      </dl>
-      <p class="note">※ 地図は Google マップの「共有 → 地図を埋め込む」で取得したコードをここに貼ります。</p>
     </section>
 
   </main>

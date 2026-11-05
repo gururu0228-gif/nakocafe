@@ -7,20 +7,20 @@
    変数(色や幅をここで一括管理)
    ============================== */
 /* rootには全体に共通するデザインの変数を置く、大きく変わるから管理がしやすい */
- :root { 
-  --color-main: #e88f5a;      /* メインのオレンジ */
-  --color-main-dark: #c9703c;
-  --color-tint: #fdeedd;      /* 交互セクションの背景 */
-  --color-text: #4a3b32;
-  --radius: 16px;  /* 角のまるみをradiusという文字列で定義　*/
+  :root { 
+  --color-main: #b8743a;      /* 暖色:行灯のような、琥珀色(ボタン・フッターなどの差し色) */
+  --color-main-dark: #8f5527; /* 暖色の、濃い版(小さな見出し・日付) */
+  --color-tint: #e2dfd8;      /* 交互セクションの背景:薄いグレー */
+  --color-text: #2d2c2b;
+  --radius: 16px;
   --max-width: 60rem;
-  --paper: #faf8f4;          /* 和紙のような、あたたかい白 */
-  --ink: #3d3d42;            /* 墨 */
+  --paper: #eeece7;           /* 和紙:少し温かい、明るいグレー */
+  --ink: #2d2c2b;             /* 墨:黒に近い、くすんだ灰 */
   --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
-  --sakura: #ffc9c0;
-  --mint: #8fe3ea;
-  --line: #5a5a60;           /* 縁取りの線の色 */
-  --paper-2: #f1eee7;        /* 一段ふかい紙の色 */
+  --sakura: #ddc6ad;          /* 影・選択色(名前は、そのまま。中身は、あたたかい、薄い茶) */
+  --mint: #d9a45f;            /* 進み具合バーの、終わりの色(琥珀) */
+  --line: #4a4846;            /* 縁取りの線:墨の灰 */
+  --paper-2: #e3e0d9;         /* 一段ふかい紙の色 */
 }
 /* ハイフンは呼び出し時の目印的なやつ */
 
@@ -1486,3 +1486,186 @@ html:has(body:not(.bar)) {
 body:not(.bar) {
   background: transparent;
 }
+
+/* ==============================
+   ねんね(昼):和紙の質感 + 和モダンの色
+   ============================== */
+
+/* ----- 紙:細かい紙の目 + 雲のようなムラ + ちり ----- */
+body:not(.bar)::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 150;                  /* 内容・ヘッダーより手前、進み具合バー(200)より奥 */
+  pointer-events: none;          /* クリックの邪魔をしない */
+  opacity: 0.6;
+  background:
+    /* 細かい紙の目 */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.30 0 0 0 0 0.27 0 0 0 0 0.23 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    /* 雲のような、うっすらしたムラ */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.50 0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0.5 -0.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E"),
+    /* ちり(ところどころの、小さな点) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.30 0 0 0 0 0.25 0 0 0 10 -6.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+}
+
+/* ----- 白かった所を、少し温かい、生成りに(紙の上に、紙が、重なる感じ) ----- */
+body:not(.bar) .news-list,
+body:not(.bar) .faq__item,
+body:not(.bar) .info,
+body:not(.bar) .price-table,
+body:not(.bar) .oval-title span,
+body:not(.bar) .modal__card,
+body:not(.bar) .staff__item,
+body:not(.bar) .menu__chip,
+body:not(.bar) .sys__chip,
+body:not(.bar) .floater__name {
+  background: #f6f4ef;
+}
+body:not(.bar) .price-table th { background: #e9e5dc; }
+
+/* ----- ABOUT の6枚:カラフルな色を、グレーの濃淡に ----- */
+body:not(.bar) .panel:nth-child(1) { background: #e8e4dc; }
+body:not(.bar) .panel:nth-child(2) { background: #dfdbd3; }
+body:not(.bar) .panel:nth-child(3) { background: #e9e5dd; }
+body:not(.bar) .panel:nth-child(4) { background: #dad7d0; }
+body:not(.bar) .panel:nth-child(5) { background: #e5e1d7; }
+body:not(.bar) .panel:nth-child(6) { background: #dcd8d0; }
+
+/* ----- 暖色の、間接照明:ヘッダーの下に、ほんのり、光がにじむ ----- */
+body:not(.bar) .header {
+  box-shadow: 0 8px 22px rgba(214, 150, 80, 0.22);
+}
+
+/* ----- フッター:墨色にして、文字は、行灯の色 ----- */
+body:not(.bar) .footer {
+  background: #2b2927;
+  color: #d8cdbb;
+  box-shadow: 0 -10px 26px rgba(214, 150, 80, 0.18);   /* 上に、あたたかい光 */
+}
+
+/* ==============================
+   ねんね(昼):炭の黒を、増やす(モダン)
+   ============================== */
+
+/* ----- ヘッダー:炭の黒 ----- */
+body:not(.bar) .header {
+  background: #262524;
+  color: #eeece7;
+  border-bottom: 1px solid #3c3a38;
+  box-shadow: 0 8px 22px rgba(214, 150, 80, 0.22);   /* 暖色の光は、そのまま */
+}
+body:not(.bar) .logo { color: #eeece7; }
+body:not(.bar) .menu-btn span { background: #eeece7; }
+body:not(.bar) .mode-btn {                /* ボタンは、紙色に反転 */
+  background: #eeece7;
+  color: #2b2927;
+  border-color: #eeece7;
+}
+body:not(.bar) .nav a:hover { background: rgba(238, 236, 231, 0.14); }
+
+/* スマホのメニュー(開いたとき)も、炭の黒 */
+@media (max-width: 1023px) {
+  body:not(.bar) .nav { background: #262524; }
+  body:not(.bar) .nav a { border-top-color: #3c3a38; }
+}
+/* PCの、ABOUT の、ひらくメニュー */
+@media (min-width: 1024px) {
+  body:not(.bar) .nav .nav__sub {
+    background: #262524;
+    border-color: #4a4846;
+    box-shadow: 4px 4px 0 rgba(214, 150, 80, 0.35);
+  }
+}
+
+/* ----- 見出し:炭の黒の、帯 ----- */
+body:not(.bar) .oval-title span {
+  background: #2b2927;
+  color: #eeece7;
+  border-color: #2b2927;
+  box-shadow: 0 8px 0 -4px rgba(184, 116, 58, 0.45);   /* 下に、暖色の光 */
+}
+
+/* ----- 色つきだったセクション(お知らせ・猫・FAQ)を、炭の黒に ----- */
+body:not(.bar) .section--tinted {
+  background: #2b2927;
+  color: #e9e5dc;
+}
+body:not(.bar) .section--tinted .oval-title span {   /* 黒い背景では、見出しを、紙色に反転 */
+  background: #eeece7;
+  color: #2b2927;
+  border-color: #eeece7;
+}
+
+/* 黒い所に置いた、紙色のカード:文字は、墨のまま */
+body:not(.bar) .news-list,
+body:not(.bar) .faq__item,
+body:not(.bar) .info,
+body:not(.bar) .price-table,
+body:not(.bar) .modal__card,
+body:not(.bar) .staff__item {
+  color: #2d2c2b;
+}
+
+/* ----- ABOUT:偶数の画面(2・4・6枚目)を、炭の黒に ----- */
+body:not(.bar) .panel:nth-child(2),
+body:not(.bar) .panel:nth-child(4),
+body:not(.bar) .panel:nth-child(6) {
+  background: #2b2927;
+  color: #e9e5dc;
+}
+
+/* ----- ボタンも、炭の黒 ----- */
+body:not(.bar) .btn { background: #2b2927; color: #eeece7; }
+body:not(.bar) .btn:hover { background: var(--color-main); }
+
+/* ==============================
+   本:サイト全体を、右から左へ、めくる
+   ============================== */
+.hscroll { height: calc(var(--n, 12) * 70svh); }   /* 全体の縦の長さ(1ページ=画面の70%) */
+
+.hscroll__track {
+  flex-direction: row-reverse;     /* 1ページ目が、いちばん右。次のページは、左へ並ぶ */
+  /* p=0 で、右端(1ページ目)が見える。p=1 に近づくほど、右へ動いて、左のページが見える */
+  translate: calc((var(--p, 0) - 1) * (var(--n, 12) - 1) / var(--n, 12) * 100%) 0;
+}
+
+/* 1ページ分の大きさ(ヒーロー・各セクション・ABOUTのカード、全部同じ) */
+.hscroll__track > * {
+  flex: 0 0 calc(100% / var(--n, 12));
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;                /* 1画面に収まらないときだけ、中でスクロール */
+  scrollbar-width: thin;
+}
+
+.hscroll__track > .hero { margin-top: 0; min-height: 0; }
+
+/* 通常のセクションは、1ページの中で、縦の真ん中に置く */
+.hscroll__track > .section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 20px;
+}
+.hscroll__track > .section > * { width: 100%; }   /* 幅は、max-width が、決める */
+.hscroll__track > .section .oval-title { margin-bottom: 1.5rem; }
+
+/* 猫の紹介:画面の高さに、収める */
+#cats .floaters {
+  height: calc(100svh - 64px - 11rem);
+  min-height: 18rem;
+}
+
+/* 猫の手:本が、左へ進むので、手は、左端から、右へ動く */
+.cat-hand {
+  left: calc(var(--u, 0) * 100%);
+  rotate: 8deg;
+}
+
+/* ABOUT の6枚の色:兄弟の数え方が、変わったので、「article の何番目か」で指定し直す */
+body:not(.bar) .panel:nth-of-type(1) { background: #e8e4dc; color: var(--ink); }
+body:not(.bar) .panel:nth-of-type(2) { background: #2b2927; color: #e9e5dc; }
+body:not(.bar) .panel:nth-of-type(3) { background: #e9e5dd; color: var(--ink); }
+body:not(.bar) .panel:nth-of-type(4) { background: #2b2927; color: #e9e5dc; }
+body:not(.bar) .panel:nth-of-type(5) { background: #e5e1d7; color: var(--ink); }
+body:not(.bar) .panel:nth-of-type(6) { background: #2b2927; color: #e9e5dc; }

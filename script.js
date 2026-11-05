@@ -449,9 +449,9 @@ if (!reduceMotion) {                        // reduceMotion は、ふわっと�
 // ==============================
 // ABOUT:縦にスクロールした量を、横のスライドに変える
 // ==============================
-const hscroll = document.getElementById('about');
+const hscroll = document.getElementById('book');
 const hscrollSticky = hscroll.querySelector('.hscroll__sticky');
-const hscrollCount = hscroll.querySelectorAll('.panel').length;   // 画面の枚数(←この行を足す)
+const hscrollCount = hscroll.querySelectorAll('.hscroll__track > *').length;   // 本の、ページ数
 
 function updateHscroll() {
   const stickTop = parseFloat(getComputedStyle(hscrollSticky).top);   // 貼りつく位置(64px)
@@ -528,7 +528,7 @@ if (!reduceMotion) {                                           // 「動きを�
 }
 
 // ナビの、ABOUTのサブ項目:押した画面へ、スクロールする
-document.querySelectorAll('.nav__sub a[data-go]').forEach((link) => {
+document.querySelectorAll('.nav a[data-go]').forEach((link) => {
   link.addEventListener('click', (event) => {
     event.preventDefault();                                          // 標準の、ページ内リンクの動きは、止める
     const i = Number(link.dataset.go);                               // 何枚目か(HTMLの data-go)
