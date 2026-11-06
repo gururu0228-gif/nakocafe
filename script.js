@@ -882,3 +882,58 @@ async function loadStaff() {
 }
 
 loadStaff();
+
+// ==============================
+// 文字の出方:1文字ずつに分けて、画面に入ったら、しなやかに出す
+// ==============================
+
+// 要素の中の文字を、1文字ずつの <span class="char"> に分ける
+function splitChars(el) {
+  const label = el.textContent.replace(/\s+/g, ' ').trim();   // 読み上げ用に、元の文章を覚えておく
+  const wrap = document.createElement('span');
+  wrap.setAttribute('aria-hidden', 'true');                   // 分けた文字は、読み上げない(二重に読まれるのを防ぐ)
+  let i = 0;                                                  // 何文字目か(遅れの計算に使う)
+
+  Array.from(el.childNodes).forEach((node) => {
+    if (node.nodeType === Node.TEXT_NODE) {                   // 文字の部分
+      const text = node.textContent.replace(/\s+/g, ' ').trim();
+      for (const ch of text) {                                // 1文字ずつ
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.style.setProperty('--i', i++);
+        span.textContent = ch;
+        wrap.append(span);
+      }
+    } else {
+      wrap.append(node.cloneNode(true));                      // <br> などは、そのまま
+    }
+  });
+
+  const sr = document.createElement('span');                  // 読み上げ専用の、元の文章
+  sr.className = 'sr-only';
+  sr.textContent = label;
+  el.replaceChildren(sr, wrap);
+}
+
+// 対象:見出し、導入文、カードの文字
+const textTargets = document.querySelectorAll(
+  '.hero__vtext, .intro__text, .card__title, .card__big, .card__text, .oval-title span'
+);
+textTargets.forEach((el) => {
+  el.classList.add('text-in');
+  splitChars(el);
+});
+
+if ('IntersectionObserver' in window && !reduceMotion) {
+  const textObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        textObserver.unobserve(entry.target);                 // 1回出したら、見張りをやめる
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '0px -8% 0px -8%' });      // 画面の端から、少し内側に入ったら、始める
+  textTargets.forEach((el) => textObserver.observe(el));
+} else {
+  textTargets.forEach((el) => el.classList.add('is-visible'));
+}

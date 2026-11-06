@@ -1763,3 +1763,36 @@ html:has(body:not(.bar))::after {
   z-index: 140;                    /* 内容より手前、和紙の膜(150)より奥 */
   pointer-events: none;
 }
+
+/* ==============================
+   文字の出方:1文字ずつ、しなやかに
+   ============================== */
+.char {
+  display: inline-block;
+  white-space: pre;                       /* 空白の文字も、つぶさない */
+  opacity: 0;                             /* 最初は、見えない */
+  filter: blur(6px);                      /* ぼかして */
+  translate: 0 0.5em;                     /* 少し下から */
+  transition:
+    opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 1.2s cubic-bezier(0.22, 1, 0.36, 1);   /* ゆっくり始まり、やわらかく止まる */
+  transition-delay: calc(var(--i, 0) * 60ms);        /* 1文字ごとに、60ミリ秒ずつ、遅らせる */
+}
+.text-in.is-visible .char {               /* 画面に入ったら、くっきり、元の位置へ */
+  opacity: 1;
+  filter: blur(0);
+  translate: 0 0;
+}
+
+/* 「動きを減らす」設定の人には、最初から、見せる */
+@media (prefers-reduced-motion: reduce) {
+  .char { opacity: 1; filter: none; translate: none; transition: none; }
+}
+
+/* ヒーローの縦書き:写真がなくなったので、大きく、ゆったり */
+body:not(.bar) .hero__stage { justify-content: center; gap: clamp(1.5rem, 6vw, 3rem); }
+body:not(.bar) .hero__vtext {
+  font-size: clamp(1.6rem, 6vw, 2.8rem);
+  letter-spacing: 0.5em;
+}
