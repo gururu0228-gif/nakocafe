@@ -16,7 +16,7 @@
   --max-width: 60rem;
   --paper: #eeece7;           /* 和紙:少し温かい、明るいグレー */
   --ink: #2d2c2b;             /* 墨:黒に近い、くすんだ灰 */
-  --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
   --sakura: #ddc6ad;          /* 影・選択色(名前は、そのまま。中身は、あたたかい、薄い茶) */
   --mint: #d9a45f;            /* 進み具合バーの、終わりの色(琥珀) */
   --line: #4a4846;            /* 縁取りの線:墨の灰 */
@@ -1730,3 +1730,36 @@ body:not(.bar) .tour__cap { color: #2d2c2b; }
 
 /* 進み具合バー:右から、左へ伸びる */
 body:not(.bar) .progress { transform-origin: 100% 50%; }
+
+/* ==============================
+   和柄:青海波(せいがいは)の帯
+   ============================== */
+:root {
+  /* 波の模様(SVG)。変数に入れておいて、2か所で使い回す */
+  --seigaiha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'%3E%3Cg fill='%23262524' stroke='%23e9e5dc' stroke-opacity='.55' stroke-width='1'%3E%3Ccircle cx='18' cy='-9' r='18'/%3E%3Ccircle cx='18' cy='-9' r='13.5'/%3E%3Ccircle cx='18' cy='-9' r='9'/%3E%3Ccircle cx='18' cy='-9' r='4.5'/%3E%3Ccircle cx='0' cy='0' r='18'/%3E%3Ccircle cx='0' cy='0' r='13.5'/%3E%3Ccircle cx='0' cy='0' r='9'/%3E%3Ccircle cx='0' cy='0' r='4.5'/%3E%3Ccircle cx='36' cy='0' r='18'/%3E%3Ccircle cx='36' cy='0' r='13.5'/%3E%3Ccircle cx='36' cy='0' r='9'/%3E%3Ccircle cx='36' cy='0' r='4.5'/%3E%3Ccircle cx='18' cy='9' r='18'/%3E%3Ccircle cx='18' cy='9' r='13.5'/%3E%3Ccircle cx='18' cy='9' r='9'/%3E%3Ccircle cx='18' cy='9' r='4.5'/%3E%3Ccircle cx='0' cy='18' r='18'/%3E%3Ccircle cx='0' cy='18' r='13.5'/%3E%3Ccircle cx='0' cy='18' r='9'/%3E%3Ccircle cx='0' cy='18' r='4.5'/%3E%3Ccircle cx='36' cy='18' r='18'/%3E%3Ccircle cx='36' cy='18' r='13.5'/%3E%3Ccircle cx='36' cy='18' r='9'/%3E%3Ccircle cx='36' cy='18' r='4.5'/%3E%3Ccircle cx='18' cy='27' r='18'/%3E%3Ccircle cx='18' cy='27' r='13.5'/%3E%3Ccircle cx='18' cy='27' r='9'/%3E%3Ccircle cx='18' cy='27' r='4.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ヘッダーの下:波の帯 */
+body:not(.bar) .header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;                       /* ヘッダーの、すぐ下 */
+  height: 18px;
+  background: var(--seigaiha) repeat-x;
+  pointer-events: none;            /* クリックの邪魔をしない */
+}
+
+/* 画面の下の端:波の帯(上下で、帯を、挟む形になる) */
+html:has(body:not(.bar))::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 18px;
+  background: var(--seigaiha) repeat-x;
+  z-index: 140;                    /* 内容より手前、和紙の膜(150)より奥 */
+  pointer-events: none;
+}
