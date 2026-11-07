@@ -2462,3 +2462,25 @@ body:not(.bar) .book > #faq::before {
     var(--karakusa) 0 0 / 320px 320px repeat,
     var(--obi-bg);
 }
+
+/* 目次ボタンを大きく */
+body:not(.bar) .menu-btn {
+  scale: 1.8;                    /* 大きさ(1.3倍)。1.5 なら、もっと大きい */
+  transform-origin: top right;   /* 右上を基準に大きくする(画面の外にはみ出さない) */
+}
+
+/* 帯:唐草をなくして、黒の半透明に */
+body:not(.bar) {
+  --obi-bg: rgba(18, 18, 17, 0.5);     /* 黒の濃さ(右の数字。大きいほど黒い) */
+  --karakusa: none;                     /* 唐草をなくす */
+}
+
+body:not(.bar) .book > #about-concept::before,
+body:not(.bar) .book > #about-can::before,
+body:not(.bar) .book > #about-menu::before,
+body:not(.bar) .book > #about-tour::before,
+body:not(.bar) .book > #about-staff::before,
+body:not(.bar) .book > #about-system::before,
+body:not(.bar) .book > #faq::before {
+  background: var(--obi-bg);
+}
