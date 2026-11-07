@@ -1876,3 +1876,135 @@ body:not(.bar) .staff__item {
     0 -12px 26px -12px rgba(var(--warm), 0.55),     /* 要素の上へ、光がにじむ */
     inset 0 10px 16px -12px rgba(var(--warm), 0.5); /* 要素の中の、上の縁が、ほんのり、温かい */
 }
+
+/* ==============================
+   17-a:ヘッダーの帯をなくす / 右上のロゴ / 右端の「目次」
+   ============================== */
+
+/* ----- ヘッダーの帯を、なくす(中のものは、それぞれ、画面に固定で置く) ----- */
+body:not(.bar) .header {
+  height: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+body:not(.bar) .header::after { display: none; }      /* 上の青海波の帯も、なくす */
+
+/* 帯がなくなった分、画面いっぱいに使う */
+body:not(.bar) .book {
+  margin-top: 0;
+  height: 100svh;
+}
+#cats .floaters { height: calc(100svh - 13rem); }
+
+/* ----- ロゴ:右上 ----- */
+body:not(.bar) .logo {
+  position: fixed;
+  top: 22px;
+  right: 28px;
+  z-index: 1;
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  color: #eeece7;
+}
+
+/* ----- 昼夜の切り替え:左下に、小さく ----- */
+body:not(.bar) .mode-btn {
+  position: fixed;
+  left: 16px;
+  bottom: 34px;                       /* 下の青海波の帯の、すぐ上 */
+  margin: 0;
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  z-index: 1;
+}
+
+/* ----- 「目次」:3本の細い縦線 + 縦書きの文字(PCでも、スマホでも、これ) ----- */
+body:not(.bar) .menu-btn {
+  position: fixed;
+  right: 14px;
+  top: 30%;
+  z-index: 3;
+  width: auto;
+  height: auto;
+  padding: 10px 12px;
+  display: grid;                      /* PCで隠していた設定を、上書き */
+  grid-template-columns: repeat(3, 1px);
+  gap: 10px 6px;                      /* 縦のすき間 10px、線と線のすき間 6px */
+  justify-content: center;
+}
+body:not(.bar) .menu-btn span {
+  width: 1px;
+  height: 34px;
+  background: #e9e5dc;
+  border-radius: 0;
+}
+body:not(.bar) .menu-btn::after {
+  content: "目次";
+  grid-column: 1 / -1;                /* 3本の線の下に、1行で置く */
+  justify-self: center;
+  writing-mode: vertical-rl;          /* 縦書き */
+  letter-spacing: 0.3em;
+  font-size: 0.8rem;
+  color: #e9e5dc;
+}
+body:not(.bar) .menu-btn.is-open::after { content: "閉"; }
+/* 開いたときも、線は、そのまま(×にしない) */
+body:not(.bar) .menu-btn.is-open span:nth-child(n) {
+  transform: none;
+  opacity: 1;
+}
+
+/* ----- 目次の中身:右からすべり出る、細い板(画面いっぱいには、広がらない) ----- */
+body:not(.bar) .nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  z-index: 2;
+  width: min(78vw, 18rem);
+  height: 100svh;
+  padding: 4.5rem 1.6rem 2rem;
+  overflow-y: auto;
+  display: block;                     /* 閉じているときは、位置と透明さで、隠す */
+  background: rgba(31, 30, 29, 0.96);
+  box-shadow: -14px 0 32px rgba(0, 0, 0, 0.35);
+  translate: 100% 0;                  /* 右の外へ */
+  visibility: hidden;
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s 0.5s;
+}
+body:not(.bar) .nav.is-open {
+  translate: 0 0;
+  visibility: visible;
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
+}
+
+/* リンクを、縦に並べる(PC幅の「横並び」を、取り消す) */
+body:not(.bar) .nav ul { display: block; }
+body:not(.bar) .nav a {
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(238, 236, 231, 0.14);
+  border-radius: 0;
+  color: #e9e5dc;
+  letter-spacing: 0.12em;
+}
+body:not(.bar) .nav a:hover { background: none; color: rgb(var(--warm)); }
+
+/* ABOUT の下の項目:常に、開いた状態で、少し小さく、右にずらす */
+body:not(.bar) .nav .nav__sub {
+  display: block;
+  position: static;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+body:not(.bar) .nav__sub a {
+  padding: 0.5rem 0 0.5rem 1rem;
+  font-size: 0.85rem;
+  background: none;
+  border-radius: 0;
+  opacity: 0.8;
+}

@@ -956,3 +956,14 @@ window.addEventListener('pageshow', goToStart);       // 戻るボタンなど�
 if (introScreen) {
   new MutationObserver(goToStart).observe(introScreen, { attributes: true, attributeFilter: ['class'] });
 }
+
+// ==============================
+// ロゴ:押したら、いちばん右(ヒーロー)へ、なめらかに戻る
+// ==============================
+const logoLink = document.querySelector('.logo');
+if (logoLink) {
+  logoLink.addEventListener('click', (event) => {
+    event.preventDefault();                                  // 標準の動きは、止める
+    book.scrollTo({ left: 0, behavior: 'smooth' });          // 右の端 = ヒーロー
+  });
+}
