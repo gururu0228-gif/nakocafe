@@ -1026,3 +1026,62 @@ function updatePageLabel() {
 book.addEventListener('scroll', updatePageLabel, { passive: true });
 window.addEventListener('resize', updatePageLabel);
 updatePageLabel();
+
+// ==============================
+// 進み具合:ロケット君が、右から左へ歩く
+// ==============================
+const WALKER_FRAMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];   // 歩くコマ(ローディングと同じ)
+const WALKER_FRAME_MS = 90;                              // 1コマを、見せる時間
+const IMAGES_FACE_RIGHT = true;                          // 絵が、右向きなら true。左向きなら false
+
+const walker = document.createElement('div');
+walker.className = 'walker';
+walker.setAttribute('aria-hidden', 'true');              // 飾りなので、読み上げない
+const walkerImg = document.createElement('img');
+walkerImg.src = 'images/rocket-stand.png';               // 立ち止まっている絵
+walkerImg.alt = '';
+walker.append(walkerImg);
+document.body.append(walker);
+
+// 先に、全部のコマを、読み込んでおく(ちらつかないように)
+WALKER_FRAMES.forEach((n) => { new Image().src = `images/rocket-${n}.png`; });
+
+let walkerFrame = 0;
+let walkerTimer = null;       // コマ送りのタイマー
+let walkerStopTimer = null;   // 「止まった」を、見張るタイマー
+let lastWalkerLeft = book.scrollLeft;
+
+function updateWalker() {
+  // 1. 位置:全体の何%まで来たか(右端 = 0、左端 = 1)
+  const max = bookMax();
+  const p = max > 0 ? Math.min(1, Math.max(0, -book.scrollLeft / max)) : 0;
+  walker.style.setProperty('--p', p);
+
+  // 2. 動いた向きを調べる(マイナス = 左へ進んでいる)
+  const delta = book.scrollLeft - lastWalkerLeft;
+  lastWalkerLeft = book.scrollLeft;
+  if (Math.abs(delta) < 0.5) return;
+
+  const goingLeft = delta < 0;
+  walker.classList.toggle('is-flip', IMAGES_FACE_RIGHT ? goingLeft : !goingLeft);
+
+  // 3. 動いている間は、コマ送りで、歩く
+  if (!reduceMotion && walkerTimer === null) {
+    walkerTimer = setInterval(() => {
+      walkerFrame = (walkerFrame + 1) % WALKER_FRAMES.length;
+      walkerImg.src = `images/rocket-${WALKER_FRAMES[walkerFrame]}.png`;
+    }, WALKER_FRAME_MS);
+  }
+
+  // 4. 0.2秒、動きがなければ、立ち止まる
+  clearTimeout(walkerStopTimer);
+  walkerStopTimer = setTimeout(() => {
+    clearInterval(walkerTimer);
+    walkerTimer = null;
+    walkerImg.src = 'images/rocket-stand.png';
+  }, 200);
+}
+
+book.addEventListener('scroll', updateWalker, { passive: true });
+window.addEventListener('resize', updateWalker);
+updateWalker();
