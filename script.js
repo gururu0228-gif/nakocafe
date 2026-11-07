@@ -462,8 +462,7 @@ let wheelFrame = null;     // 動いている間の、アニメーション番�
 
 function glide() {
   const diff = wheelTarget - book.scrollLeft;
-  if (Math.abs(diff) < 0.5) {                       // ほぼ着いたら、終わる
-    book.scrollLeft = wheelTarget;
+  if (Math.abs(diff) < 1.5) {                       // ほぼ着いたら、終わる(拡大率の刻みより、大きく)    book.scrollLeft = wheelTarget;
     wheelFrame = null;
     return;
   }
@@ -960,10 +959,9 @@ if (introScreen) {
 // ==============================
 // ロゴ:押したら、いちばん右(ヒーロー)へ、なめらかに戻る
 // ==============================
-const logoLink = document.querySelector('.logo');
-if (logoLink) {
-  logoLink.addEventListener('click', (event) => {
-    event.preventDefault();                                  // 標準の動きは、止める
-    book.scrollTo({ left: 0, behavior: 'smooth' });          // 右の端 = ヒーロー
-  });
-}
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.logo')) return;     // ロゴ以外のクリックは、無視
+  event.preventDefault();                         // 標準の動きは、止める
+  wheelTarget = 0;                                // 行き先は、右の端(ヒーロー)
+  if (wheelFrame === null) wheelFrame = requestAnimationFrame(glide);   // ホイールと、同じ動きで進む
+});
