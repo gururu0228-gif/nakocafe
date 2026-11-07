@@ -1848,3 +1848,31 @@ body:not(.bar) .book .oval-title span {
   transition: translate 1.4s cubic-bezier(0.5, 0, 0.2, 1),
               scale 1.4s cubic-bezier(0.5, 0, 0.2, 1);   /* ロケット君が、左下へ */
 }
+
+/* ==============================
+   間接照明:暖色の光
+   ============================== */
+body:not(.bar) {
+  --warm: 255, 238, 215;      /* 光の色(赤, 緑, 青)。琥珀色。ここを変えると、全部変わる */
+}
+
+/* 天井の光:上から、ほんのり、にじむ(帯のスクロールに合わせて動かない) */
+body:not(.bar) .book {
+  background: radial-gradient(
+    120% 55% at 50% -8%,
+    rgba(var(--warm), 0.30) 0%,
+    rgba(var(--warm), 0.10) 45%,
+    transparent 70%
+  );
+}
+
+/* 要素の光:上の縁に、光が当たって、上にも、にじむ */
+body:not(.bar) .news-list,
+body:not(.bar) .faq__item,
+body:not(.bar) .info,
+body:not(.bar) .price-table,
+body:not(.bar) .staff__item {
+  box-shadow:
+    0 -12px 26px -12px rgba(var(--warm), 0.55),     /* 要素の上へ、光がにじむ */
+    inset 0 10px 16px -12px rgba(var(--warm), 0.5); /* 要素の中の、上の縁が、ほんのり、温かい */
+}
