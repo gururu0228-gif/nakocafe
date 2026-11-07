@@ -2066,3 +2066,166 @@ body:not(.bar) .nav__sub a {
 @media (prefers-reduced-motion: reduce) {
   .page-label { transition: none; filter: none; translate: none; }
 }
+
+/* ==============================
+   17-c:見出しを、画面から消す(左上のラベルが、役目を持つ)
+   読み上げソフト用には、残す(sr-only と同じ指定)
+   ============================== */
+body:not(.bar) .oval-title,
+body:not(.bar) .card__title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==============================
+   縦書きのお試し(ねんねの紹介 / コンセプト)
+   ============================== */
+
+/* ----- ねんねの紹介:写真と縦書きの文章を、横に並べる ----- */
+body:not(.bar) .intro {
+  max-width: none;
+  display: flex;
+  flex-direction: row;                 /* 写真と文章を、横に並べる */
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 6vw, 4rem);
+}
+body:not(.bar) .intro__photo {
+  flex: 0 0 auto;
+  width: min(40vw, 16rem);
+}
+body:not(.bar) .intro__text {
+  writing-mode: vertical-rl;           /* 縦書き。右の列から、左の列へ読む */
+  text-orientation: mixed;             /* 漢字は、立てて。英数字は、横向き */
+  text-combine-upright: digits 2;      /* 2桁までの数字は、縦書きの中で、横に1文字分にまとめる */
+  height: min(60svh, 24rem);           /* 縦の長さ。これで、文章が、折り返す */
+  font-size: 1.15rem;
+  line-height: 2.4;                    /* 縦書きでは、列と列の間隔になる */
+  letter-spacing: 0.25em;
+  text-align: start;
+}
+
+/* ----- コンセプト:カードの中身を、縦書きの列にする ----- */
+body:not(.bar) #about-concept .panel__card {
+  writing-mode: vertical-rl;
+  width: auto;                         /* 横幅は、列の数で決まる */
+  height: min(60svh, 26rem);
+}
+body:not(.bar) #about-concept .card__big {
+  margin: 0 0.8rem;
+  font-size: 2.4rem;
+  letter-spacing: 0.3em;
+}
+body:not(.bar) #about-concept .card__text {
+  margin: 0 0.8rem;
+  font-size: 1.1rem;
+  line-height: 2.2;
+  letter-spacing: 0.25em;
+  text-align: start;
+}
+
+/* ==============================
+   縦書きを広げる(できること / お知らせ / アクセス)
+   ============================== */
+
+/* ----- できること:項目が、1列ずつ ----- */
+body:not(.bar) #about-can .panel__card {
+  writing-mode: vertical-rl;
+  width: auto;
+  height: min(60svh, 24rem);
+}
+body:not(.bar) #about-can .card__list li {
+  padding: 1.8em 0 0;                  /* 上に、猫の足あとの分の、余白 */
+  margin: 0 0.5rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+}
+body:not(.bar) #about-can .card__list li::before {
+  left: 0;
+  top: 0;                              /* 足あとを、列の、いちばん上に */
+}
+
+/* ----- お知らせ:1件ずつ、「日付の列」と「内容の列」 ----- */
+body:not(.bar) .news-list {
+  writing-mode: vertical-rl;
+  width: fit-content;                  /* 中身の幅だけ。中央に置く */
+  max-width: 100%;
+  height: min(60svh, 24rem);
+  margin: 0 auto;
+  background: none;                    /* 白い箱は、やめる */
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  color: #e9e5dc;
+}
+body:not(.bar) .news-list li {
+  display: flex;
+  flex-direction: column;              /* 縦書きでは、「横に並ぶ」向き */
+  gap: 0.5rem;
+  padding: 0 1rem;
+  border-bottom: 0;
+  border-left: 1px solid rgba(238, 236, 231, 0.18);   /* 件と件の、あいだの細い線 */
+}
+body:not(.bar) .news-list li:last-child { border-left: 0; }
+body:not(.bar) .news-list__date {
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-orientation: upright;           /* 数字も、立てて並べる */
+  color: rgb(var(--warm));             /* 暖色 */
+}
+
+/* ----- アクセス:項目名と内容が、列になる ----- */
+body:not(.bar) #access .info {
+  writing-mode: vertical-rl;
+  display: flex;
+  flex-direction: column;              /* 項目名、内容、項目名、内容…の順に、右から左へ */
+  gap: 0;
+  width: fit-content;
+  max-width: 100%;
+  height: min(60svh, 24rem);
+  margin: 0 auto;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  color: #e9e5dc;
+}
+body:not(.bar) #access .info dt {
+  margin: 0 0 0 0.4rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  color: rgb(var(--warm));
+}
+body:not(.bar) #access .info dt:not(:first-child) { margin-right: 1.8rem; }   /* 組と組の間を、広く */
+body:not(.bar) #access .info dd {
+  margin: 0;
+  line-height: 2;
+  letter-spacing: 0.15em;
+  text-combine-upright: digits 2;
+}
+
+/* ==============================
+   左上のラベル:ひとまわり大きく
+   ============================== */
+.page-label__en {
+  font-size: 1.2rem;
+  letter-spacing: 0.35em;
+}
+.page-label__en::before { width: 2.4rem; }     /* 暖色の線 */
+.page-label__ja {
+  padding-left: 3.2rem;                        /* 線の幅 + すき間(0.8rem) */
+  font-size: 0.9rem;
+}
+@media (max-width: 767px) {
+  .page-label__en { font-size: 1rem; }
+  .page-label__en::before { width: 2rem; }
+  .page-label__ja { padding-left: 2.8rem; font-size: 0.8rem; }
+}
