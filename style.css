@@ -2300,3 +2300,65 @@ body:not(.bar) .story__headline--small {
   height: min(50svh, 18rem);
   font-size: clamp(1.4rem, 3.5vw, 2rem);
 }
+
+/* ==============================
+   調整(目次・間隔・ラベル・ドアのボタン・スマホの文字)
+   ============================== */
+
+/* ----- 1. 目次の位置を、上げる ----- */
+body:not(.bar) .menu-btn { top: 16%; }
+
+/* ----- 2. 要素どうしの、間隔を、離す ----- */
+body:not(.bar) .book { gap: clamp(3rem, 10vw, 9rem); }
+
+/* ----- 3. 左上の見出し:PCだけ、大きく(左の位置は、そのまま。右へ伸びる) ----- */
+@media (min-width: 1024px) {
+  .page-label { top: 32px; }                       /* left は、そのまま(28px) */
+  .page-label__en { font-size: 1.8rem; }
+  .page-label__en::before { width: 3.6rem; }       /* 暖色の線も、長く */
+  .page-label__ja { padding-left: 4.4rem; font-size: 1.1rem; }   /* 線の幅(3.6rem) + すき間(0.8rem) */
+}
+
+/* ----- 4. 昼夜の切り替え:炭の黒の、ドアの形 ----- */
+body:not(.bar) .mode-btn {
+  writing-mode: vertical-rl;                       /* 文字は、縦書き */
+  width: 3.6rem;
+  height: 9.6rem;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: #e9e5dc;
+  background: #262524;                             /* 炭の黒 */
+  border: 1px solid rgba(238, 236, 231, 0.45);
+  border-radius: 1.8rem 1.8rem 3px 3px;            /* 上が、アーチ形のドア */
+  box-shadow:
+    inset 0 0 0 4px #262524,
+    inset 0 0 0 5px rgba(238, 236, 231, 0.2),      /* 内側の、ドアの枠(パネル) */
+    0 8px 16px -6px rgba(var(--warm), 0.45);       /* ドアの下から、暖色の光がもれる */
+  transform-origin: left center;                   /* 左の辺が、ちょうつがい */
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+body:not(.bar) .mode-btn:hover {
+  background: #262524;
+  opacity: 1;
+  transform: perspective(320px) rotateY(-24deg);   /* ちょっと、ドアが開く */
+}
+body:not(.bar) .mode-btn::after {                  /* ドアノブ */
+  content: "";
+  position: absolute;
+  left: 0.55rem;
+  top: 55%;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: rgb(var(--warm));
+}
+
+/* ----- 5. スマホの文字を、少し小さく(14px → 13px) ----- */
+@media (max-width: 767px) {
+  html { font-size: 13px; }
+}
