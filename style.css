@@ -16,9 +16,7 @@
   --max-width: 60rem;
   --paper: #eeece7;           /* 和紙:少し温かい、明るいグレー */
   --ink: #2d2c2b;             /* 墨:黒に近い、くすんだ灰 */
-  --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
-  --sakura: #ddc6ad;          /* 影・選択色(名前は、そのまま。中身は、あたたかい、薄い茶) */
-  --mint: #d9a45f;            /* 進み具合バーの、終わりの色(琥珀) */
+  --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;  --mint: #d9a45f;            /* 進み具合バーの、終わりの色(琥珀) */
   --line: #4a4846;            /* 縁取りの線:墨の灰 */
   --paper-2: #e3e0d9;         /* 一段ふかい紙の色 */
 }
@@ -1491,21 +1489,23 @@ body:not(.bar) {
    ねんね(昼):和紙の質感 + 和モダンの色
    ============================== */
 
-/* ----- 紙:細かい紙の目 + 雲のようなムラ + ちり ----- */
+/* ----- 紙:細かい紙の目 + ちり + 雲のようなムラ(ムラは、画面全体に1枚。目地なし) ----- */
 body:not(.bar)::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 150;                  /* 内容・ヘッダーより手前、進み具合バー(200)より奥 */
-  pointer-events: none;          /* クリックの邪魔をしない */
+  z-index: 150;
+  pointer-events: none;
   opacity: 0.6;
   background:
-    /* 細かい紙の目 */
+    /* 細かい紙の目(小さいタイル。境目は、目立たない) */
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.30 0 0 0 0 0.27 0 0 0 0 0.23 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
-    /* 雲のような、うっすらしたムラ */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.50 0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0.5 -0.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E"),
     /* ちり(ところどころの、小さな点) */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.30 0 0 0 0 0.25 0 0 0 10 -6.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.30 0 0 0 0 0.25 0 0 0 10 -6.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E"),
+    /* 雲のようなムラ(画面全体に、1枚) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='c' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.50 0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0.5 -0.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+  background-size: 300px 300px, 500px 500px, 100% 100%;   /* 3枚目だけ、画面いっぱい */
+  background-repeat: repeat, repeat, no-repeat;           /* 3枚目は、繰り返さない */
 }
 
 /* ----- 白かった所を、少し温かい、生成りに(紙の上に、紙が、重なる感じ) ----- */
