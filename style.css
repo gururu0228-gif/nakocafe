@@ -830,7 +830,7 @@ code {
   width: 22px;
   height: 22px;
   pointer-events: none;                     /* クリックの邪魔をしない */
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23e59a90'%3E%3Cellipse cx='12' cy='16' rx='6' ry='5'/%3E%3Cellipse cx='5' cy='10' rx='2.2' ry='3'/%3E%3Cellipse cx='9.5' cy='5.5' rx='2.2' ry='3'/%3E%3Cellipse cx='14.5' cy='5.5' rx='2.2' ry='3'/%3E%3Cellipse cx='19' cy='10' rx='2.2' ry='3'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23262524'%3E%3Cellipse cx='12' cy='16' rx='6' ry='5'/%3E%3Cellipse cx='5' cy='10' rx='2.2' ry='3'/%3E%3Cellipse cx='9.5' cy='5.5' rx='2.2' ry='3'/%3E%3Cellipse cx='14.5' cy='5.5' rx='2.2' ry='3'/%3E%3Cellipse cx='19' cy='10' rx='2.2' ry='3'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
   transform: translate(-50%, -50%) rotate(var(--rot)) translateX(var(--side));
   animation: paw-fade 1.1s ease-out forwards;
 }
@@ -1795,4 +1795,56 @@ body:not(.bar) .hero__stage { justify-content: center; gap: clamp(1.5rem, 6vw, 3
 body:not(.bar) .hero__vtext {
   font-size: clamp(1.6rem, 6vw, 2.8rem);
   letter-spacing: 0.5em;
+}
+
+/* 猫の紹介:中で縦に動かさない(漂う丸が、枠からはみ出しても、バーが出ない) */
+#cats { overflow-y: hidden; }
+
+/* 丸が、上下にはみ出しても、切れないように、枠を少し低くして、余白をとる */
+#cats .floaters {
+  height: calc(100svh - 64px - 13rem);
+  min-height: 16rem;
+}
+/* ==============================
+   スマホの調整 + 見出しの修正
+   ============================== */
+
+/* 見出しの「1文字ずつの span」に、帯の飾りが、うつらないようにする */
+body:not(.bar) .book .oval-title span span {
+  display: inline-block;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 見出しの帯:墨色(炭の黒)に戻す */
+body:not(.bar) .book .oval-title span {
+  background: #2b2927;
+  color: #eeece7;
+  border-color: rgba(238, 236, 231, 0.5);   /* 暗い背景でも、輪郭が見えるように、細い明るい線 */
+}
+
+/* スマホ幅(767px以下):全体を、少し小さく */
+@media (max-width: 767px) {
+  html { font-size: 14px; }                 /* 基準の文字の大きさ(いまは16px)。rem で書いた所が、全部、小さくなる */
+  .oval-title { font-size: 1.25rem; }
+  .oval-title span { padding: 6px 28px; }
+  .book > .section { padding: 16px; }
+  .book > .section .oval-title { margin-bottom: 1rem; }
+}
+
+/* ==============================
+   オープニング:2秒
+   ============================== */
+.intro-screen {
+  transition: opacity 0.6s ease, visibility 0.6s;       /* 消えるとき */
+}
+.intro-screen__text {
+  transition: opacity 0.8s ease, scale 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);   /* 「ねんね」が出る */
+}
+.intro-screen__rocket {
+  transition: translate 1.4s cubic-bezier(0.5, 0, 0.2, 1),
+              scale 1.4s cubic-bezier(0.5, 0, 0.2, 1);   /* ロケット君が、左下へ */
 }

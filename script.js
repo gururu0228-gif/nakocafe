@@ -573,8 +573,8 @@ loadMenu();
 const introScreen = document.getElementById('introScreen');
 
 if (introScreen) {
-  const MIN_LOADING = 3000;                 // ローディングを、最低、これだけ(ミリ秒)見せる
-  const OPENING_TIME = 5000;                // 「ねんね」の画面を、見せている時間
+  const MIN_LOADING = 2000;                 // ローディングを、最低、これだけ(ミリ秒)見せる
+  const OPENING_TIME = 2000;                // 「ねんね」の画面を、見せている時間
   const started = performance.now();
   
     // ボタンで、夜のページから、戻ってきたか(mode.js が、メモを残している)
@@ -936,4 +936,23 @@ if ('IntersectionObserver' in window && !reduceMotion) {
   textTargets.forEach((el) => textObserver.observe(el));
 } else {
   textTargets.forEach((el) => el.classList.add('is-visible'));
+}
+
+// ==============================
+// 開いたとき、必ず、いちばん右(ヒーロー)から始める
+// ==============================
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';   // ブラウザの「前の位置を覚える機能」を、切る
+
+function goToStart() {
+  book.scrollLeft = 0;     // 右の端 = ヒーロー
+  wheelTarget = 0;         // ホイールの目標位置も、合わせる
+}
+
+goToStart();                                          // 最初に1回
+window.addEventListener('load', goToStart);           // 全部の読み込みが終わったとき
+window.addEventListener('pageshow', goToStart);       // 戻るボタンなどで、戻ってきたとき
+
+// オープニングの画面の状態(class)が変わるたびに、位置を戻す(消えるとき・始まるとき)
+if (introScreen) {
+  new MutationObserver(goToStart).observe(introScreen, { attributes: true, attributeFilter: ['class'] });
 }
