@@ -965,3 +965,64 @@ document.addEventListener('click', (event) => {
   wheelTarget = 0;                                // 行き先は、右の端(ヒーロー)
   if (wheelFrame === null) wheelFrame = requestAnimationFrame(glide);   // ホイールと、同じ動きで進む
 });
+
+// ==============================
+// 左上のラベル:いまいる章の名前が、ふわっと出て、その章の間、とどまる
+// ==============================
+// ページの id → [英語, 日本語]。ヒーローとフッターは、ラベルなし
+const PAGE_LABELS = {
+  'intro':          ['STORY',    'ねんねのはじまり'],
+  'news':           ['NEWS',     'お知らせ'],
+  'cats':           ['CATS',     '猫の紹介'],
+  'about-concept':  ['CONCEPT',  'コンセプト'],
+  'about-can':      ['ACTIVITY', 'できること'],
+  'about-menu':     ['MENU',     'カフェメニュー'],
+  'about-tour':     ['TOUR',     '店内あんない'],
+  'about-staff':    ['STAFF',    'スタッフ紹介'],
+  'about-system':   ['SYSTEM',   'システム'],
+  'faq':            ['FAQ',      'よくある質問'],
+  'access':         ['ACCESS',   'アクセス'],
+};
+
+// ラベルの箱を作って、ページに足す
+const pageLabel = document.createElement('div');
+pageLabel.className = 'page-label';
+pageLabel.setAttribute('aria-hidden', 'true');              // 飾りなので、読み上げない
+const labelEn = document.createElement('span');
+labelEn.className = 'page-label__en';
+const labelJa = document.createElement('span');
+labelJa.className = 'page-label__ja';
+pageLabel.append(labelEn, labelJa);
+document.body.append(pageLabel);
+
+let labelId = null;       // いま出している章の id
+let labelTimer = null;
+
+function updatePageLabel() {
+  // 画面のまん中(横)に、かかっているページを探す
+  const x = window.innerWidth * 0.5;
+  let id = null;
+  for (const page of book.children) {
+    const rect = page.getBoundingClientRect();
+    if (rect.left <= x && x < rect.right) {
+      if (PAGE_LABELS[page.id]) id = page.id;               // 一覧にある章だけ
+      break;
+    }
+  }
+  if (id === labelId) return;                               // 同じ章なら、何もしない
+  labelId = id;
+
+  pageLabel.classList.remove('is-show');                    // いったん、ふわっと消す
+  clearTimeout(labelTimer);
+  labelTimer = setTimeout(() => {                           // 消えたころに、文字を入れ替えて、出す
+    if (id) {
+      labelEn.textContent = PAGE_LABELS[id][0];
+      labelJa.textContent = PAGE_LABELS[id][1];
+      pageLabel.classList.add('is-show');
+    }
+  }, 350);
+}
+
+book.addEventListener('scroll', updatePageLabel, { passive: true });
+window.addEventListener('resize', updatePageLabel);
+updatePageLabel();
