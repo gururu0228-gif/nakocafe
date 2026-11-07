@@ -916,7 +916,7 @@ function splitChars(el) {
 
 // 対象:見出し、導入文、カードの文字
 const textTargets = document.querySelectorAll(
-  '.hero__vtext, .intro__text, .card__title, .card__big, .card__text, .oval-title span'
+  '.hero__vtext, .intro__text, .card__title, .card__big, .card__text, .oval-title span, .story__headline, .story__text p'
 );
 textTargets.forEach((el) => {
   el.classList.add('text-in');

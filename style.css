@@ -2229,3 +2229,74 @@ body:not(.bar) #access .info dd {
   .page-label__en::before { width: 2rem; }
   .page-label__ja { padding-left: 2.8rem; font-size: 0.8rem; }
 }
+
+/* ==============================
+   16-e:お店の紹介(横に長い、4つの場面)
+   ============================== */
+
+/* 全体:場面を、右から左へ並べる。幅は、場面の合計 */
+body:not(.bar) .story {
+  width: auto;
+  max-width: none;
+  padding: 0;
+  display: flex;
+  flex-direction: row-reverse;          /* 最初の場面が、いちばん右 */
+  align-items: center;
+}
+
+/* 1つの場面 */
+body:not(.bar) .story > .story__scene {
+  width: auto;                          /* 「幅100%」の指定を、取り消す */
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;                  /* 写真が左、文章が右 */
+  align-items: center;
+  gap: clamp(1.5rem, 6vw, 4rem);
+  padding: 0 clamp(2.5rem, 10vw, 8rem);
+}
+
+/* 写真 */
+body:not(.bar) .story__photo {
+  flex: 0 0 auto;
+  width: min(40vw, 16rem);
+  aspect-ratio: 3 / 4;                  /* 縦長 */
+  display: grid;
+  place-items: center;
+  font-size: 4rem;                      /* 仮の絵の大きさ */
+  background: rgba(238, 236, 231, 0.06);
+  border: 1px solid rgba(238, 236, 231, 0.3);
+  overflow: hidden;
+}
+body:not(.bar) .story__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 文章:縦書きの、複数の列(段落ごとに、1列) */
+body:not(.bar) .story__text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  text-combine-upright: digits 2;
+  height: min(60svh, 24rem);
+  display: flex;
+  flex-direction: column;               /* 縦書きでは、「横に並ぶ」向き(右から左へ) */
+  gap: 1.4rem;
+  font-size: 1.15rem;
+  line-height: 2.4;
+  letter-spacing: 0.25em;
+}
+
+/* 大きな一言 */
+body:not(.bar) .story__headline {
+  writing-mode: vertical-rl;
+  height: min(70svh, 28rem);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.9;
+  letter-spacing: 0.3em;
+  font-weight: 500;
+}
+body:not(.bar) .story__headline--small {
+  height: min(50svh, 18rem);
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+}
