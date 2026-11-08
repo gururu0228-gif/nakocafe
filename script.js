@@ -163,34 +163,6 @@ if ('IntersectionObserver' in window && !reduceMotion) {
   targets.forEach((target) => target.classList.add('is-visible'));
 }
 
-// ページの進み具合(0〜1)を返す関数。「計算だけ」する
-function scrollProgress() {
-  const max = document.documentElement.scrollHeight - window.innerHeight;     // スクロールできる長さ
-  return max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;        // 0〜1に収める
-}
-
-const progress = document.getElementById('progress');
-
-function updateProgress() {
-  progress.style.setProperty('--p', scrollProgress());   // CSS変数 --p に、数字を書き込む
-}
-
-window.addEventListener('scroll', updateProgress, { passive: true });   // スクロールするたびに実行
-updateProgress();                                                        // 最初に1回、実行しておく
-
-// ヒーローの写真スライド(3.4秒ごとに、次の1枚へ)
-const slides = document.querySelectorAll('#heroPhotos .slide');   // 写真の枠の中の、スライドを全部集める
-let slideIndex = 0;                                               // いま見えているのは、何枚目か(0が1枚目)
-
-// 2枚以上あって、「動きを減らす」設定ではないときだけ動かす
-if (slides.length > 1 && !reduceMotion) {
-  setInterval(() => {                                             // 3400ミリ秒(3.4秒)ごとに、この中を繰り返す
-    slides[slideIndex].classList.remove('is-active');             // いまの1枚から、印を外す(薄くなって消える)
-    slideIndex = (slideIndex + 1) % slides.length;                // 次の番号にする。最後まで行ったら、0に戻る
-    slides[slideIndex].classList.add('is-active');                // 次の1枚に、印を付ける(濃くなって出てくる)
-  }, 3400);
-}
-
 // ==============================
 // 猫の紹介:cats.json から、丸い写真を、ふわふわ漂わせる
 // ==============================
@@ -487,7 +459,8 @@ let wheelFrame = null;     // 動いている間の、アニメーション番�
 
 function glide() {
   const diff = wheelTarget - book.scrollLeft;
-  if (Math.abs(diff) < 1.5) {                       // ほぼ着いたら、終わる(拡大率の刻みより、大きく)    book.scrollLeft = wheelTarget;
+  if (Math.abs(diff) < 1.5) {                       // ほぼ着いたら、終わる(拡大率の刻みより、大きく)
+    book.scrollLeft = wheelTarget;
     wheelFrame = null;
     return;
   }
@@ -503,15 +476,6 @@ book.addEventListener('wheel', (e) => {
   wheelTarget = Math.max(-bookMax(), Math.min(0, wheelTarget - delta));   // 下へ回すと、左へ進む
   if (wheelFrame === null) wheelFrame = requestAnimationFrame(glide);
 }, { passive: false });
-
-// --- 進み具合バー:帯の位置から、0〜1 を計算 ---
-function updateBookProgress() {
-  const max = bookMax();
-  const p = max > 0 ? Math.min(1, Math.max(0, -book.scrollLeft / max)) : 0;
-  progress.style.setProperty('--p', p);
-}
-book.addEventListener('scroll', updateBookProgress, { passive: true });
-window.addEventListener('resize', updateBookProgress);
 
 // --- ナビのリンク:押した要素の「始まり」を、画面の右寄り(左から65%)へ、なめらかに動かす ---
 let navAnim = null;

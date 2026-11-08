@@ -37,9 +37,6 @@
   <!-- JavaScriptが使えない環境では、この画面を出さない -->
   <noscript><style>.intro-screen { display: none; }</style></noscript>
 
-  <!-- 進み具合バー  -->
-  <div class="progress" id="progress" aria-hidden="true"></div>
-
   <!-- ヘッダー -->
   <header class="header">
   <!-- 背景は画面いっぱいに広げ、中の文字やメニューだけを真ん中に寄せたいので、枠を二重にする（hederとdiv） -->
@@ -355,7 +352,6 @@
   <script src="sections.js"></script>    
   <script src="mode.js"></script> 
   <!--JavaScriptのファイルをHTMLに読み込む行,<link> と同じ役割で、script.js とHTMLをつなぐ。src属性=読み込むファイルの場所を指定する属性 -->
-  <!-- JavaScriptは、HTMLの要素を探して操作するため最後に指示を書く -->
   <!-- <head> に書いて、defer を付ける方法もある。「HTMLを全部読み込んでから実行してね」という指定になる　 -->
 </body>
 
