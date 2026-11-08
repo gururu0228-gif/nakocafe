@@ -2585,3 +2585,30 @@ body:not(.bar) .page-label {
 body:not(.bar) {
   --font-body: "Iroha Kaku", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
 }
+
+/* ABOUT の小項目:PC では、かざしたら開く(スマホは、常に見える) */
+@media (hover: hover) {
+  body:not(.bar) .nav__sub {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height .5s cubic-bezier(.22, 1, .36, 1), opacity .4s;
+  }
+  body:not(.bar) .nav__item--has-sub:hover > .nav__sub,
+  body:not(.bar) .nav__item--has-sub:focus-within > .nav__sub {
+    max-height: 20rem;
+    opacity: 1;
+  }
+}
+
+/* 動きは JS で作るので、ブラウザ側のなめらか移動は、切る */
+body:not(.bar) .book { scroll-behavior: auto; }
+
+/* 背景の紙(ざらざらの質感)をやめる */
+body:not(.bar)::after { display: none; }
+
+/* ABOUT を押して開いたとき(PC でも、スマホでも) */
+body:not(.bar) .nav__item--has-sub.is-sub-open > .nav__sub {
+  max-height: 20rem;
+  opacity: 1;
+}

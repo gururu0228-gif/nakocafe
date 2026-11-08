@@ -9,23 +9,48 @@
 const menuBtn = document.getElementById('menuBtn');
 const nav = document.getElementById('nav');
 
-// menuBtn(ハンバーガー)がクリックされるイベントが起きたら｛｝内を実行する
+// ==============================
+// 目次(開く・閉じる)
+// ==============================
+
+// 閉じる処理を、1つの「関数」にまとめる(何度も使うので)
+function closeMenu() {
+  nav.classList.remove('is-open');
+  menuBtn.classList.remove('is-open');
+  menuBtn.setAttribute('aria-expanded', false);
+  menuBtn.setAttribute('aria-label', 'メニューを開く');
+}
+
+// ボタンを押したら、開け閉め
 menuBtn.addEventListener('click', () => {
-  // HTMLのnavにクリックされてたらis-openを付け、されていなければis-openを外す。またtrueかfalseをisOpenに返す。
-  const isOpen = nav.classList.toggle('is-open');   // navにis-openを付け外し(toggle)する。is-openがついてる=開いてる(true)is-openがついてない=閉じている(false)をisOpenni返す(trueかfalseかはtoggleが自分で判断する)
-  menuBtn.classList.toggle('is-open', isOpen);      // ボタンを「×」に(ボタンにisOpenがtrueならis-openを付ける、falseなら外す)
-  menuBtn.setAttribute('aria-expanded', isOpen);    // 読み上げ用の状態
+  const isOpen = nav.classList.toggle('is-open');
+  menuBtn.classList.toggle('is-open', isOpen);
+  menuBtn.setAttribute('aria-expanded', isOpen);
   menuBtn.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
 });
 
-// メニュー内のリンクを押したら自動で閉じる
- nav.querySelectorAll('a').forEach((link) => {// navの中のリンクを1つずつ処理する。navの<a>を一覧にし順番にlinkという名前で受け取り{}の処理をする
-  link.addEventListener('click', () => { //linkがクリックされたら{}内を実行する
-    nav.classList.remove('is-open'); // navのis-openを外す
-    menuBtn.classList.remove('is-open'); //menuBtnのis-openを外す(✕が三本線に戻る)
-    menuBtn.setAttribute('aria-expanded', false); // 読み上げを閉じる状態にする
-    menuBtn.setAttribute('aria-label', 'メニューを開く'); //読み上げをメニューを開く状態にする
-  });
+// メニュー内のリンクを押したら、閉じる(ABOUT 本体は、除く)
+nav.querySelectorAll('a').forEach((link) => {
+  if (link.parentElement.classList.contains('nav__item--has-sub')) return;   // ABOUT は、閉じない
+  link.addEventListener('click', closeMenu);
+});
+
+// ABOUT 本体を押しても、何も起きない(中の項目を、選んでもらう)
+document.querySelectorAll('.nav__item--has-sub > a').forEach((a) => {
+  a.addEventListener('click', (e) => e.preventDefault());
+});
+
+// 目次の「外」を押したら、閉じる
+document.addEventListener('click', (e) => {
+  if (!nav.classList.contains('is-open')) return;          // 閉じているなら、何もしない
+  if (nav.contains(e.target)) return;                       // 目次の中を押したなら、そのまま
+  if (menuBtn.contains(e.target)) return;                   // ボタンは、上の処理に任せる
+  closeMenu();
+});
+
+// Esc キーでも、閉じる
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && nav.classList.contains('is-open')) closeMenu();
 });
 
 // ============================== 
@@ -488,18 +513,59 @@ function updateBookProgress() {
 book.addEventListener('scroll', updateBookProgress, { passive: true });
 window.addEventListener('resize', updateBookProgress);
 
-// --- ナビのリンク:押した場所の、右端が、画面の右端に来るように、動かす ---
+// --- ナビのリンク:押した要素の「始まり」を、画面の右寄り(左から65%)へ、なめらかに動かす ---
+let navAnim = null;
+
+function stopNavAnim() {
+  if (navAnim !== null) { cancelAnimationFrame(navAnim); navAnim = null; }
+}
+window.addEventListener('wheel', stopNavAnim, { passive: true });
+window.addEventListener('touchstart', stopNavAnim, { passive: true });
+
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function navScrollTo(target) {
+  stopNavAnim();
+  if (wheelFrame !== null) { cancelAnimationFrame(wheelFrame); wheelFrame = null; }
+
+  const from = book.scrollLeft;
+  const dist = target - from;
+  if (Math.abs(dist) < 1) { wheelTarget = target; return; }
+
+  const duration = reduceMotion ? 0 : Math.min(1800, Math.max(900, Math.abs(dist) * 0.4));
+  const t0 = performance.now();
+
+  function step(now) {
+    const t = duration === 0 ? 1 : Math.min(1, (now - t0) / duration);
+    book.scrollLeft = from + dist * easeInOutCubic(t);
+    if (t < 1) {
+      navAnim = requestAnimationFrame(step);
+    } else {
+      navAnim = null;
+      wheelTarget = target;
+    }
+  }
+  navAnim = requestAnimationFrame(step);
+}
+
 document.querySelectorAll('.nav a[href^="#"]').forEach((link) => {
   link.addEventListener('click', (event) => {
+    if (link.parentElement.classList.contains('nav__item--has-sub')) return;   // ABOUT 本体は、移動しない
+
     const href = link.getAttribute('href');
     const dest = document.querySelector(href);
     if (!dest) return;
-    event.preventDefault();                                     // 標準の動きは、止める
-    let left = 0;                                               // #top(ロゴ)は、右の端へ
+    event.preventDefault();
+
+    let left = 0;                                      // #top(ロゴ)は、右の端へ
     if (href !== '#top') {
-      left = book.scrollLeft + (dest.getBoundingClientRect().right - book.getBoundingClientRect().right);
+      const bookRect = book.getBoundingClientRect();
+      const anchorX = bookRect.left + bookRect.width * 0.65;                    // 左から65%の位置
+      left = book.scrollLeft + (dest.getBoundingClientRect().right - anchorX); // 要素の右端を、そこへ
     }
-    book.scrollTo({ left: Math.max(-bookMax(), Math.min(0, left)), behavior: 'smooth' });
+    navScrollTo(Math.max(-bookMax(), Math.min(0, left)));
   });
 });
 
@@ -1181,4 +1247,3 @@ fetch('report.json')
   .then((r) => r.json())
   .then((data) => buildReport(data))
   .catch((e) => console.warn('運営レポート:report.json を読めませんでした', e));
-  
