@@ -279,36 +279,6 @@ code {
 }
 
 /* ==============================
-   猫カード(スマホは1列)
-   ============================== */
-.cat-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-.cat-card {
-  background: #fff;
-  border-radius: var(--radius);
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-.cat-card__img {
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  background: var(--color-tint);
-  border-radius: 12px;
-  margin-bottom: 12px;
-}
-
-.cat-card h3 { font-size: 1.1rem; }
-
-/* ==============================
    料金表
    ============================== */
 .price-table {
@@ -484,12 +454,6 @@ code {
   .hero h1 { font-size: 3rem; }
   .section { padding: 80px 24px; }
 
-  /* 猫カードを3列に */
-  .cat-list {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-  }
-
   .info {
     display: grid;
     grid-template-columns: 120px 1fr;
@@ -554,18 +518,6 @@ code {
   .reveal { opacity: 1; translate: 0 0; transition: none; }
 }
 
-/* 進み具合バー:ページの一番上にくっつく細い線 */
-.progress {
-  position: fixed;                                     /* 画面に固定する(スクロールしても動かない) */
-  top: 0; left: 0;                                     /* 左上に置く */
-  height: 5px;
-  width: 100%;                                         /* 最初から、いっぱいの幅にしておく */
-  background: linear-gradient(90deg, var(--sakura), var(--mint));   /* さくら色 → ミント色 */
-  transform: scaleX(var(--p, 0));                      /* 横に何倍に伸ばすか(0=見えない、1=いっぱい) */
-  transform-origin: 0 50%;                             /* 伸びる軸を、左端にする */
-  z-index: 200;                                        /* 他の要素より、手前に出す */
-}
-
 /* 手描き風の見出し:文字のまわりを、少しゆがんだ楕円で囲む */
 .oval-title {
   text-align: center;            /* 見出しを、真ん中に寄せる */
@@ -601,31 +553,6 @@ code {
   gap: clamp(14px, 4vw, 28px);         /* 画面の幅に合わせて、すき間が変わる(14px〜28px) */
 }
 
-/* 写真の枠:窓のような、アーチ形 */
-.hero__photos {
-  position: relative;
-  flex: 0 0 56%;                       /* 幅は、入れ物の56%で固定 */
-  aspect-ratio: 3 / 4.3;               /* 縦長の比率 */
-  overflow: hidden;                    /* 角の外に、はみ出したものを隠す */
-  background: #fff;
-  border: 3px solid var(--line);
-  border-radius: 999px 999px 28px 28px;   /* 上は半円、下は小さい角丸 */
-  box-shadow: 8px 8px 0 var(--sakura);    /* ぼかさない、さくら色の影 */
-}
-
-/* 1枚ごとの写真(全部、重ねておいて、is-active が付いた1枚だけ見せる) */
-.slide {
-  position: absolute;
-  inset: 0;                            /* 上下左右を、すべて0に。枠いっぱいに広げる */
-  display: grid;
-  place-items: center;
-  font-size: 5rem;                     /* 絵文字の大きさ */
-  background: var(--tint);             /* HTMLで指定した、1枚ごとの色 */
-  opacity: 0;
-  transition: opacity 1.3s ease;       /* 切り替わりを、1.3秒かけて、ふわっと */
-}
-.slide.is-active { opacity: 1; }
-
 /* 縦書きのキャッチコピー(右から左へ読む) */
 .hero__vtext {
   writing-mode: vertical-rl;           /* 縦書き。vertical-rl = 縦・右から左 */
@@ -642,7 +569,6 @@ code {
 /* 広い画面(768px以上)では、写真の枠と文字を、少し大きくする */
 @media (min-width: 768px) {
   .hero__stage { width: min(100%, 45rem); gap: 40px; }   /* 並べる入れ物を、広げる */
-  .hero__photos { flex-basis: 52%; }                     /* 写真の枠の幅(入れ物の52%) */
   .hero__vtext { font-size: 1.7rem; }                    /* 縦書きの文字を、大きくする */
 }
 
@@ -879,43 +805,12 @@ code {
   text-align: center;
 }
 
-/* 写真の枠:少しゆがんだ形(手描き風)。写真が入るまでは、仮の絵(🐾)を中に出す */
-.intro__photo {
-  width: min(100%, 24rem);
-  aspect-ratio: 4 / 3;                 /* 横長の比率 */
-  display: grid;
-  place-items: center;
-  font-size: 4rem;                     /* 仮の絵の大きさ */
-  background: var(--paper-2);
-  border: 3px solid var(--line);
-  border-radius: 48% 52% 46% 54% / 56% 48% 52% 44%;   /* ゆがんだ形 */
-  box-shadow: 8px 8px 0 var(--sakura); /* ぼかさない、さくら色の影 */
-  overflow: hidden;                    /* 写真が、角からはみ出さない */
-}
-.intro__photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;                   /* 枠いっぱいに、写真を広げる(比率は保つ) */
-}
-
 /* ひとこと */
 .intro__text {
   font-size: 1.15rem;
   font-weight: 700;
   line-height: 2.1;
   letter-spacing: 0.08em;
-}
-
-/* ==============================
-   ABOUT:横スクロールのカード
-   ============================== */
-.cards {
-  display: flex;                          /* カードを、横一列に並べる */
-  gap: 1.25rem;
-  overflow-x: auto;                       /* 入りきらない分は、横にスクロール */
-  scroll-snap-type: x mandatory;          /* スクロールしたら、カードの位置にぴたっと止まる */
-  padding: 0.5rem 0.5rem 1.75rem;         /* 影や、スクロールバーが切れないように、余白をあける */
-  scrollbar-width: thin;                  /* スクロールバーを細くする */
 }
 
 .card {
@@ -962,32 +857,6 @@ code {
   font-size: 0.8em;
 }
 
-/* ==============================
-   ABOUT:縦にスクロールすると、横にスライドする
-   ============================== */
-.hscroll {
-  position: relative;
-  height: calc(var(--n, 6) * 80svh);        /* 全体の縦の長さ。カード1枚あたり、画面の高さの80% */
-}
-
-/* 画面に貼りつく窓。ヘッダー(64px)の下に、くっつく */
-.hscroll__sticky {
-  position: sticky;
-  top: 64px;
-  height: calc(100svh - 64px);              /* ヘッダーを除いた、画面いっぱい */
-  overflow: hidden;                         /* 窓の外に出たカードは、隠す */
-}
-
-/* カードを、横一列に並べた帯。JSの数字(--p)で、横に動く */
-.hscroll__track {
-  display: flex;
-  width: calc(var(--n, 6) * 100%);          /* 窓の幅 × 枚数 */
-  height: 100%;
-  /* 動かす量 = 帯の幅の (n-1)/n。--p が 0 なら動かず、1 なら最後のカードまで動く */
-  translate: calc(var(--p, 0) * (var(--n, 6) - 1) / var(--n, 6) * -100%) 0;
-  will-change: translate;                   /* ブラウザに、「動くよ」と伝えて、なめらかにする */
-}
-
 /* 画面いっぱいの1枚 */
 .panel {
   flex: 0 0 calc(100% / var(--n, 6));       /* 帯を、枚数で、等分する */
@@ -1013,21 +882,6 @@ code {
 .panel .card__big   { font-size: 2.6rem; }
 .panel .card__text  { font-size: 1.15rem; }
 .panel .card__list li { font-size: 1.2rem; margin-bottom: 0.6rem; }
-
-/* 猫の手 */
-.cat-hand {
-  position: absolute;                       /* 窓(.hscroll__sticky)の中で、自由に置く */
-  bottom: 0;
-  /* 横の位置:画面の境目。切り替えが進む(--u が増える)ほど、左へ動く */
-  left: calc((1 - var(--u, 0)) * 100%);
-  width: clamp(5rem, 14vw, 8rem);
-  /* 縦の位置:--lift が 0 なら、完全に下に隠れる。1に近いほど、上に出てくる */
-  translate: -50% calc((1 - var(--lift, 0) * 0.85) * 100%);
-  rotate: -8deg;                            /* 少し傾けて、押している感じに */
-  z-index: 5;                               /* カードより、手前 */
-  pointer-events: none;                     /* クリックの邪魔をしない */
-}
-.cat-hand svg { display: block; width: 100%; height: auto; }
 
 /* ナビの階層(ABOUTの下の、サブ項目) */
 /* スマホ(ハンバーガーの中):サブ項目は、少し右に下げて、小さく、並べる */
@@ -1585,17 +1439,6 @@ body:not(.bar) .oval-title span {
   box-shadow: 0 8px 0 -4px rgba(184, 116, 58, 0.45);   /* 下に、暖色の光 */
 }
 
-/* ----- 色つきだったセクション(お知らせ・猫・FAQ)を、炭の黒に ----- */
-body:not(.bar) .section--tinted {
-  background: #2b2927;
-  color: #e9e5dc;
-}
-body:not(.bar) .section--tinted .oval-title span {   /* 黒い背景では、見出しを、紙色に反転 */
-  background: #eeece7;
-  color: #2b2927;
-  border-color: #eeece7;
-}
-
 /* 黒い所に置いた、紙色のカード:文字は、墨のまま */
 body:not(.bar) .news-list,
 body:not(.bar) .faq__item,
@@ -1618,48 +1461,10 @@ body:not(.bar) .panel:nth-child(6) {
 body:not(.bar) .btn { background: #2b2927; color: #eeece7; }
 body:not(.bar) .btn:hover { background: var(--color-main); }
 
-/* ==============================
-   本:サイト全体を、右から左へ、めくる
-   ============================== */
-.hscroll { height: calc(var(--n, 12) * 70svh); }   /* 全体の縦の長さ(1ページ=画面の70%) */
-
-.hscroll__track {
-  flex-direction: row-reverse;     /* 1ページ目が、いちばん右。次のページは、左へ並ぶ */
-  /* p=0 で、右端(1ページ目)が見える。p=1 に近づくほど、右へ動いて、左のページが見える */
-  translate: calc((var(--p, 0) - 1) * (var(--n, 12) - 1) / var(--n, 12) * 100%) 0;
-}
-
-/* 1ページ分の大きさ(ヒーロー・各セクション・ABOUTのカード、全部同じ) */
-.hscroll__track > * {
-  flex: 0 0 calc(100% / var(--n, 12));
-  min-width: 0;
-  min-height: 0;
-  overflow-y: auto;                /* 1画面に収まらないときだけ、中でスクロール */
-  scrollbar-width: thin;
-}
-
-.hscroll__track > .hero { margin-top: 0; min-height: 0; }
-
-/* 通常のセクションは、1ページの中で、縦の真ん中に置く */
-.hscroll__track > .section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 24px 20px;
-}
-.hscroll__track > .section > * { width: 100%; }   /* 幅は、max-width が、決める */
-.hscroll__track > .section .oval-title { margin-bottom: 1.5rem; }
-
 /* 猫の紹介:画面の高さに、収める */
 #cats .floaters {
   height: calc(100svh - 64px - 11rem);
   min-height: 18rem;
-}
-
-/* 猫の手:本が、左へ進むので、手は、左端から、右へ動く */
-.cat-hand {
-  left: calc(var(--u, 0) * 100%);
-  rotate: 8deg;
 }
 
 /* ABOUT の6枚の色:兄弟の数え方が、変わったので、「article の何番目か」で指定し直す */
@@ -1727,9 +1532,6 @@ body:not(.bar) .book .oval-title span {
 body:not(.bar) .hero__vtext { color: #cfc9bd; }
 body:not(.bar) .floater__name,
 body:not(.bar) .tour__cap { color: #2d2c2b; }
-
-/* 進み具合バー:右から、左へ伸びる */
-body:not(.bar) .progress { transform-origin: 100% 50%; }
 
 /* ==============================
    和柄:青海波(せいがいは)の帯
@@ -2097,10 +1899,7 @@ body:not(.bar) .intro {
   justify-content: center;
   gap: clamp(1.5rem, 6vw, 4rem);
 }
-body:not(.bar) .intro__photo {
-  flex: 0 0 auto;
-  width: min(40vw, 16rem);
-}
+
 body:not(.bar) .intro__text {
   writing-mode: vertical-rl;           /* 縦書き。右の列から、左の列へ読む */
   text-orientation: mixed;             /* 漢字は、立てて。英数字は、横向き */
@@ -2372,9 +2171,6 @@ body:not(.bar) .menu-btn { top: 88px; }
 
 /* フッターの、光のにじみ(縦の線に見えていたもの)をなくす */
 body:not(.bar) .book > .footer { box-shadow: none; }
-
-/* 古い進み具合バー(上の線)は、やめる */
-body:not(.bar) .progress { display: none; }
 
 /* ロケット君:右の端(0%)から、左の端(100%)へ、歩く */
 .walker {
