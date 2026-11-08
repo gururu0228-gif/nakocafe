@@ -981,6 +981,7 @@ const PAGE_LABELS = {
   'about-staff':    ['STAFF',    'スタッフ紹介'],
   'about-system':   ['SYSTEM',   'システム'],
   'faq':            ['FAQ',      'よくある質問'],
+  'report': ['REPORT', '運営レポート'],
   'access':         ['ACCESS',   'アクセス'],
 };
 
@@ -1085,3 +1086,99 @@ function updateWalker() {
 book.addEventListener('scroll', updateWalker, { passive: true });
 window.addEventListener('resize', updateWalker);
 updateWalker();
+
+// ==============================
+// 運営レポート(数字は、すべてダミー)
+// ==============================
+
+function buildReport(REPORT) {
+  const sec = document.getElementById('report');
+  if (!sec) return;
+
+  const el = (tag, cls, text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  };
+  const byId = (id) => document.getElementById(id);   // 無い ID でも、止まらないように使う
+
+  // 大きな数字
+  const stats = byId('reportStats');
+  if (stats) {
+    REPORT.stats.forEach((s) => {
+      const box = el('div', 'report__stat');
+      const b = el('b', '', s.value);
+      b.append(el('small', '', s.unit));
+      box.append(b, el('span', '', s.label));
+      stats.append(box);
+    });
+  }
+
+  // 棒グラフ
+  const bars = byId('reportBars');
+  if (bars) {
+    const max = Math.max(...REPORT.monthly.map((m) => m[1]));
+    REPORT.monthly.forEach(([month, v], i) => {
+      const col = el('div', 'bar-col');
+      col.style.setProperty('--i', i);
+      const bar = el('i');
+      bar.style.setProperty('--v', (v / max) * 100);
+      col.append(el('span', '', v), bar, el('span', '', month));
+      bars.append(col);
+    });
+  }
+
+  // ドーナツ(収入・支出)
+  function drawDonut(donutId, legendId, items) {
+    const donut = byId(donutId);
+    const legend = byId(legendId);
+    if (!donut || !legend) {                       // HTML 側に無ければ、教えて、止まらず進む
+      console.warn('運営レポート:HTML に見つからない ID →', donutId, legendId);
+      return;
+    }
+    let acc = 0;
+    const stops = items.map((u) => {
+      const from = acc;
+      acc += u.pct;
+      return `${u.color} ${from}% ${acc}%`;
+    });
+    donut.style.background = `conic-gradient(${stops.join(', ')})`;
+    items.forEach((u) => {
+      const li = el('li', '', `${u.label} ${u.pct}%`);
+      li.append(el('small', '', u.amt));
+      li.style.setProperty('--c', u.color);
+      legend.append(li);
+    });
+  }
+  drawDonut('incomeDonut', 'incomeLegend', REPORT.income);
+  drawDonut('expenseDonut', 'expenseLegend', REPORT.expense);
+
+  // ひとこと月報
+  const log = byId('reportLog');
+  if (log) {
+    REPORT.log.forEach((l) => {
+      const li = el('li');
+      li.append(el('time', '', l.m), document.createTextNode(l.t));
+      log.append(li);
+    });
+  }
+  const note = byId('reportNote');
+  if (note) note.textContent = REPORT.note;
+
+  // 見える位置まで来たら、グラフを動かす
+  const io = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      sec.classList.add('is-in');
+      io.disconnect();
+    }
+  }, { root: book, threshold: 0.25 });
+  io.observe(sec);
+}
+
+// JSON を読み込んでから、描く(パスは、ニュースの JSON と同じ場所に合わせる)
+fetch('report.json')
+  .then((r) => r.json())
+  .then((data) => buildReport(data))
+  .catch((e) => console.warn('運営レポート:report.json を読めませんでした', e));
+  

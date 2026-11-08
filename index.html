@@ -9,13 +9,11 @@
    <!--検索結果で、タイトルの下に出る説明文 -->
    <meta name="description" content="猫カフェ ねんねの公式サイト。料金、猫の紹介、アクセスをご案内します。">
    
-   <!-- Google Fonts(外部のサービス)から、丸い文字「Zen Maru Gothic」を読み込む -->
    <!-- preconnect:先に接続だけ済ませておく合図。読み込みが少し速くなる -->
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <!-- 文字の設定ファイルを読み込む。wght@400;500;700;900 は、太さの種類 -->
    <!-- display=swap:文字が届くまでは、代わりの文字で表示しておく -->
-   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">   <!--今回は外部CSSを読み込む。レルは参照するファイルの属性をおしえる、エイチレフはその参照先 -->
    <link rel="stylesheet" href="style.css">
    
 </head>
@@ -83,6 +81,7 @@
           </li>
           <li><a href="#cats">猫の紹介</a></li>
           <li><a href="#faq">よくある質問</a></li>
+          <li><a href="#report">運営レポート</a></li>
           <li><a href="#access">アクセス</a></li>
         </ul>
       </nav>
@@ -264,6 +263,37 @@
         </div>
       </div>
     </section>
+
+<!-- 運営レポート -->
+<section id="report" class="section report">
+  <div class="report__head">
+    <h2 class="report__title">運営レポート</h2>
+    <p class="report__lead">ねんねの、いまの様子です。</p>
+  </div>
+
+  <div class="report__main">
+    <div class="report__stats" id="reportStats"></div>
+
+    <div class="report__charts">
+      <div class="report__bars" id="reportBars"></div>
+
+      <div class="report__usage">
+        <h3 class="report__sub">収入のうちわけ</h3>
+        <div class="report__donut" id="incomeDonut"></div>
+        <ul class="report__legend" id="incomeLegend"></ul>
+      </div>
+
+      <div class="report__usage">
+        <h3 class="report__sub">支出のうちわけ</h3>
+        <div class="report__donut" id="expenseDonut"></div>
+        <ul class="report__legend" id="expenseLegend"></ul>
+      </div>
+    </div>
+
+    <ul class="report__log" id="reportLog"></ul>
+    <p class="report__note" id="reportNote"></p>
+  </div>
+</section>    
 
     <!-- 12:アクセス -->
     <section class="section" id="access">
