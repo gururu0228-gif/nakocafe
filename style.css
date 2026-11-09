@@ -290,16 +290,6 @@ code {
   overflow: hidden;
 }
 
-/* 料金表:コース名は左、金額は中央にそろえる */
-.price-table th,
-.price-table td {
-  text-align: center;          /* 平日・土日祝の列を、中央にそろえる */
-}
-.price-table th:first-child,
-.price-table td:first-child {
-  text-align: left;            /* 1列目(コース名)だけ、左にそろえる */
-}
-
 /* 表の下の一文:表と同じ幅にして、中央に置く */
 .price-note {
   max-width: 35rem;            /* 表(.price-table)と同じ幅 */
@@ -579,9 +569,7 @@ code {
   --d: clamp(4.5rem, 18vw, 9.5rem);   /* 前: 6rem, 24vw。スマホは約72〜108px */
   max-width: 64rem;
   margin: 0 auto;
-  padding: calc(var(--range, 0px) * 0.6 + 10px) calc(var(--range, 0px) * 0.5);   /* 前: * 0.6 + 20px / var(--range) */
-  display: grid;
-  /* 1つの置き場の幅を「丸+余白」にして、入るだけ、自動で並べる */
+ /* 1つの置き場の幅を「丸+余白」にして、入るだけ、自動で並べる */
   grid-template-columns: repeat(auto-fit, minmax(calc(var(--d) + 2rem), 1fr));   /* 前: + 3rem */
   gap: 2rem 1rem;                                                                 /* 前: 1.5rem 0.75rem */
 }
@@ -598,10 +586,7 @@ code {
 /* 猫1匹分の置き場:ゆっくり、ふわふわ動く */
 .floater {
   justify-self: center;                          /* 置き場の、真ん中に置く */
-  width: var(--d);
-  height: var(--d);
   margin-top: var(--shift, 0px);                 /* 縦の位置を、少しずつ、ずらす(JSが数字を書く) */
-  animation: floater-drift var(--dur, 7s) ease-in-out var(--delay, 0s) infinite;
 }
 
 /* 0%と100%は元の位置。そのあいだに、3か所の目的地を、順番に巡る */
@@ -1645,11 +1630,7 @@ body:not(.bar) .book .oval-title span {
 }
 .intro-screen__text {
   transition: opacity 0.8s ease, scale 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);   /* 「ねんね」が出る */
-}
-.intro-screen__rocket {
-  transition: translate 1.4s cubic-bezier(0.5, 0, 0.2, 1),
-              scale 1.4s cubic-bezier(0.5, 0, 0.2, 1);   /* ロケット君が、左下へ */
-}
+}}
 
 /* ==============================
    間接照明:暖色の光
@@ -1663,7 +1644,7 @@ body:not(.bar) .book {
   background: radial-gradient(
     120% 55% at 50% -8%,
     rgba(var(--warm), 0.30) 0%,
-    rgba(var(--warm), 0.10) 45%,
+    rgba(var(--warm), 0.10) 45%,transition: opacitytransition: opacity
     transparent 70%
   );
 }
