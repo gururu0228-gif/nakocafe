@@ -1061,6 +1061,7 @@ updatePageLabel();
 // ==============================
 // 進み具合:ロケット君が、右から左へ歩く
 // ==============================
+const WALKER_PREFIX = 'walk';                            // 画像名の頭(images/walk-1.png ...)
 const WALKER_FRAMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];   // 歩くコマ(ローディングと同じ)
 const WALKER_FRAME_MS = 90;                              // 1コマを、見せる時間
 const IMAGES_FACE_RIGHT = true;                          // 絵が、右向きなら true。左向きなら false
@@ -1075,7 +1076,7 @@ walker.append(walkerImg);
 document.body.append(walker);
 
 // 先に、全部のコマを、読み込んでおく(ちらつかないように)
-WALKER_FRAMES.forEach((n) => { new Image().src = `images/rocket-${n}.png`; });
+WALKER_FRAMES.forEach((n) => { new Image().src = `images/${WALKER_PREFIX}-${n}.png`; });
 
 let walkerFrame = 0;
 let walkerTimer = null;       // コマ送りのタイマー
@@ -1100,8 +1101,8 @@ function updateWalker() {
   if (!reduceMotion && walkerTimer === null) {
     walkerTimer = setInterval(() => {
       walkerFrame = (walkerFrame + 1) % WALKER_FRAMES.length;
-      walkerImg.src = `images/rocket-${WALKER_FRAMES[walkerFrame]}.png`;
-    }, WALKER_FRAME_MS);
+            walkerImg.src = `images/${WALKER_PREFIX}-${WALKER_FRAMES[walkerFrame]}.png`;
+                  }, WALKER_FRAME_MS);
   }
 
   // 4. 0.2秒、動きがなければ、立ち止まる
@@ -1109,8 +1110,8 @@ function updateWalker() {
   walkerStopTimer = setTimeout(() => {
     clearInterval(walkerTimer);
     walkerTimer = null;
-    walkerImg.src = 'images/rocket-stand.png';
-  }, 200);
+    walkerImg.src = `images/${WALKER_PREFIX}-stand.png`;
+    }, 200);
 }
 
 book.addEventListener('scroll', updateWalker, { passive: true });
