@@ -2366,6 +2366,11 @@ body:not(.bar) .nav__item--has-sub.is-sub-open > .nav__sub {
   opacity: 0;
   transform: scale(0.4);
   transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  filter:
+    drop-shadow(3px 0 0 #fff)
+    drop-shadow(-3px 0 0 #fff)
+    drop-shadow(0 3px 0 #fff)
+    drop-shadow(0 -3px 0 #fff);        /* 上下左右に、白をずらして重ねる = 縁取り */
 }
 .rocket-open.is-on .rocket-open__circle,
 .rocket-open.is-on .rocket-open__rocket {
@@ -2374,7 +2379,9 @@ body:not(.bar) .nav__item--has-sub.is-sub-open > .nav__sub {
 }
 .rocket-open__circle {
   animation: rocketSpin 12s linear infinite;   /* ゆっくり回る */
+  filter: brightness(0) invert(1);             /* 線を、真っ白に */
 }
+
 @keyframes rocketSpin { to { rotate: 360deg; } }
 
 /* ドアが、開いたままになる */
