@@ -2057,44 +2057,44 @@ body:not(.bar) .story__headline--small {
   .page-label__ja { padding-left: 4.4rem; font-size: 1.1rem; }   /* 線の幅(3.6rem) + すき間(0.8rem) */
 }
 
-/* ----- 4. 昼夜の切り替え:炭の黒の、ドアの形 ----- */
+/* ----- 4. 昼夜の切り替え:画像のドア + ふちの間接照明 ----- */
 body:not(.bar) .mode-btn {
-  writing-mode: vertical-rl;                       /* 文字は、縦書き */
-  width: 3.6rem;
-  height: 9.6rem;
-  padding: 1rem 0;
+  width: 5.9rem;                                   /* 画像の縦横比(9:16)に合わせる */
+  height: 10.5rem;
+  writing-mode: vertical-rl;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
-  font-size: 0.72rem;
+  white-space: nowrap;                             /* 1列で、縦に流す */
+  padding: 1rem 0;                                 /* 上にも、かぶせてよいので、中央に */
+  font-size: 0.78rem;
   letter-spacing: 0.15em;
-  color: #e9e5dc;
-  background: #262524;                             /* 炭の黒 */
-  border: 1px solid rgba(238, 236, 231, 0.45);
-  border-radius: 1.8rem 1.8rem 3px 3px;            /* 上が、アーチ形のドア */
+  color: #f6f1e7;
+  text-shadow:
+    0 0 3px rgba(0, 0, 0, 1),
+    0 1px 6px rgba(0, 0, 0, 0.9),
+    0 0 12px rgba(0, 0, 0, 0.7);                   /* 明るい窓の上でも読める */
+  background: #262524 url("images/door.png") center / 100% 100% no-repeat;
+  border: 0;
+  border-radius: 2.95rem 2.95rem 2px 2px;         /* 上のアーチ = 幅の半分 */
   box-shadow:
-    inset 0 0 0 4px #262524,
-    inset 0 0 0 5px rgba(238, 236, 231, 0.2),      /* 内側の、ドアの枠(パネル) */
-    0 8px 16px -6px rgba(var(--warm), 0.45);       /* ドアの下から、暖色の光がもれる */
-  transform-origin: left center;                   /* 左の辺が、ちょうつがい */
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    0 0 6px 0 rgba(var(--warm), 0.3),
+    0 0 20px 4px rgba(var(--warm), 0.22),
+    0 0 44px 12px rgba(var(--warm), 0.14);
+  transform-origin: right center;                  /* 右の辺が、ちょうつがい */  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s;
 }
+
 body:not(.bar) .mode-btn:hover {
-  background: #262524;
   opacity: 1;
-  transform: perspective(320px) rotateY(-24deg);   /* ちょっと、ドアが開く */
+  transform: perspective(320px) rotateY(24deg);
+  box-shadow:
+    0 0 8px 1px rgba(var(--warm), 0.42),
+    0 0 26px 6px rgba(var(--warm), 0.3),
+    0 0 54px 16px rgba(var(--warm), 0.2);
 }
-body:not(.bar) .mode-btn::after {                  /* ドアノブ */
-  content: "";
-  position: absolute;
-  left: 0.55rem;
-  top: 55%;
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  background: rgb(var(--warm));
-}
+
+body:not(.bar) .mode-btn::after { display: none; }   /* ドアノブは画像にあるので消す */
+#modeIcon { display: none; }
 
 /* ----- 5. スマホの文字を、少し小さく(14px → 13px) ----- */
 @media (max-width: 767px) {
