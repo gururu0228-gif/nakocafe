@@ -2345,3 +2345,39 @@ body:not(.bar) .nav__item--has-sub.is-sub-open > .nav__sub {
   max-height: 20rem;
   opacity: 1;
 }
+
+/* ----- ドアを開けたときの、ロケット君(夜へ行く前の1秒) ----- */
+.rocket-open {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;                       /* 暗い幕(2000)の下 */
+  display: grid;
+  place-items: center;
+  background: rgba(11, 10, 16, 0);
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+.rocket-open.is-on { background: rgba(11, 10, 16, 0.55); }
+
+.rocket-open__circle,
+.rocket-open__rocket {
+  grid-area: 1 / 1;                    /* 2枚を、同じ場所に重ねる */
+  width: min(70vw, 380px);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rocket-open.is-on .rocket-open__circle,
+.rocket-open.is-on .rocket-open__rocket {
+  opacity: 1;
+  transform: scale(1);
+}
+.rocket-open__circle {
+  animation: rocketSpin 12s linear infinite;   /* ゆっくり回る */
+}
+@keyframes rocketSpin { to { rotate: 360deg; } }
+
+/* ドアが、開いたままになる */
+body:not(.bar) .mode-btn.is-opening {
+  transform: perspective(320px) rotateY(24deg);
+}
