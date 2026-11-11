@@ -2070,10 +2070,10 @@ body:not(.bar) .mode-btn {
   font-size: 0.78rem;
   letter-spacing: 0.15em;
   color: #f6f1e7;
-  text-shadow:
-    0 0 3px rgba(0, 0, 0, 1),
-    0 1px 6px rgba(0, 0, 0, 0.9),
-    0 0 12px rgba(0, 0, 0, 0.7);                   /* 明るい窓の上でも読める */
+  /* text-shadow: */
+    /* 0 0 3px rgba(0, 0, 0, 1), */
+    /* 0 1px 6px rgba(0, 0, 0, 0.9), */
+    /* 0 0 12px rgba(0, 0, 0, 0.7);                   /* 明るい窓の上でも読める */
   background: #262524 url("images/door.png") center / 100% 100% no-repeat;
   border: 0;
   border-radius: 2.95rem 2.95rem 2px 2px;         /* 上のアーチ = 幅の半分 */
@@ -2091,6 +2091,28 @@ body:not(.bar) .mode-btn:hover {
     0 0 8px 1px rgba(var(--warm), 0.42),
     0 0 26px 6px rgba(var(--warm), 0.3),
     0 0 54px 16px rgba(var(--warm), 0.2);
+}
+
+/* PC:ドアを、少し右へ */
+@media (min-width: 1024px) {
+  body:not(.bar) .mode-btn { left: 48px; }
+}
+
+/* スマホ:ドアを、少し小さく(縦横比 9:16 は保つ) */
+@media (max-width: 767px) {
+  body:not(.bar) .mode-btn {
+    width: 5rem;
+    height: 8.9rem;
+    border-radius: 2.5rem 2.5rem 2px 2px;   /* 上のアーチ = 幅の半分 */
+    font-size: 0.7rem;
+  }
+}
+
+/* 文字を、ドアの真ん中に */
+#modeLabel {
+  display: block;
+  line-height: 1;
+  translate: -0.1em 0;       /* まだ右にずれて見えたら、数字を大きく(-0.2em など) */
 }
 
 body:not(.bar) .mode-btn::after { display: none; }   /* ドアノブは画像にあるので消す */
