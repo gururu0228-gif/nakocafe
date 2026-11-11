@@ -2101,18 +2101,19 @@ body:not(.bar) .mode-btn:hover {
 /* スマホ:ドアを、少し小さく(縦横比 9:16 は保つ) */
 @media (max-width: 767px) {
   body:not(.bar) .mode-btn {
-    width: 5rem;
-    height: 8.9rem;
-    border-radius: 2.5rem 2.5rem 2px 2px;   /* 上のアーチ = 幅の半分 */
-    font-size: 0.7rem;
+    width: 4.2rem;
+    height: 7.47rem;                          /* 幅 × 16/9。画像の縦横比を保つ */
+    border-radius: 2.1rem 2.1rem 2px 2px;     /* アーチ = 幅の半分 */
+    font-size: 0.62rem;
   }
+ #modeLabel { translate: -0.45em 0; }      /* スマホだけ、左へ */ 
 }
 
 /* 文字を、ドアの真ん中に */
 #modeLabel {
   display: block;
   line-height: 1;
-  translate: -0.1em 0;       /* まだ右にずれて見えたら、数字を大きく(-0.2em など) */
+  translate: -0.1em 0;
 }
 
 body:not(.bar) .mode-btn::after { display: none; }   /* ドアノブは画像にあるので消す */
