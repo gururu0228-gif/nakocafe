@@ -33,7 +33,8 @@ if (modeBtn && pageFade) {
       '<img class="rocket-open__rocket" src="images/rocket-BAROPEN.png" alt="">';
     document.body.appendChild(r);
     requestAnimationFrame(() => requestAnimationFrame(() => r.classList.add('is-on')));
-    setTimeout(cover, 1000);                           // 1秒見せてから、暗くして移る
+    setTimeout(() => r.classList.add('is-zoom'), 500); // 現れたあと、ズームインを始める
+    setTimeout(cover, 1200);                           // ほぼ画面いっぱいになったら、幕をかけて移る
   });
 
   // ページが、表示されたら、幕を、ふわっと外す(夜のページは、最初から、幕が、かかっている)

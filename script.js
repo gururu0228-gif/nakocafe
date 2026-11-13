@@ -1062,17 +1062,29 @@ updatePageLabel();
 // 進み具合:ロケット君が、右から左へ歩く
 // ==============================
 const WALKER_PREFIX = 'walk';                            // 画像名の頭(images/walk-1.png ...)
-const WALKER_FRAMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];   // 歩くコマ(ローディングと同じ)
-const WALKER_FRAME_MS = 90;                              // 1コマを、見せる時間
+const WALKER_FRAMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];   // 歩くコマ(ローディングと同じ)
+const WALKER_FRAME_MS = 150;                              // 1コマを、見せる時間
 const IMAGES_FACE_RIGHT = true;                          // 絵が、右向きなら true。左向きなら false
 
 const walker = document.createElement('div');
 walker.className = 'walker';
 walker.setAttribute('aria-hidden', 'true');              // 飾りなので、読み上げない
-const walkerImg = document.createElement('img');
-walkerImg.src = 'images/rocket-stand.png';               // 立ち止まっている絵
-walkerImg.alt = '';
-walker.append(walkerImg);
+// 全部の絵を、先に並べておく(見せるものだけ、切り替える)
+const walkerImgs = {};
+[, ...WALKER_FRAMES].forEach((k) => {
+  const im = document.createElement('img');
+  im.src = `images/${WALKER_PREFIX}-${k}.png`;
+  im.alt = '';
+  walkerImgs[k] = im;
+  walker.append(im);
+});
+let walkerNow = WALKER_FRAMES[0];
+function showWalker(k) {
+  walkerImgs[walkerNow].classList.remove('is-show');
+  walkerImgs[k].classList.add('is-show');
+  walkerNow = k;
+}
+walkerImgs[walkerNow].classList.add('is-show');
 document.body.append(walker);
 
 // 先に、全部のコマを、読み込んでおく(ちらつかないように)
@@ -1101,7 +1113,7 @@ function updateWalker() {
   if (!reduceMotion && walkerTimer === null) {
     walkerTimer = setInterval(() => {
       walkerFrame = (walkerFrame + 1) % WALKER_FRAMES.length;
-            walkerImg.src = `images/${WALKER_PREFIX}-${WALKER_FRAMES[walkerFrame]}.png`;
+            showWalker(WALKER_FRAMES[walkerFrame]);
                   }, WALKER_FRAME_MS);
   }
 
@@ -1110,8 +1122,7 @@ function updateWalker() {
   walkerStopTimer = setTimeout(() => {
     clearInterval(walkerTimer);
     walkerTimer = null;
-    walkerImg.src = `images/${WALKER_PREFIX}-stand.png`;
-    }, 200);
+  }, 200);
 }
 
 book.addEventListener('scroll', updateWalker, { passive: true });
@@ -1206,9 +1217,3 @@ function buildReport(REPORT) {
   }, { root: book, threshold: 0.25 });
   io.observe(sec);
 }
-
-// JSON を読み込んでから、描く(パスは、ニュースの JSON と同じ場所に合わせる)
-fetch('report.json')
-  .then((r) => r.json())
-  .then((data) => buildReport(data))
-  .catch((e) => console.warn('運営レポート:report.json を読めませんでした', e));
