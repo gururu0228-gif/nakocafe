@@ -2445,10 +2445,21 @@ body:not(.bar) .menu-btn::after {
   .intro-screen__text { translate: -11vw 0; }
 }
 
-/* 目次ボタン:少し小さく、文字を線の真ん中へ(id指定なので、順番に関係なく効く) */
+/* 目次ボタン:PC */
 body:not(.bar) #menuBtn {
-  scale: 1.4;                          /* 前は 1.8。もっと小さくするなら 1.2 */
+  scale: 1.4;
 }
 body:not(.bar) #menuBtn::after {
-  translate: -0.5em 0;                 /* 文字を、左へ */
+  translate: 0 0;                      /* PC は、ずらさない */
+}
+
+/* 目次ボタン:スマホ(小さく、上へ。文字は、線の真ん中へ) */
+@media (max-width: 767px) {
+  body:not(.bar) #menuBtn {
+    scale: 1.15;                       /* PC は 1.4。もっと小さくするなら 1.0 */
+    top: 72px;                         /* 前は 88px。数字を小さくすると、上へ */
+  }
+  body:not(.bar) #menuBtn::after {
+    translate: -0.5em 0;               /* iPhone で、右に寄って見えたぶんを戻す */
+  }
 }
