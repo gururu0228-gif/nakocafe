@@ -1077,6 +1077,7 @@ WALKER_FRAMES.forEach((k) => {
   im.decoding = 'async';
   let tries = 0;
   im.onerror = () => {                       // 読み込みに失敗したら、やり直す(最大3回)
+　   walker.dataset.fail = (walker.dataset.fail || '') + k + ' ';
     if (tries++ < 3) setTimeout(() => { im.src = `images/${WALKER_PREFIX}-${k}.png?r=${tries}`; }, 300 * tries);
   };
   im.src = `images/${WALKER_PREFIX}-${k}.png`;
