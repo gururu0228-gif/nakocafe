@@ -2106,7 +2106,6 @@ body:not(.bar) .mode-btn:hover {
     border-radius: 2.1rem 2.1rem 2px 2px;     /* アーチ = 幅の半分 */
     font-size: 0.62rem;
   }
-  #modeLabel { translate: -1.2em 0; }      /* 前は -0.45em。もう少し左へ */
 }
 
 /* 文字を、ドアの真ん中に */
@@ -2119,6 +2118,10 @@ body:not(.bar) .mode-btn:hover {
 
 body:not(.bar) .mode-btn::after { display: none; }   /* ドアノブは画像にあるので消す */
 #modeIcon { display: none; }
+
+@media (max-width: 767px) {
+  #modeLabel { translate: -1.2em 0; }      /* スマホだけ、さらに左へ */
+}
 
 /* ----- 5. スマホの文字を、少し小さく(14px → 13px) ----- */
 @media (max-width: 767px) {

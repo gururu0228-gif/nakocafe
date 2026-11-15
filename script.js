@@ -1015,7 +1015,7 @@ const PAGE_LABELS = {
   'access':         ['ACCESS',   'アクセス'],
 };
 
-// ラベルの箱を作って、ページに足す
+// ラベルの箱を作って、ページの上に置く
 const pageLabel = document.createElement('div');
 pageLabel.className = 'page-label';
 pageLabel.setAttribute('aria-hidden', 'true');              // 飾りなので、読み上げない
@@ -1071,13 +1071,19 @@ walker.className = 'walker';
 walker.setAttribute('aria-hidden', 'true');              // 飾りなので、読み上げない
 // 全部の絵を、先に並べておく(見せるものだけ、切り替える)
 const walkerImgs = {};
-[, ...WALKER_FRAMES].forEach((k) => {
+WALKER_FRAMES.forEach((k) => {
   const im = document.createElement('img');
-  im.src = `images/${WALKER_PREFIX}-${k}.png`;
   im.alt = '';
+  im.decoding = 'async';
+  let tries = 0;
+  im.onerror = () => {                       // 読み込みに失敗したら、やり直す(最大3回)
+    if (tries++ < 3) setTimeout(() => { im.src = `images/${WALKER_PREFIX}-${k}.png?r=${tries}`; }, 300 * tries);
+  };
+  im.src = `images/${WALKER_PREFIX}-${k}.png`;
   walkerImgs[k] = im;
   walker.append(im);
 });
+
 let walkerNow = WALKER_FRAMES[0];
 function showWalker(k) {
   walkerImgs[walkerNow].classList.remove('is-show');
@@ -1086,9 +1092,6 @@ function showWalker(k) {
 }
 walkerImgs[walkerNow].classList.add('is-show');
 document.body.append(walker);
-
-// 先に、全部のコマを、読み込んでおく(ちらつかないように)
-WALKER_FRAMES.forEach((n) => { new Image().src = `images/${WALKER_PREFIX}-${n}.png`; });
 
 let walkerFrame = 0;
 let walkerTimer = null;       // コマ送りのタイマー
