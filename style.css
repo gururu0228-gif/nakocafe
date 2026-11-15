@@ -2432,9 +2432,15 @@ body:not(.bar) .mode-btn.is-opening {
   body:not(.bar) .hero__stage { translate: -3.5vw 0; }
 }
 
-.walker::after {
-  content: attr(data-fail);
-  position: absolute; left: 0; top: -1.4em;
-  font-size: 12px; color: #fff; background: rgba(200, 0, 0, 0.8);
-  padding: 0 4px;
+/* 目次ボタン:少し小さく、文字を線の真ん中へ */
+body:not(.bar) .menu-btn {
+  scale: 1.4;                          /* 前は 1.8。もっと小さくするなら 1.2 */
+}
+body:not(.bar) .menu-btn::after {
+  translate: -0.5em 0;                 /* 文字が、線より右に寄っていたぶん、左へ */
+}
+
+/* スマホ:オープニングの「ねんね」を、真ん中へ(右に寄っていたぶん、戻す) */
+@media (max-width: 767px) {
+  .intro-screen__text { translate: -11vw 0; }
 }
