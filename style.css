@@ -2444,3 +2444,11 @@ body:not(.bar) .menu-btn::after {
 @media (max-width: 767px) {
   .intro-screen__text { translate: -11vw 0; }
 }
+
+/* 目次ボタン:少し小さく、文字を線の真ん中へ(id指定なので、順番に関係なく効く) */
+body:not(.bar) #menuBtn {
+  scale: 1.4;                          /* 前は 1.8。もっと小さくするなら 1.2 */
+}
+body:not(.bar) #menuBtn::after {
+  translate: -0.5em 0;                 /* 文字を、左へ */
+}
