@@ -1221,3 +1221,10 @@ function buildReport(REPORT) {
   }, { root: book, threshold: 0.25 });
   io.observe(sec);
 }
+
+
+// JSON を読み込んでから、描く
+fetch('report.json')
+  .then((r) => r.json())
+  .then((data) => buildReport(data))
+  .catch((e) => console.warn('運営レポート:report.json を読めませんでした', e));

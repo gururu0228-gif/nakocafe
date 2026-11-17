@@ -2463,3 +2463,140 @@ body:not(.bar) #menuBtn::after {
     translate: -0.5em 0;               /* iPhone で、右に寄って見えたぶんを戻す */
   }
 }
+/* ----- 目次:日本の本の「目次」のように、縦書き ----- */
+body:not(.bar) #nav {
+  --toc-h: 17rem;                      /* 1列の高さ(項目名 + 点線 + 番号) */
+  writing-mode: vertical-rl;
+  width: fit-content;
+  max-width: 100vw;
+  height: auto;
+  max-height: 100svh;
+  bottom: auto;
+  padding: 4.2rem 4.4rem 2rem 1rem;    /* 右は、目次ボタンの下を、避ける */
+  overflow: auto;
+  border-radius: 0 0 0 0.8rem;
+  counter-reset: toc;                  /* 番号を、1から数える */
+}
+
+/* いちばん右の、見出し「目 次」 */
+body:not(.bar) #nav::before {
+  content: "目　次";
+  display: block;
+  margin-left: 1.2rem;
+  font-size: 1.1rem;
+  line-height: 1.9;
+  letter-spacing: 0.4em;
+  color: #e9e5dc;
+}
+
+/* 項目を、右から左へ、1列ずつ */
+body:not(.bar) #nav > ul {
+  display: flex;
+  flex-direction: column;              /* 縦書きでは、column が、右から左 */
+  align-items: flex-start;
+}
+body:not(.bar) #nav > ul > li {
+  display: flex;
+  flex-direction: column;              /* ABOUT の列 → 小項目の列、が、右から左へ */
+  align-items: flex-start;
+  padding: 0 0.7rem;
+  border-left: 1px solid rgba(238, 236, 231, 0.16);
+}
+body:not(.bar) #nav > ul > li:last-child { border-left: 0; }
+
+/* 1列:項目名 → 点線 → 番号(上から下) */
+body:not(.bar) #nav a {
+  display: flex;
+  flex-direction: row;                 /* 縦書きでは、row が、上から下 */
+  height: var(--toc-h);
+  padding: 0;
+  border: 0;
+  font-size: 1rem;
+  line-height: 1.9;
+  letter-spacing: 0.3em;
+  white-space: nowrap;
+}
+body:not(.bar) #nav a::after {         /* 点線(下まで、のびる) */
+  content: "・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・";
+  order: 1;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  margin-block: 0.3rem;
+  letter-spacing: 0;
+  opacity: 0.5;
+}
+body:not(.bar) #nav > ul > li > a { counter-increment: toc; }   /* 大項目だけ、番号を進める */
+body:not(.bar) #nav > ul > li > a::before {                     /* 下に、順番の番号 */
+  content: counter(toc);
+  order: 2;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  letter-spacing: 0;
+  text-combine-upright: all;           /* 2桁の数字も、縦書きの中で、横に1文字分 */
+}
+
+/* ABOUT の小項目:ABOUT の左に、小さい列で、続く(番号は、付けない) */
+body:not(.bar) #nav .nav__sub {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 0.7rem;
+}
+body:not(.bar) #nav .nav__sub li { padding: 0 0.3rem; }
+body:not(.bar) #nav .nav__sub a {
+  font-size: 0.88rem;
+  letter-spacing: 0.25em;
+  opacity: 0.85;
+}
+
+/* スマホ:横幅に、収まるように、少し小さく */
+@media (max-width: 767px) {
+  body:not(.bar) #nav > ul > li { padding: 0 0.4rem; }
+  body:not(.bar) #nav a { font-size: 0.92rem; line-height: 1.8; }
+  body:not(.bar) #nav .nav__sub a { font-size: 0.8rem; }
+  body:not(.bar) #nav { padding-right: 4rem; }
+}
+
+/* ----- 目次:調整(高さは画面いっぱい / 点線と番号を中心へ / ABOUT は常に表示 / 色を反転) ----- */
+body:not(.bar) #nav {
+  height: 100svh;                      /* 縦は、画面いっぱい */
+  max-height: none;
+  bottom: 0;
+  --toc-h: calc(100svh - 6.4rem);      /* 1列の高さ = 画面の高さ - 上下の余白 */
+  background: rgba(238, 236, 231, 0.78);          /* 紙色。数字が小さいほど、透ける */
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);                     /* 後ろを、少しぼかして、文字を読みやすく */
+  box-shadow: -14px 0 32px rgba(0, 0, 0, 0.25);
+}
+
+/* 文字の色:炭の黒 */
+body:not(.bar) #nav::before,
+body:not(.bar) #nav a { color: #2d2c2b; }
+body:not(.bar) #nav a:hover { color: #8a6a3a; }   /* かざしたら、琥珀に近い茶色 */
+body:not(.bar) #nav > ul > li { border-left-color: rgba(45, 44, 43, 0.2); }
+
+/* 点線と番号を、文字の真ん中へ(測ったずれを、戻す) */
+body:not(.bar) #nav a::after { translate: 0.4em 0; }
+body:not(.bar) #nav > ul > li > a::before { translate: -0.75em 0; }
+
+/* ABOUT の中身を、常に表示 */
+body:not(.bar) #nav .nav__sub {
+  max-height: none;
+  overflow: visible;
+  opacity: 1;
+}
+
+/* 目次ボタン(開いている間)も、紙色の上で見えるように、黒に */
+body:not(.bar) #menuBtn.is-open span { background: #2d2c2b; }
+body:not(.bar) #menuBtn.is-open::after { color: #2d2c2b; }
+
+/* ----- 目次:下の端を画面の半分にそろえる / ABOUT の中身を1文字下げる ----- */
+body:not(.bar) #nav {
+  --toc-h: calc(50svh - 4.2rem);   /* 上の余白(4.2rem)を引いて、列の下端が画面の真ん中に来る */
+}
+
+/* ABOUT の中身:頭を1文字ぶん下げ、下端はそのまま(その分、短くする) */
+body:not(.bar) #nav .nav__sub { padding-top: 0.88rem; }
+body:not(.bar) #nav .nav__sub a { height: calc(var(--toc-h) - 0.88rem); }
