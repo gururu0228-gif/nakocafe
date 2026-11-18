@@ -2600,3 +2600,214 @@ body:not(.bar) #nav {
 /* ABOUT の中身:頭を1文字ぶん下げ、下端はそのまま(その分、短くする) */
 body:not(.bar) #nav .nav__sub { padding-top: 0.88rem; }
 body:not(.bar) #nav .nav__sub a { height: calc(var(--toc-h) - 0.88rem); }
+
+/* ----- ドアとロケットを、下の帯(青海波)に、くっつける ----- */
+body:not(.bar) #modeBtn { bottom: 16px; }   /* ドア */
+.walker { bottom: 9px; }                    /* ロケット */
+@media (max-width: 767px) {
+  .walker { bottom: 12px; }                 /* スマホのロケット */
+}
+
+/* ----- 見出しの文字を、ABOUT(コンセプトの大きな一言)の大きさにそろえる ----- */
+body:not(.bar) {
+  --heading-size: 2.4rem;            /* 見出しの大きさ。ここを変えれば、全部いっしょに変わる */
+}
+
+body:not(.bar) .hero__vtext,
+body:not(.bar) .story__headline,
+body:not(.bar) .story__headline--small,
+body:not(.bar) #about-concept .card__big,
+.report__title {
+  font-size: var(--heading-size);
+  letter-spacing: 0.3em;
+}
+
+@media (max-width: 767px) {
+  body:not(.bar) { --heading-size: 1.8rem; }   /* スマホは、ひとまわり小さく */
+}
+
+/* ----- ロゴ(右上)を、大きく ----- */
+body:not(.bar) .logo {
+  font-size: 1.7rem;       /* 今は 1.1rem。大きいほど、ロゴが大きい */
+}
+@media (max-width: 767px) {
+  body:not(.bar) .logo { font-size: 1.35rem; }   /* スマホは、少し控えめに */
+}
+
+/* ----- フッター:縦書きの、4つの列 ----- */
+body:not(.bar) .book > .footer {
+  width: 34rem;                         /* 列が並ぶぶん、広げる */
+  display: flex;
+  flex-direction: column;               /* 縦書きの中の column は、右から左へ並ぶ */
+  align-items: flex-start;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  gap: 2.2rem;
+  padding: 3rem 2rem;
+  text-align: start;
+  font-size: 0.85rem;
+  line-height: 1.9;
+  letter-spacing: 0.2em;
+  color: rgba(233, 229, 220, 0.85);
+}
+body:not(.bar) .footer a { color: inherit; text-decoration: none; }
+body:not(.bar) .footer a:hover { color: #d9a45f; }       /* かざすと、琥珀 */
+
+.footer__col { height: min(60svh, 24rem); }
+
+/* 列の間に、細い線(右側) */
+.footer__col + .footer__col {
+  padding-right: 0;
+  border-right: 1px solid rgba(233, 229, 220, 0.18);
+  padding-right: 2.2rem;
+}
+
+.footer__name { font-size: 1.8rem; letter-spacing: 0.4em; margin: 0; }
+.footer__sub  { margin: 0; opacity: 0.7; }
+.footer__copy { margin: 1rem 0 0; font-size: 0.7rem; opacity: 0.55; }
+
+.footer__nav ul,
+.footer__sns { display: flex; flex-direction: column; gap: 0.8rem; margin: 0; padding: 0; list-style: none; }
+
+/* 法律の表示は、小さく */
+.footer__legal { font-size: 0.72rem; opacity: 0.75; }
+.footer__legal p { margin: 0; }
+
+/* ----- フッター:ブロックを、縦に積む。区切りは、細い横線 ----- */
+body:not(.bar) .book > .footer {
+  width: 22rem;
+  flex-direction: column;             /* 上から下へ、積む */
+  align-items: stretch;
+  justify-content: center;
+  writing-mode: horizontal-tb;        /* 文字は、横書き */
+  gap: 0;
+  padding: 2rem 2rem;
+  text-align: left;
+  letter-spacing: 0.12em;
+}
+
+.footer__col {
+  height: auto;
+  padding: 1.1rem 0;
+  border-top: 1px solid rgba(233, 229, 220, 0.2);   /* 区切りの、細い横線 */
+}
+.footer__col:first-child { border-top: 0; padding-top: 0; }   /* いちばん上の線は、なし */
+.footer__col:last-child  { padding-bottom: 0; }
+
+/* さっきの、縦線の指定を、打ち消す */
+.footer__col + .footer__col { border-right: 0; padding-right: 0; }
+
+/* SNS は、横に並べる */
+.footer__sns { flex-direction: row; flex-wrap: wrap; gap: 0.4rem 1.4rem; }
+
+/* ----- フッター:各章のリンクは3行×2列 / SNSは1列 ----- */
+.footer__nav ul {
+  display: grid;
+  grid-template-rows: repeat(3, auto);   /* 3行 */
+  grid-auto-flow: column;                /* 上から下へ埋めて、次の列へ */
+  justify-content: start;
+  gap: 0.8rem 2.4rem;                    /* 行の間 / 列の間 */
+}
+
+.footer__sns {
+  flex-direction: column;                /* 1列 */
+  flex-wrap: nowrap;
+  gap: 0.8rem;
+}
+
+/* ----- フッター:リンクの頭に、アイコン ----- */
+.footer a::before {
+  content: "";
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  margin-right: 0.6em;
+  vertical-align: -0.2em;
+  background: currentColor;               /* 文字と同じ色(かざすと、琥珀に変わる) */
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+/* 各章へのリンク:小さな矢印 */
+.footer__nav a { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 5l7 7-7 7'/%3E%3C/svg%3E"); }
+
+/* Instagram */
+.footer a[href*="instagram.com"] { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='5' fill='none' stroke='black' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='4' fill='none' stroke='black' stroke-width='2'/%3E%3Ccircle cx='17.5' cy='6.5' r='1.3' fill='black'/%3E%3C/svg%3E"); }
+
+/* note */
+.footer a[href*="note.com"] { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h9l4 4v14H6z'/%3E%3Cpath d='M9 12h7M9 16h7'/%3E%3C/svg%3E"); }
+
+/* YouTube */
+.footer a[href*="youtube.com"] { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M6 5h12a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4zM10 9v6l5-3z'/%3E%3C/svg%3E"); }
+
+/* ネットショップ */
+.footer a[href*="theshop.jp"] { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8h14l-1 13H6z'/%3E%3Cpath d='M9 8V6a3 3 0 0 1 6 0v2'/%3E%3C/svg%3E"); }
+
+/* リンク集 */
+.footer a[href*="lit.link"] { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1'/%3E%3Cpath d='M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1'/%3E%3C/svg%3E"); }
+
+/* プライバシーポリシー:盾 */
+.footer a[href="#privacy"] { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z'/%3E%3C/svg%3E"); }
+
+/* ----- ラグづくり / ネットショップ:縦書きの列 ----- */
+body:not(.bar) #rug .panel__card,
+body:not(.bar) #shop .panel__card {
+  writing-mode: vertical-rl;
+  width: auto;
+  height: min(60svh, 24rem);
+}
+
+/* ラグ:手順が、1列ずつ(右から、1、2、3…) */
+.rug__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: rug;
+}
+.rug__steps li {
+  display: flex;
+  flex-direction: column;     /* 見出し(右)と、説明(左)の、2列 */
+  gap: 0.5rem;
+  counter-increment: rug;
+}
+.rug__steps strong {
+  font-size: 1.2rem;
+  letter-spacing: 0.3em;
+}
+.rug__steps strong::before {
+  content: counter(rug);
+  display: inline-block;
+  margin-bottom: 0.4em;
+  font-size: 0.9rem;
+  text-combine-upright: all;
+  color: #d9a45f;             /* 琥珀 */
+}
+.rug__steps span {
+  font-size: 0.95rem;
+  letter-spacing: 0.2em;
+  opacity: 0.85;
+}
+
+/* ネットショップ */
+#shop .card__text { margin: 0 0.8rem; letter-spacing: 0.25em; }
+.shop__btn {
+  display: inline-block;
+  margin: 0 0.8rem;
+  padding: 1rem 0.6rem;
+  border: 1px solid rgba(233, 229, 220, 0.55);
+  color: #e9e5dc;
+  text-decoration: none;
+  letter-spacing: 0.3em;
+  transition: color .3s, border-color .3s;
+}
+.shop__btn:hover { color: #d9a45f; border-color: #d9a45f; }
+
+/* ----- ヒーローの文字:もう少し細く ----- */
+body:not(.bar) .hero__vtext {
+  font-weight: 300;                        /* 400 → 300(細い) */
+  color: rgba(233, 229, 220, 0.75);        /* 色も、少しだけ、薄く */
+  letter-spacing: 0.55em;
+}

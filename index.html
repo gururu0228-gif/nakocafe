@@ -242,6 +242,29 @@
       </div>
     </article>
 
+    <!-- ラグを作ってみる -->
+    <article class="panel" id="rug">
+      <div class="panel__card">
+        <h3 class="card__title">ラグを作ってみる</h3>
+        <ol class="rug__steps">
+          <li><strong>えらぶ</strong><span>すきな色と、柄をえらぶ</span></li>
+          <li><strong>つくる</strong><span>スタッフが、やさしく教えます</span></li>
+          <li><strong>そろえる</strong><span>長さを、ととのえる</span></li>
+          <li><strong>もちかえる</strong><span>そのまま、お持ち帰り</span></li>
+        </ol>
+      </div>
+    </article>
+
+    <!-- 雑貨屋GRR ネットショップ -->
+    <article class="panel" id="shop">
+      <div class="panel__card">
+        <h3 class="card__title">雑貨屋GRR</h3>
+        <p class="card__big">雑貨屋GRR</p>
+        <p class="card__text">店主が作る、猫雑貨とラグ。</p>
+        <a class="shop__btn" href="https://grr.theshop.jp/" target="_blank" rel="noopener">ネットショップを見る</a>
+      </div>
+    </article>
+
     <!-- 11:よくある質問 -->
     <section class="section" id="faq">
       <h2 class="oval-title"><span>よくある質問</span></h2>
@@ -301,13 +324,40 @@
         <dt>定休日</dt><dd>毎週水曜日</dd>
         <dt>最寄り駅</dt><dd>○○駅 徒歩5分</dd>
       </dl>
-      <p class="note">※ 地図は Google マップの「共有 → 地図を埋め込む」で取得したコードをここに貼ります。</p>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3862.555233768296!2d130.97152287624039!3d33.730465073279746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543e9c93417d38d%3A0xd7d9ee28854fd19!2z5biC5aC044GI44Gz44GZ6YCa44KK!5e1!3m2!1sja!2sjp!4v1795023293024!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </section>
 
     <!-- 13:フッター(いちばん左の端) -->
     <footer class="footer">
-      <p>&copy; 2026 猫カフェ ねんね</p>
-    </footer>
+      <!-- 店名 -->
+      <div class="footer__col footer__brand">
+        <p class="footer__name">ねんね</p>
+        <p class="footer__sub">[猫とくつろげるお店]</p>
+        <p class="footer__copy">&copy; 2026 猫カフェ ねんね</p>
+      </div>
+
+      <!-- 各章へのリンク(目次と同じ) -->
+      <nav class="footer__col footer__nav" aria-label="各章へのリンク">
+        <ul>
+          <li><a href="#news">お知らせ</a></li>
+          <li><a href="#about-concept">ABOUT</a></li>
+          <li><a href="#cats">猫の紹介</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+          <li><a href="#report">運営レポート</a></li>
+          <li><a href="#access">アクセス</a></li>
+        </ul>
+      </nav>
+
+      <!-- SNS・リンク -->
+      <ul class="footer__col footer__sns">
+        <li><a href="https://www.instagram.com/shamucyamu/" target="_blank" rel="noopener">ねんね Instagram</a></li>
+        <li><a href="https://note.com/nyan_gururu/" target="_blank" rel="noopener">ねんね note</a></li>
+        <li><a href="https://www.instagram.com/nyangururu/" target="_blank" rel="noopener">雑貨屋GRR Instagram</a></li>
+        <li><a href="https://grr.theshop.jp/" target="_blank" rel="noopener">雑貨屋GRR ネットショップ</a></li>
+        <li><a href="https://youtube.com/@grrhogoneko" target="_blank" rel="noopener">GRR YouTube</a></li>
+        <li><a href="https://lit.link/GrayRugGRR" target="_blank" rel="noopener">リンク集(Lit.link)</a></li>
+        <li><a href="#privacy">プライバシーポリシー</a></li>
+      </ul>
 
   </main>
 

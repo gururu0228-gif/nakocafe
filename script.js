@@ -514,8 +514,8 @@ function navScrollTo(target) {
   navAnim = requestAnimationFrame(step);
 }
 
-document.querySelectorAll('.nav a[href^="#"]').forEach((link) => {
-  link.addEventListener('click', (event) => {
+document.querySelectorAll('.nav a[href^="#"], .footer__nav a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
     if (link.parentElement.classList.contains('nav__item--has-sub')) return;   // ABOUT 本体は、移動しない
 
     const href = link.getAttribute('href');
@@ -1010,12 +1010,14 @@ const PAGE_LABELS = {
   'about-tour':     ['TOUR',     '店内あんない'],
   'about-staff':    ['STAFF',    'スタッフ紹介'],
   'about-system':   ['SYSTEM',   'システム'],
+  'rug':            ['RUG',      'ラグづくり'],
+  'shop':           ['SHOP',     'ネットショップ'],
   'faq':            ['FAQ',      'よくある質問'],
-  'report': ['REPORT', '運営レポート'],
+  'report':         ['REPORT',   '運営レポート'],
   'access':         ['ACCESS',   'アクセス'],
 };
 
-// ラベルの箱を作って、ページの上に置く
+// ラベルの箱を作って、ページに置く
 const pageLabel = document.createElement('div');
 pageLabel.className = 'page-label';
 pageLabel.setAttribute('aria-hidden', 'true');              // 飾りなので、読み上げない
@@ -1030,6 +1032,7 @@ let labelId = null;       // いま出している章の id
 let labelTimer = null;
 
 function updatePageLabel() {
+
   // 画面のまん中(横)に、かかっているページを探す
   const x = window.innerWidth * 0.5;
   let id = null;
