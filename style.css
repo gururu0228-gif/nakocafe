@@ -2811,3 +2811,73 @@ body:not(.bar) .hero__vtext {
   color: rgba(233, 229, 220, 0.75);        /* 色も、少しだけ、薄く */
   letter-spacing: 0.55em;
 }
+
+/* ----- 帯:上下の細い線(枠)を、なくす ----- */
+body:not(.bar) .book > #about-concept::before,
+body:not(.bar) .book > #about-can::before,
+body:not(.bar) .book > #about-menu::before,
+body:not(.bar) .book > #about-tour::before,
+body:not(.bar) .book > #about-staff::before,
+body:not(.bar) .book > #about-system::before,
+body:not(.bar) .book > #faq::before {
+  border: 0;
+}
+
+/* ----- 帯:上下のすき間をなくして、画面いっぱいの背景に ----- */
+body:not(.bar) .book > #about-concept::before,
+body:not(.bar) .book > #about-can::before,
+body:not(.bar) .book > #about-menu::before,
+body:not(.bar) .book > #about-tour::before,
+body:not(.bar) .book > #about-staff::before,
+body:not(.bar) .book > #about-system::before,
+body:not(.bar) .book > #faq::before {
+  inset: 0;               /* 上下左右、ぴったり */
+}
+
+/* ----- 帯:猫の紹介 〜 運営レポートまで、ひとつづきに ----- */
+
+/* 帯を敷く準備(文字の後ろに、帯を置く) */
+body:not(.bar) .book > #cats,
+body:not(.bar) .book > #rug,
+body:not(.bar) .book > #shop,
+body:not(.bar) .book > #report {
+  position: relative;
+  isolation: isolate;
+}
+
+/* 章の中の左右の余白(猫の紹介と運営レポートは、もともと余白があるので、除く) */
+body:not(.bar) .book > #rug,
+body:not(.bar) .book > #shop {
+  padding-inline: calc(var(--book-gap) / 2);
+}
+
+/* 章の間のすき間を、なくす(猫の紹介の、すぐ左から、つなげる) */
+body:not(.bar) .book > #rug,
+body:not(.bar) .book > #shop,
+body:not(.bar) .book > #faq,
+body:not(.bar) .book > #report {
+  margin-left: calc(-1 * var(--book-gap));
+}
+
+/* 帯の本体:上下左右、ぴったり */
+body:not(.bar) .book > #cats::before,
+body:not(.bar) .book > #rug::before,
+body:not(.bar) .book > #shop::before,
+body:not(.bar) .book > #report::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--obi-bg);
+}
+
+/* ----- 帯:猫の紹介 → コンセプトの、すき間をなくす ----- */
+body:not(.bar) .book > #cats {
+  margin-left: calc(-1 * var(--book-gap));    /* 左隣(コンセプト)との間を、つめる */
+}
+
+/* 運営レポートは、アクセスと、くっつけない */
+body:not(.bar) .book > #report {
+  margin-left: 0;
+}
